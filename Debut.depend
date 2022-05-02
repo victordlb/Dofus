@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1651498615 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\main.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+
+1651440952 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\sousprog.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1651504385 c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\header.h
+
+1651342787 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\liste.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1651506315 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\map.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
