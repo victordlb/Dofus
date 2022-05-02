@@ -3,6 +3,7 @@
 #include <allegro.h>
 #include "header.h"
 
+/// salut a tous
 int main()
 {
     //lancement();
