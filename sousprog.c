@@ -3,6 +3,7 @@
 #include <allegro.h>
 #include <time.h>
 #include <synchapi.h>
+#include <string.h>
 #include "header.h"
 
 void initialisation()
@@ -142,10 +143,10 @@ void menu_principal()
             int nbr;
             int premier_joueur;
             nbr = nombre_joueur();
-            tab_joueur = choix_perso(nbr);
+            tab_joueur = initialisation_joueur(nbr);
             for(int x = 0; x<nbr; x++)
             {
-                printf("joueur %d : %s\n", tab_joueur[x]->ID, tab_joueur[x]->nom);
+                printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
             }
             premier_joueur = random_commencer(nbr);
             tour(tab_joueur, nbr, premier_joueur, 0);
@@ -266,9 +267,9 @@ int nombre_joueur()
     return nbr;
 }
 
-t_joueur** choix_perso(int nbr_joueur)
+t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 {
-    t_joueur** tab_joueur = (t_joueur**)malloc(nbr_joueur * sizeof(t_joueur*));
+    t_classe uneclasse;
     FILE* luf = NULL;
     FILE* san = NULL;
     FILE* rob = NULL;
@@ -291,9 +292,35 @@ t_joueur** choix_perso(int nbr_joueur)
     int couleur2 = 0;
     int couleur3 = 0;
     int couleur4 = 0;
-    while(stop != nbr_joueur)
+    for(int j=0; j< i; j++)
     {
-        textprintf_ex(fond, font, 570, 50, makecol(0,0,0), -1, "CHOISISSEZ 1 PAR 1 VOTRE MUGIWARA");
+        if(tab_joueur[j]->classes.PV==70)
+        {
+            test1 = 4;
+        }
+        else if(tab_joueur[j]->classes.PV==65)
+        {
+            test2 = 4;
+        }
+        else if(tab_joueur[j]->classes.PV==50)
+        {
+            test3 = 4;
+        }
+        else if(tab_joueur[j]->classes.PV==100)
+        {
+            test4 = 4;
+        }
+        else
+        {
+            test1 = 0;
+            test2 = 0;
+            test3 = 0;
+            test4 = 0;
+        }
+    }
+    while(stop == 0)
+    {
+        textprintf_ex(fond, font, 580, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MUGIWARA");
         if(mouse_x < 90 || mouse_x > (180 + text_length(font, "LUFFY")) || mouse_y < 180 || mouse_y > (180 + text_height(font)))
         {
             couleur1 = makecol(0,0,0);
@@ -374,14 +401,12 @@ t_joueur** choix_perso(int nbr_joueur)
             {
                 printf("Erreur d'ouverture fichier luffy\n");
             }
-            tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
-            tab_joueur[stop]->nom = (char*)malloc(5*sizeof(char));
-            tab_joueur[stop]->nom = "luffy";
-            tab_joueur[stop]->ID = stop + 1;
-            fscanf(luf, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            uneclasse.nom = (char*)malloc(5*sizeof(char));
+            uneclasse.nom = "luffy";
+            uneclasse.ID = i+1;
+            fscanf(luf, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(luf);
             clear_bitmap(luffy);
-            test1 = 4;
             Sleep(500);
             stop++;
         }
@@ -392,14 +417,12 @@ t_joueur** choix_perso(int nbr_joueur)
             {
                 printf("Erreur d'ouverture fichier robin\n");
             }
-            tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
-            tab_joueur[stop]->nom = (char*)malloc(5*sizeof(char));
-            tab_joueur[stop]->nom = "robin";
-            tab_joueur[stop]->ID = stop + 1;
-            fscanf(rob, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            uneclasse.nom = (char*)malloc(5*sizeof(char));
+            uneclasse.nom = "robin";
+            uneclasse.ID = i+1;
+            fscanf(rob, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(rob);
             clear_bitmap(robin);
-            test2 = 4;
             Sleep(500);
             stop++;
         }
@@ -410,14 +433,12 @@ t_joueur** choix_perso(int nbr_joueur)
             {
                 printf("Erreur d'ouverture fichier sanji\n");
             }
-            tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
-            tab_joueur[stop]->nom = (char*)malloc(5*sizeof(char));
-            tab_joueur[stop]->nom = "sanji";
-            tab_joueur[stop]->ID = stop + 1;
-            fscanf(san, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            uneclasse.nom = (char*)malloc(5*sizeof(char));
+            uneclasse.nom = "sanji";
+            uneclasse.ID = i+1;
+            fscanf(san, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(san);
             clear_bitmap(sanji);
-            test3 = 4;
             Sleep(500);
             stop++;
         }
@@ -428,14 +449,12 @@ t_joueur** choix_perso(int nbr_joueur)
             {
                 printf("Erreur d'ouverture fichier francky\n");
             }
-            tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
-            tab_joueur[stop]->nom = (char*)malloc(6*sizeof(char));
-            tab_joueur[stop]->nom = "franky";
-            tab_joueur[stop]->ID = stop + 1;
-            fscanf(fra, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            uneclasse.nom = (char*)malloc(6*sizeof(char));
+            uneclasse.nom = "franky";
+            uneclasse.ID = i+1;
+            fscanf(fra, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(fra);
             clear_bitmap(franky);
-            test4 = 4;
             Sleep(500);
             stop++;
         }
@@ -449,7 +468,7 @@ t_joueur** choix_perso(int nbr_joueur)
     destroy_bitmap(robin_c);
     destroy_bitmap(sanji_c);
     destroy_bitmap(franky_c);
-    return tab_joueur;
+    return uneclasse;
 }
 
 void menu_pause(t_joueur** tabjoueur, int nbrjoueur)
@@ -562,10 +581,10 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
         {
             for(int i=0; i<nbrjoueur; i++)
             {
-                textprintf_ex(fond, font, x, 100, makecol(255,255,255), 0, "Joueur %d : %s", tabjoueur[i]->ID, tabjoueur[i]->nom);
-                textprintf_ex(fond, font, x, 140, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->PV);
-                textprintf_ex(fond, font, x, 160, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->PA);
-                textprintf_ex(fond, font, x, 180, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->PM);
+                textprintf_ex(fond, font, x, 100, makecol(255,255,255), 0, "Joueur %d : %s", tabjoueur[i]->classes.ID, tabjoueur[i]->classes.nom);
+                textprintf_ex(fond, font, x, 140, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->classes.PV);
+                textprintf_ex(fond, font, x, 160, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->classes.PA);
+                textprintf_ex(fond, font, x, 180, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->classes.PM);
                 if(tabjoueur[i]->perdu == 1)
                 {
                     textprintf_ex(fond, font, x, 200, makecol(255,255,255), 0, "Etat : perdu");
@@ -580,4 +599,37 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
         compteur++;
     }
     destroy_bitmap(fond);
+}
+
+void saisie_pseudo()
+{
+    BITMAP* fond;
+    fond = load_bitmap("fond pseudo.bmp", NULL);
+    int touche = 0;
+    int touche1 = 0;
+    char pseudo[100];
+    while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])
+    {
+        blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
+        if(keypressed())
+        {
+             touche = readkey();
+
+        }
+    }
+    destroy_bitmap(fond);
+}
+
+t_joueur** initialisation_joueur(int nbrjoueur)
+{
+    t_joueur** tabjoueur;
+    tabjoueur =(t_joueur**)malloc(nbrjoueur * sizeof(t_joueur*));
+    for(int i = 0; i<nbrjoueur; i++)
+    {
+        tabjoueur[i] = (t_joueur*)malloc(sizeof(t_joueur));
+        //tabjoueur[i].pseudo = saisie_pseudo();
+        saisie_pseudo();
+        tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
+    }
+    return tabjoueur;
 }
