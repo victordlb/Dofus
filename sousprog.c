@@ -269,6 +269,10 @@ int nombre_joueur()
 t_joueur** choix_perso(int nbr_joueur)
 {
     t_joueur** tab_joueur = (t_joueur**)malloc(nbr_joueur * sizeof(t_joueur*));
+    FILE* luf = NULL;
+    FILE* san = NULL;
+    FILE* rob = NULL;
+    FILE* fra = NULL;
     BITMAP* fond = load_bitmap("choix.bmp", NULL);
     BITMAP* luffy = load_bitmap("luffy.bmp", NULL);
     BITMAP* robin = load_bitmap("robin.bmp", NULL);
@@ -365,10 +369,17 @@ t_joueur** choix_perso(int nbr_joueur)
         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
+            luf = fopen("luffy.txt", "r+");
+            if(luf == NULL)
+            {
+                printf("Erreur d'ouverture fichier luffy\n");
+            }
             tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
             tab_joueur[stop]->nom = (char*)malloc(5*sizeof(char));
             tab_joueur[stop]->nom = "luffy";
             tab_joueur[stop]->ID = stop + 1;
+            fscanf(luf, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            fclose(luf);
             clear_bitmap(luffy);
             test1 = 4;
             Sleep(500);
@@ -376,10 +387,17 @@ t_joueur** choix_perso(int nbr_joueur)
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
+            rob = fopen("robin.txt", "r+");
+            if(rob == NULL)
+            {
+                printf("Erreur d'ouverture fichier robin\n");
+            }
             tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
             tab_joueur[stop]->nom = (char*)malloc(5*sizeof(char));
             tab_joueur[stop]->nom = "robin";
             tab_joueur[stop]->ID = stop + 1;
+            fscanf(rob, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            fclose(rob);
             clear_bitmap(robin);
             test2 = 4;
             Sleep(500);
@@ -387,10 +405,17 @@ t_joueur** choix_perso(int nbr_joueur)
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
+            san = fopen("sanji.txt", "r+");
+            if(san == NULL)
+            {
+                printf("Erreur d'ouverture fichier sanji\n");
+            }
             tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
             tab_joueur[stop]->nom = (char*)malloc(5*sizeof(char));
             tab_joueur[stop]->nom = "sanji";
             tab_joueur[stop]->ID = stop + 1;
+            fscanf(san, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            fclose(san);
             clear_bitmap(sanji);
             test3 = 4;
             Sleep(500);
@@ -398,10 +423,17 @@ t_joueur** choix_perso(int nbr_joueur)
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
+            fra = fopen("franky.txt", "r+");
+            if(fra == NULL)
+            {
+                printf("Erreur d'ouverture fichier francky\n");
+            }
             tab_joueur[stop] = (t_joueur*)malloc(sizeof(t_joueur));
             tab_joueur[stop]->nom = (char*)malloc(6*sizeof(char));
             tab_joueur[stop]->nom = "franky";
             tab_joueur[stop]->ID = stop + 1;
+            fscanf(fra, "%d %d %d", &tab_joueur[stop]->PV, &tab_joueur[stop]->PM, &tab_joueur[stop]->PA);
+            fclose(fra);
             clear_bitmap(franky);
             test4 = 4;
             Sleep(500);
