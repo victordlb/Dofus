@@ -21,14 +21,14 @@ void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur)
         {
             if(tabjoueur[i]->perdu != 1)
             {
-                printf("joueur %d :%s, vous avez gagner !\n", tabjoueur[i]->ID, tabjoueur[i]->nom);
+                printf("joueur %d :%s, vous avez gagner !\n", tabjoueur[i]->classes.ID, tabjoueur[i]->classes.nom);
             }
         }
     }
     else if(tabjoueur[random-1]->perdu != 1)
     {
         int entier;
-        printf("joueur %d : %s a vous de jouer(saisir un entier)\n", tabjoueur[random-1]->ID, tabjoueur[random-1]->nom);
+        printf("joueur %d : %s a vous de jouer(saisir un entier)\n", tabjoueur[random-1]->classes.ID, tabjoueur[random-1]->classes.nom);
         scanf("%d", &entier);
         if(entier == 2)
         {
