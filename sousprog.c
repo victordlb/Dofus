@@ -581,17 +581,18 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
         {
             for(int i=0; i<nbrjoueur; i++)
             {
-                textprintf_ex(fond, font, x, 100, makecol(255,255,255), 0, "Joueur %d : %s", tabjoueur[i]->classes.ID, tabjoueur[i]->classes.nom);
-                textprintf_ex(fond, font, x, 140, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->classes.PV);
-                textprintf_ex(fond, font, x, 160, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->classes.PA);
-                textprintf_ex(fond, font, x, 180, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->classes.PM);
+                textprintf_ex(fond, font, x, 100, makecol(255,255,255), 0, "Joueur %d : %s", tabjoueur[i]->classes.ID,tabjoueur[i]->pseudo);
+                textprintf_ex(fond, font, x, 140, makecol(255,255,255), 0, "Classe : %s",tabjoueur[i]->classes.nom);
+                textprintf_ex(fond, font, x, 170, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->classes.PV);
+                textprintf_ex(fond, font, x, 190, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->classes.PA);
+                textprintf_ex(fond, font, x, 210, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->classes.PM);
                 if(tabjoueur[i]->perdu == 1)
                 {
-                    textprintf_ex(fond, font, x, 200, makecol(255,255,255), 0, "Etat : perdu");
+                    textprintf_ex(fond, font, x, 230, makecol(255,255,255), 0, "Etat : perdu");
                 }
                 else
                 {
-                    textprintf_ex(fond, font, x, 200, makecol(255,255,255), 0, "Etat : encore en vie");
+                    textprintf_ex(fond, font, x, 230, makecol(255,255,255), 0, "Etat : encore en vie");
                 }
                 x = x+300;
             }
@@ -601,23 +602,70 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(fond);
 }
 
-void saisie_pseudo()
+char* saisie_pseudo()
 {
     BITMAP* fond;
     fond = load_bitmap("fond pseudo.bmp", NULL);
-    int touche = 0;
-    int touche1 = 0;
-    char pseudo[100];
+    char* pseudo;
+    int touche, touche1, touche2;
+    int i=0;
+    char masaisie[21]; // stockage de la totalité de la saisie
+    char lastsaisie[2];    // stockage la derniere touche saisie
+    masaisie[20]=0;
+    lastsaisie[1]=0;
+    clear_keybuf();
+    textprintf_ex(fond, font, 400, 250, makecol(255,255,255),0,"SAISIR VOTRE PSEUDO : (entree pour valider)");
+    /* affichage curseur */
+    textprintf_ex(fond,font,420+8*(i+1),300,makecol(255,255,255),0,"_");
+
     while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])
     {
-        blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
-        if(keypressed())
+        blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        touche=readkey();
+        touche1=touche & 0xFF; // code ASCII
+        touche2=touche >> 8;   // scancode
+        // selection des touches (la selection est totalement arbitraire)
+        if (( touche1>31 && touche1<58) || ( touche1>64 && touche1<123))
         {
-             touche = readkey();
-
+            if (i>=20)
+                i=20;
+            else
+            {
+                masaisie[i]=touche1;
+                lastsaisie[0]=touche1;
+                masaisie[i+1]=0;
+                /*  on affiche la touche saisie */
+                textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"%s",lastsaisie);
+                i++;
+                textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"_");
+            }
+        }
+        //* si effacement
+        if ( touche2==KEY_BACKSPACE )
+        {
+            i--;
+            if ( i<0 )
+                i=0;
+            textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"_");
+            textprintf_ex(fond,font,420+8*(i+1),300,makecol(255,255,255),0," ");
+        }
+        //* si validation
+        if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
+        {
+            textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0," ");
+            if (i==0)
+                masaisie[0]=32; // space
+            masaisie[i+1]=0;
         }
     }
-    destroy_bitmap(fond);
+    pseudo = (char*)malloc((strlen(masaisie)+1)*sizeof(char));
+    if(pseudo != NULL)
+    {
+        strcpy(pseudo, masaisie);
+    }
+    clear_keybuf();
+    clear_bitmap(fond);
+    return pseudo;
 }
 
 t_joueur** initialisation_joueur(int nbrjoueur)
@@ -627,8 +675,7 @@ t_joueur** initialisation_joueur(int nbrjoueur)
     for(int i = 0; i<nbrjoueur; i++)
     {
         tabjoueur[i] = (t_joueur*)malloc(sizeof(t_joueur));
-        //tabjoueur[i].pseudo = saisie_pseudo();
-        saisie_pseudo();
+        tabjoueur[i]->pseudo = saisie_pseudo();
         tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
     }
     return tabjoueur;

@@ -18,7 +18,6 @@ typedef struct classe
     int PV;
     int PM;
     int PA;
-    int perdu;
     t_attaque** mesattaques;
 }t_classe;
 
@@ -59,5 +58,6 @@ int testvert(int vert);
 int testrouge(int rouge);
 int testbleu(int bleu);
 t_joueur** initialisation_joueur(int nbrjoueur);
+char* saisie_pseudo();
 
 #endif // HEADER_H_INCLUDED
