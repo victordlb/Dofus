@@ -28,6 +28,7 @@ void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur)
     else if(tabjoueur[random-1]->perdu != 1)
     {
         int entier;
+        deplacement(tabjoueur, random);
         printf("joueur %d : %s a vous de jouer(saisir un entier)\n", tabjoueur[random-1]->classes.ID, tabjoueur[random-1]->classes.nom);
         scanf("%d", &entier);
         if(entier == 2)

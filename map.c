@@ -54,16 +54,23 @@ t_cases** chargement_map()
     return tabcases;
 }
 
-void deplacement()
+void deplacement(t_joueur** tabjoueur, int indice)
 {
     t_cases** tabcases;
     tabcases = chargement_map();
     BITMAP* fond;
-    BITMAP* luffy;
+    BITMAP* personnage;
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
     fond = load_bitmap("map monde.bmp", NULL);
-    luffy = load_bitmap("luf0.bmp", NULL);
+    if(tabjoueur[indice-1]->classes.PV == 70)
+        personnage = load_bitmap("luffy standby.bmp", NULL);
+    else if(tabjoueur[indice-1]->classes.PV == 65)
+        personnage = load_bitmap("robin standby.bmp", NULL);
+    else if(tabjoueur[indice-1]->classes.PV == 50)
+        personnage = load_bitmap("sanji standby.bmp", NULL);
+    else if(tabjoueur[indice-1]->classes.PV == 100)
+        personnage = load_bitmap("franky standby.bmp", NULL);
     for(int x=50; x<1400; x = x+50)
     {
         vline(fond, x, 0,800,makecol(255,255,255));
@@ -77,31 +84,38 @@ void deplacement()
     int validation = 0;
     while(!key[KEY_ESC])
     {
+        ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
         {
             premier_x = tabcases[mouse_y/50][mouse_x/50].x;
-            premier_y = tabcases[mouse_y/50][mouse_x/50].y;
+            premier_y = tabcases[(mouse_y/50)-1][(mouse_x/50)-1].y;
+            //Sleep(500);
             validation = 1;
         }
         if(validation == 1)
         {
-            draw_sprite(buffer, luffy, premier_x, premier_y);
+            draw_sprite(buffer, personnage, premier_x, premier_y);
         }
         blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
         {
             premier_x = tabcases[mouse_y/50][mouse_x/50].x;
-            premier_y = tabcases[mouse_y/50][mouse_x/50].y;
-            draw_sprite(screen, luffy, premier_x, premier_y);
+            premier_y = tabcases[(mouse_y/50)-1][(mouse_x/50)-1].y;
+            draw_sprite(screen, personnage, premier_x, premier_y);
+            Sleep(500);
             validation = 1;
         }
         if(validation == 1)
         {
-            draw_sprite(buffer, luffy, premier_x, premier_y);
+            draw_sprite(buffer, personnage, premier_x, premier_y);
+            Sleep(500);
         }
         clear_bitmap(buffer);
     }
+    destroy_bitmap(fond);
+    destroy_bitmap(personnage);
+    destroy_bitmap(buffer);
 }
 
 int possibilite_deplacement(t_cases** tabcases,int X, int Y)
