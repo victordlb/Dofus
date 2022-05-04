@@ -39,9 +39,15 @@
 	<synchapi.h>
 	"header.h"
 
+<<<<<<< Updated upstream
 1651685317 c:\users\victo\onedrive\documents\github\dofus\header.h
 
 1651700686 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+=======
+1651678690 c:\users\victo\onedrive\documents\github\dofus\header.h
+
+1651678690 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+>>>>>>> Stashed changes
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
