@@ -57,13 +57,13 @@ void dessin_ligne();
 t_cases** chargement_map();
 BITMAP* charger_map(t_cases** tabcases);
 
-void deplacement(t_joueur** tabjoueur, int indice);
+void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur);
 int possibilite_deplacement(t_cases** tabcases,int X, int Y);
 int testvert(int vert);
 int testrouge(int rouge);
 int testbleu(int bleu);
 t_joueur** initialisation_joueur(int nbrjoueur);
 char* saisie_pseudo();
-void premier_placement(t_joueur*** tabjoueur, int nbrjoueur);
+void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
 
 #endif // HEADER_H_INCLUDED
