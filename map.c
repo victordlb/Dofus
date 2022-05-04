@@ -51,6 +51,7 @@ t_cases** chargement_map()
                 tabcases[i][j].obstacle = 0;
             else
                 tabcases[i][j].obstacle = 1;
+            tabcases[0][j].obstacle = 1;
         }
         ligne = ligne +50;
     }
