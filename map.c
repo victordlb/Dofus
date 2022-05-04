@@ -98,7 +98,6 @@ BITMAP* charger_map(t_cases** tabcases)
                 draw_sprite(fond, zero, tabcases[i][j].x, tabcases[i][j].y);
         }
     }
-    //blit(fond, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
     destroy_bitmap(un);
     destroy_bitmap(deux);
     destroy_bitmap(trois);
@@ -144,37 +143,93 @@ void deplacement(t_joueur** tabjoueur, int indice)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
-        //buffer = charger_map(tabcases);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
         {
             premier_x = tabcases[mouse_y/50][mouse_x/50].x;
-            premier_y = tabcases[(mouse_y/50)-1][(mouse_x/50)-1].y;
-            //Sleep(500);
+            premier_y = tabcases[mouse_y/50][mouse_x/50].y;
             validation = 1;
         }
         if(validation == 1)
         {
-            draw_sprite(buffer, personnage, premier_x, premier_y);
+            draw_sprite(buffer, personnage, premier_x, premier_y-50);
         }
         blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
         {
             premier_x = tabcases[mouse_y/50][mouse_x/50].x;
-            premier_y = tabcases[(mouse_y/50)-1][(mouse_x/50)-1].y;
-            draw_sprite(screen, personnage, premier_x, premier_y);
-            //Sleep(500);
+            premier_y = tabcases[mouse_y/50][mouse_x/50].y;
             validation = 1;
         }
         if(validation == 1)
         {
-            draw_sprite(buffer, personnage, premier_x, premier_y);
-            //Sleep(500);
+            draw_sprite(buffer, personnage, premier_x, premier_y-50);
         }
         clear_bitmap(buffer);
     }
     destroy_bitmap(fond);
     destroy_bitmap(personnage);
     destroy_bitmap(buffer);
+}
+
+void premier_placement(t_joueur*** tabjoueur, int nbrjoueur)
+{
+    BITMAP* fond ;
+    t_cases** tabcases;
+    tabcases = chargement_map();
+    fond = charger_map(tabcases);
+    BITMAP* personnage;
+    float temps = 0;
+    int validation = 0;
+    int done = 0;
+    for(int i=0; i<nbrjoueur; i++)
+    {
+        temps = 0;
+        textprintf_ex(fond, font, 300,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART DANS LE MEME ORDRE QUE VOS CHOIX DE PERSONNAGES (vous avez 15secondes)");
+        done = 0;
+        validation = 0;
+        if((*tabjoueur)[i]->classes.PV == 70)
+            personnage = load_bitmap("luffy standby.bmp", NULL);
+        else if((*tabjoueur)[i]->classes.PV == 65)
+            personnage = load_bitmap("robin standby.bmp", NULL);
+        else if((*tabjoueur)[i]->classes.PV == 50)
+            personnage = load_bitmap("sanji standby.bmp", NULL);
+        else if((*tabjoueur)[i]->classes.PV == 100)
+            personnage = load_bitmap("franky standby.bmp", NULL);
+        time_t start, end;
+        time(&start);
+        while(done==0 && temps <=16)
+        {
+            if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
+            {
+                (*tabjoueur)[i]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
+                (*tabjoueur)[i]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
+                tabcases[mouse_y/50][mouse_x/50].obstacle = 1;
+                validation = 1;
+            }
+            if(validation == 1)
+            {
+                draw_sprite(fond, personnage, (*tabjoueur)[i]->classes.cord_x, (*tabjoueur)[i]->classes.cord_y-50);
+                Sleep(500);
+                done = 1;
+            }
+            blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+            time(&end);
+            temps = difftime(end, start);
+            if(temps == 15)
+            {
+                do
+                {
+                    (*tabjoueur)[i]->classes.cord_x = tabcases[rand()%16][rand()%28].x;
+                    (*tabjoueur)[i]->classes.cord_y = tabcases[rand()%16][rand()%28].y;
+                }
+                while(possibilite_deplacement(tabcases, (*tabjoueur)[i]->classes.cord_x, (*tabjoueur)[i]->classes.cord_y)==0);
+                validation = 1;
+            }
+        }
+    }
+    Sleep(1000);
+    destroy_bitmap(personnage);
+    destroy_bitmap(fond);
 }
 
 int possibilite_deplacement(t_cases** tabcases,int X, int Y)

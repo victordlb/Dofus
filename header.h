@@ -19,6 +19,8 @@ typedef struct classe
     int PM;
     int PA;
     t_attaque** mesattaques;
+    int cord_x;
+    int cord_y;
 }t_classe;
 
 typedef struct cases

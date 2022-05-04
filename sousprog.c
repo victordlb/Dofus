@@ -678,5 +678,6 @@ t_joueur** initialisation_joueur(int nbrjoueur)
         tabjoueur[i]->pseudo = saisie_pseudo();
         tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
     }
+    premier_placement(&tabjoueur, nbrjoueur);
     return tabjoueur;
 }
