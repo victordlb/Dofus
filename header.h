@@ -64,5 +64,6 @@ int testrouge(int rouge);
 int testbleu(int bleu);
 t_joueur** initialisation_joueur(int nbrjoueur);
 char* saisie_pseudo();
+void premier_placement(t_joueur*** tabjoueur, int nbrjoueur);
 
 #endif // HEADER_H_INCLUDED
