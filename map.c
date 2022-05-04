@@ -27,7 +27,7 @@ void dessin_ligne()
 t_cases** chargement_map()
 {
     t_cases** tabcases = (t_cases**)malloc(16 * sizeof(t_cases*));
-    FILE* pf = fopen("map.txt", "r+");
+    FILE* pf = fopen("lamapa.txt", "r+");
     if(pf == NULL)
     {
         printf("Erreur d'ouverture\n");
@@ -46,12 +46,69 @@ t_cases** chargement_map()
             tabcases[i][j].x = colonne;
             tabcases[i][j].y = ligne;
             colonne = colonne +50;
-            fscanf(pf, "%d", &tabcases[i][j].obstacle);
+            fscanf(pf, "%d", &tabcases[i][j].cases);
+            if(tabcases[i][j].cases <= 5)
+                tabcases[i][j].obstacle = 0;
+            else
+                tabcases[i][j].obstacle = 1;
         }
         ligne = ligne +50;
     }
     fclose(pf);
     return tabcases;
+}
+
+BITMAP* charger_map(t_cases** tabcases)
+{
+    BITMAP* un = load_bitmap("1.bmp", NULL);
+    BITMAP* deux = load_bitmap("2.bmp", NULL);
+    BITMAP* trois = load_bitmap("3.bmp", NULL);
+    BITMAP* quatre = load_bitmap("4.bmp", NULL);
+    BITMAP* cinq = load_bitmap("5.bmp", NULL);
+    BITMAP* six = load_bitmap("6.bmp", NULL);
+    BITMAP* sept = load_bitmap("7.bmp", NULL);
+    BITMAP* huit = load_bitmap("8.bmp", NULL);
+    BITMAP* neuf = load_bitmap("9.bmp", NULL);
+    BITMAP* zero = load_bitmap("0.bmp", NULL);
+    BITMAP* fond = create_bitmap(SCREEN_W, SCREEN_H);
+    for(int i =0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            if(tabcases[i][j].cases == 1)
+                draw_sprite(fond, un, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 2)
+                draw_sprite(fond, deux, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 3)
+                draw_sprite(fond, trois, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 4)
+                draw_sprite(fond, quatre, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 5)
+                draw_sprite(fond, cinq, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 6)
+                draw_sprite(fond, six, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 7)
+                draw_sprite(fond, sept, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 8)
+                draw_sprite(fond, huit, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 9)
+                draw_sprite(fond, neuf, tabcases[i][j].x, tabcases[i][j].y);
+            if(tabcases[i][j].cases == 0)
+                draw_sprite(fond, zero, tabcases[i][j].x, tabcases[i][j].y);
+        }
+    }
+    //blit(fond, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
+    destroy_bitmap(un);
+    destroy_bitmap(deux);
+    destroy_bitmap(trois);
+    destroy_bitmap(quatre);
+    destroy_bitmap(cinq);
+    destroy_bitmap(six);
+    destroy_bitmap(sept);
+    destroy_bitmap(huit);
+    destroy_bitmap(neuf);
+    destroy_bitmap(zero);
+    return fond;
 }
 
 void deplacement(t_joueur** tabjoueur, int indice)
@@ -62,7 +119,7 @@ void deplacement(t_joueur** tabjoueur, int indice)
     BITMAP* personnage;
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    fond = load_bitmap("map monde.bmp", NULL);
+    fond = charger_map(tabcases);
     if(tabjoueur[indice-1]->classes.PV == 70)
         personnage = load_bitmap("luffy standby.bmp", NULL);
     else if(tabjoueur[indice-1]->classes.PV == 65)
@@ -86,6 +143,7 @@ void deplacement(t_joueur** tabjoueur, int indice)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
+        //buffer = charger_map(tabcases);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
         {
             premier_x = tabcases[mouse_y/50][mouse_x/50].x;
@@ -103,13 +161,13 @@ void deplacement(t_joueur** tabjoueur, int indice)
             premier_x = tabcases[mouse_y/50][mouse_x/50].x;
             premier_y = tabcases[(mouse_y/50)-1][(mouse_x/50)-1].y;
             draw_sprite(screen, personnage, premier_x, premier_y);
-            Sleep(500);
+            //Sleep(500);
             validation = 1;
         }
         if(validation == 1)
         {
             draw_sprite(buffer, personnage, premier_x, premier_y);
-            Sleep(500);
+            //Sleep(500);
         }
         clear_bitmap(buffer);
     }
