@@ -26,6 +26,7 @@ typedef struct cases
     int x;
     int y;
     int obstacle;
+    int cases;
 }t_cases;
 
 /// fin de la partie : on sauvegarde le pseudo avec la classe qu'il a choisit et son niveau
@@ -52,6 +53,8 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur);
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
 void dessin_ligne();
 t_cases** chargement_map();
+BITMAP* charger_map(t_cases** tabcases);
+
 void deplacement(t_joueur** tabjoueur, int indice);
 int possibilite_deplacement(t_cases** tabcases,int X, int Y);
 int testvert(int vert);

@@ -65,3 +65,29 @@
 	<string.h>
 	"header.h"
 
+1651676253 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1651677640 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+
+1651676253 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+	<time.h>
+
+1651676253 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\sousprog.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	"header.h"
+
