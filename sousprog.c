@@ -140,16 +140,16 @@ void menu_principal()
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
             /// a definir
-            int nbr;
+            int nbrjoueur;
             int premier_joueur;
-            nbr = nombre_joueur();
-            tab_joueur = initialisation_joueur(nbr);
-            for(int x = 0; x<nbr; x++)
+            nbrjoueur = nombre_joueur();
+            tab_joueur = initialisation_joueur(nbrjoueur);
+            for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
             }
-            premier_joueur = random_commencer(nbr);
-            tour(tab_joueur, nbr, premier_joueur, 0);
+            premier_joueur = random_commencer(nbrjoueur);
+            tour(tab_joueur, nbrjoueur, premier_joueur, 0);
             stop = 1;
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
@@ -678,6 +678,6 @@ t_joueur** initialisation_joueur(int nbrjoueur)
         tabjoueur[i]->pseudo = saisie_pseudo();
         tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
     }
-    premier_placement(&tabjoueur, nbrjoueur);
+    premier_placement(tabjoueur, nbrjoueur);
     return tabjoueur;
 }
