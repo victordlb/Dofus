@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <allegro.h>
 #include "header.h"
+#include <time.h>
 
 int main()
 {

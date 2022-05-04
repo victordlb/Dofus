@@ -31,7 +31,7 @@
 	<synchapi.h>
 	"header.h"
 
-1651592405 source:c:\users\victo\onedrive\documents\github\dofus\liste.c
+1651673183 source:c:\users\victo\onedrive\documents\github\dofus\liste.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -39,9 +39,9 @@
 	<synchapi.h>
 	"header.h"
 
-1651617995 c:\users\victo\onedrive\documents\github\dofus\header.h
+1651671282 c:\users\victo\onedrive\documents\github\dofus\header.h
 
-1651582298 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+1651672546 source:c:\users\victo\onedrive\documents\github\dofus\map.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -49,13 +49,14 @@
 	<synchapi.h>
 	"header.h"
 
-1651617995 source:c:\users\victo\onedrive\documents\github\dofus\main.c
+1651672348 source:c:\users\victo\onedrive\documents\github\dofus\main.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	"header.h"
+	<time.h>
 
-1651618058 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
+1651618547 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>

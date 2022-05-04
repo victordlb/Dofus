@@ -52,7 +52,7 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur);
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
 void dessin_ligne();
 t_cases** chargement_map();
-void deplacement();
+void deplacement(t_joueur** tabjoueur, int indice);
 int possibilite_deplacement(t_cases** tabcases,int X, int Y);
 int testvert(int vert);
 int testrouge(int rouge);
