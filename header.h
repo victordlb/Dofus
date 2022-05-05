@@ -58,7 +58,7 @@ t_cases** chargement_map();
 BITMAP* charger_map(t_cases** tabcases);
 
 void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur);
-int possibilite_deplacement(t_cases** tabcases,int X, int Y);
+int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice);
 int testvert(int vert);
 int testrouge(int rouge);
 int testbleu(int bleu);

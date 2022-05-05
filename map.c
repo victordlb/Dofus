@@ -154,8 +154,9 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
-        if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
-        {
+        if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
+        { // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
+
             tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
             tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
             validation = 1;
@@ -166,7 +167,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
             done = 1;
         }
         blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-        if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
+        if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
             tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
             tabjoueur[indice]->classes.cord_y= tabcases[mouse_y/50][mouse_x/50].y;
@@ -213,7 +214,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
         time(&start);
         while(done==0 && temps <=16)
         {
-            if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y)==1)
+            if(mouse_b&1 && tabcases[mouse_y/50][mouse_x/50].obstacle == 0)
             {
                 tabjoueur[i]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
                 tabjoueur[i]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
@@ -236,7 +237,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
                     tabjoueur[i]->classes.cord_x = tabcases[rand()%16][rand()%28].x;
                     tabjoueur[i]->classes.cord_y = tabcases[rand()%16][rand()%28].y;
                 }
-                while(possibilite_deplacement(tabcases, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y)==0);
+                while(tabcases[tabjoueur[i]->classes.cord_x/50][tabjoueur[i]->classes.cord_y/50].obstacle==1);
                 validation = 1;
             }
         }
@@ -245,18 +246,55 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(personnage);
     destroy_bitmap(fond);
 }
-
-int possibilite_deplacement(t_cases** tabcases,int X, int Y)
+///(tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) <= (X/50) && (X/50) <= (tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) &&
+int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
     if(tabcases[Y/50][X/50].obstacle == 0)
     {
-        return 1;
+        if(tabjoueur[indice]->classes.cord_x/50 == X/50)
+        {
+            if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
+            {
+                printf("Possible\n");
+                return 1;
+            }
+            else
+            {
+                printf("Impossible\n");
+                return 0;
+            }
+        }
+        else if(tabjoueur[indice]->classes.cord_y/50 == Y/50 )
+        {
+            if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
+            {
+                printf("Possible\n");
+                return 1;
+            }
+            else
+            {
+                printf("Impossible\n");
+                return 0;
+            }
+        }
+        else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
+        {
+            printf("Possible\n");
+            return 1;
+        }
+        else
+        {
+            printf("Impossible\n");
+            return 0;
+        }
     }
     else
     {
+        printf("Impossible\n");
         return 0;
     }
 }
+
 
 int testvert(int vert)
 {
