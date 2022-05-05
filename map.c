@@ -155,7 +155,8 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
-        { // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
+        {
+            // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
 
             tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
             tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
@@ -333,4 +334,63 @@ int testbleu(int bleu)
         return bleu+50;
     else
         return bleu+75;
+}
+
+///Calcul de l'itineraire (pas encore tester mais logiquement fonctionnel)
+t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
+{
+    t_cases* chemin = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
+    t_cases* tampon = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
+    int maxChemin = tabjoueur[indice]->classes.PM;
+    int X = tabjoueur[indice]->classes.cord_x;
+    int Y = tabjoueur[indice]->classes.cord_y;
+    int alea = 0;
+    int comp = 0;
+    int oldcomp = 0;
+    for(int i = 0; i<100; i++)
+    {
+        while(comp < maxChemin)
+        {
+            if(X == finishx && Y == finishy)
+            {
+                if(comp <= oldcomp)
+                    chemin = tampon;
+            }
+            else
+            {
+                alea = rand()%4 + 1;
+                if(alea == 1 && tabcases[(Y/50)-1][X/50].obstacle == 0)
+                {
+                    Y = (Y/50)-1;
+                    tampon[comp].x = X;
+                    tampon[comp].y = Y;
+                    comp +=1;
+                }
+                if(alea == 2 && tabcases[Y/50][(X/50)+1].obstacle == 0)
+                {
+                    X = (X/50)+1;
+                    tampon[comp].x = X;
+                    tampon[comp].y = Y;
+                    comp +=1;
+                }
+                if(alea == 3 && tabcases[(Y/50)+1][X/50].obstacle == 0)
+                {
+                    Y = (Y/50)+1;
+                    tampon[comp].x = X;
+                    tampon[comp].y = Y;
+                    comp +=1;
+                }
+                if(alea == 2 && tabcases[Y/50][(X/50)-1].obstacle == 0)
+                {
+                    X = (X/50)-1;
+                    tampon[comp].x = X;
+                    tampon[comp].y = Y;
+                    comp +=1;
+                }
+            }
+        }
+    }
+    tampon = NULL;
+    free(tampon);
+    return chemin;
 }
