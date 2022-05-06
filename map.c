@@ -149,6 +149,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     {
         hline(fond, 0, y,1400, makecol(255,255,255));
     }
+    couleur_case(tabjoueur,tabcases,indice,fond);
     int validation = 0;
     int done = 0;
     int ind = 0;
@@ -158,42 +159,48 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
+            tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
+            tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
             // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
-            printf("test1\n");
+           /* printf("test1\n");
             chemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
             printf("test2\n");
             ind = 0;
-            while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 || tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
-            {
+            while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
+            {*/
                 validation = 1;
-                printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
+                //printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
                 if(validation == 1)
                 {
-                    draw_sprite(buffer, personnage, chemin[ind].x, chemin[ind].y-50);
+                    draw_sprite(buffer, personnage,tabjoueur[indice]->classes.cord_x ,tabjoueur[indice]->classes.cord_y-50);
                     Sleep(500);
                     done = 1;
                 }
-                ind = ind +1;
-            }
+               // ind = ind +1;
+            //}
         }
         blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
+            tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
+            tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
             // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
+           /* printf("test1\n");
             chemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
+            printf("test2\n");
             ind = 0;
             while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
-            {
+            {*/
                 validation = 1;
-                printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
+                //printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
                 if(validation == 1)
                 {
-                    draw_sprite(buffer, personnage, chemin[ind].x, chemin[ind].y-50);
+                    draw_sprite(buffer, personnage,tabjoueur[indice]->classes.cord_x ,tabjoueur[indice]->classes.cord_y-50);
                     Sleep(500);
                     done = 1;
                 }
-                ind = ind +1;
-            }
+               // ind = ind +1;
+            //}
         }
         clear_bitmap(buffer);
     }
@@ -312,6 +319,19 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
     }
 }
 
+void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
+{
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28;j++)
+        {
+            if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
+            {
+                rectfill(fond, tabcases[i][j].x+12.5, tabcases[i][j].y+12.5, tabcases[i][j].x+37.5 ,tabcases[i][j].y+37.5, makecol(38,200,94));
+            }
+        }
+    }
+}
 
 int testvert(int vert)
 {
@@ -370,8 +390,10 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
             if(X == finishx/50 && Y == finishy/50)
             {
                 if(comp <= oldcomp)
+                {
                     oldcomp = comp;
-                chemin = tampon;
+                    chemin = tampon;
+                }
             }
             else
             {

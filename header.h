@@ -65,6 +65,7 @@ int testbleu(int bleu);
 t_joueur** initialisation_joueur(int nbrjoueur);
 char* saisie_pseudo();
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
+void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
 
 t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
 
