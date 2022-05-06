@@ -365,13 +365,14 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
     int oldcomp = tabjoueur[indice]->classes.PM;
     for(int i = 0; i<200; i++)
     {
+        tampon = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
         while(comp < maxChemin)
         {
             if(X == finishx/50 && Y == finishy/50)
             {
                 if(comp <= oldcomp)
                     oldcomp = comp;
-                chemin = tampon;
+                    chemin = tampon;
             }
             else
             {
@@ -406,6 +407,7 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
                 }
             }
         }
+        tampon = NULL;
         comp = 0;
         X = tabjoueur[indice]->classes.cord_x/50;
         Y = tabjoueur[indice]->classes.cord_y/50;
