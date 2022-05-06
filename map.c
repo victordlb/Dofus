@@ -114,6 +114,7 @@ BITMAP* charger_map(t_cases** tabcases)
 void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
 {
     t_cases** tabcases;
+    t_cases* chemin = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
     tabcases = chargement_map();
     BITMAP* fond;
     BITMAP* personnage;
@@ -150,6 +151,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     }
     int validation = 0;
     int done = 0;
+    int ind = 0;
     while(done == 0)
     {
         ///ici pour la map
@@ -157,27 +159,41 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
             // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
-
-            tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
-            tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
-            validation = 1;
-        }
-        if(validation == 1)
-        {
-            draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
-            done = 1;
+            printf("test1\n");
+            chemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
+            printf("test2\n");
+            ind = 0;
+            while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 || tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
+            {
+                validation = 1;
+                printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
+                if(validation == 1)
+                {
+                    draw_sprite(buffer, personnage, chemin[ind].x, chemin[ind].y-50);
+                    Sleep(500);
+                    done = 1;
+                }
+                ind = ind +1;
+            }
         }
         blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
-            tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
-            tabjoueur[indice]->classes.cord_y= tabcases[mouse_y/50][mouse_x/50].y;
-            validation = 1;
-        }
-        if(validation == 1)
-        {
-            draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
-            done = 1;
+            // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
+            chemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
+            ind = 0;
+            while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
+            {
+                validation = 1;
+                printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
+                if(validation == 1)
+                {
+                    draw_sprite(buffer, personnage, chemin[ind].x, chemin[ind].y-50);
+                    Sleep(500);
+                    done = 1;
+                }
+                ind = ind +1;
+            }
         }
         clear_bitmap(buffer);
     }
@@ -342,8 +358,8 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
     t_cases* chemin = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
     t_cases* tampon = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
     int maxChemin = tabjoueur[indice]->classes.PM;
-    int X = tabjoueur[indice]->classes.cord_x;
-    int Y = tabjoueur[indice]->classes.cord_y;
+    int X = tabjoueur[indice]->classes.cord_x/50;
+    int Y = tabjoueur[indice]->classes.cord_y/50;
     int alea = 0;
     int comp = 0;
     int oldcomp = tabjoueur[indice]->classes.PM;
@@ -351,50 +367,50 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
     {
         while(comp < maxChemin)
         {
-            if(X == finishx && Y == finishy)
+            if(X == finishx/50 && Y == finishy/50)
             {
                 if(comp <= oldcomp)
                     oldcomp = comp;
-                    chemin = tampon;
+                chemin = tampon;
             }
             else
             {
                 alea = rand()%4 + 1;
-                if(alea == 1 && tabcases[(Y/50)-1][X/50].obstacle == 0)
+                if(alea == 1 && tabcases[Y-1][X].obstacle == 0)
                 {
-                    Y = (Y/50)-1;
-                    tampon[comp].x = X;
-                    tampon[comp].y = Y;
+                    Y = Y-1;
+                    tampon[comp].x = X*50;
+                    tampon[comp].y = Y*50;
                     comp +=1;
                 }
-                if(alea == 2 && tabcases[Y/50][(X/50)+1].obstacle == 0)
+                if(alea == 2 && tabcases[Y][X+1].obstacle == 0)
                 {
-                    X = (X/50)+1;
-                    tampon[comp].x = X;
-                    tampon[comp].y = Y;
+                    X = X+1;
+                    tampon[comp].x = X*50;
+                    tampon[comp].y = Y*50;
                     comp +=1;
                 }
-                if(alea == 3 && tabcases[(Y/50)+1][X/50].obstacle == 0)
+                if(alea == 3 && tabcases[Y+1][X].obstacle == 0)
                 {
-                    Y = (Y/50)+1;
-                    tampon[comp].x = X;
-                    tampon[comp].y = Y;
+                    Y = Y+1;
+                    tampon[comp].x = X*50;
+                    tampon[comp].y = Y*50;
                     comp +=1;
                 }
-                if(alea == 4 && tabcases[Y/50][(X/50)-1].obstacle == 0)
+                if(alea == 4 && tabcases[Y][X-1].obstacle == 0)
                 {
-                    X = (X/50)-1;
-                    tampon[comp].x = X;
-                    tampon[comp].y = Y;
+                    X = X-1;
+                    tampon[comp].x = X*50;
+                    tampon[comp].y = Y*50;
                     comp +=1;
                 }
             }
         }
         comp = 0;
-        X = tabjoueur[indice]->classes.cord_x;
-        Y = tabjoueur[indice]->classes.cord_y;
+        X = tabjoueur[indice]->classes.cord_x/50;
+        Y = tabjoueur[indice]->classes.cord_y/50;
     }
-    tampon = NULL;
-    free(tampon);
+    //tampon = NULL;
+    //free(tampon);
     return chemin;
 }
