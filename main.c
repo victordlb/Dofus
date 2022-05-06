@@ -6,6 +6,7 @@
 
 int main()
 {
+    srand(time(NULL));
     lancement();
     //initialisation();
     //deplacement();
