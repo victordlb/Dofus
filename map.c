@@ -114,7 +114,7 @@ BITMAP* charger_map(t_cases** tabcases)
 void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
 {
     t_cases** tabcases;
-    t_cases* chemin = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
+    t_chemin* Lechemin;
     tabcases = chargement_map();
     BITMAP* fond;
     BITMAP* personnage;
@@ -149,6 +149,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     {
         hline(fond, 0, y,1400, makecol(255,255,255));
     }
+    couleur_case(tabjoueur, tabcases, indice, fond);
     int validation = 0;
     int done = 0;
     int ind = 0;
@@ -160,16 +161,16 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         {
             // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
             printf("test1\n");
-            chemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
+            Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
             printf("test2\n");
             ind = 0;
             while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 || tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
             {
                 validation = 1;
-                printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
+                printf("coordonne :%d/%d\n", Lechemin[ind].x, Lechemin[ind].y);
                 if(validation == 1)
                 {
-                    draw_sprite(buffer, personnage, chemin[ind].x, chemin[ind].y-50);
+                    draw_sprite(buffer, personnage, Lechemin[ind].x, Lechemin[ind].y-50);
                     Sleep(500);
                     done = 1;
                 }
@@ -180,15 +181,15 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
             // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
-            chemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
+            Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
             ind = 0;
             while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
             {
                 validation = 1;
-                printf("coordonne :%d/%d\n", chemin[ind].x, chemin[ind].y);
+                printf("coordonne :%d/%d\n", Lechemin[ind].x, Lechemin[ind].y);
                 if(validation == 1)
                 {
-                    draw_sprite(buffer, personnage, chemin[ind].x, chemin[ind].y-50);
+                    draw_sprite(buffer, personnage, Lechemin[ind].x, Lechemin[ind].y-50);
                     Sleep(500);
                     done = 1;
                 }
@@ -263,6 +264,9 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(personnage);
     destroy_bitmap(fond);
 }
+
+
+
 ///(tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) <= (X/50) && (X/50) <= (tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) &&
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
@@ -312,6 +316,19 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
     }
 }
 
+void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
+{
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28;j++)
+        {
+            if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
+            {
+                rectfill(fond, tabcases[i][j].x+12.5, tabcases[i][j].y+12.5, tabcases[i][j].x+37.5 ,tabcases[i][j].y+37.5, makecol(38,200,94));
+            }
+        }
+    }
+}
 
 int testvert(int vert)
 {
@@ -353,66 +370,116 @@ int testbleu(int bleu)
 }
 
 ///Calcul de l'itineraire (pas encore tester mais logiquement fonctionnel)
-t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
+t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
 {
-    t_cases* chemin = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
-    t_cases* tampon = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
-    int maxChemin = tabjoueur[indice]->classes.PM;
+    t_chemin* Lechemin = (t_chemin*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_chemin));
     int X = tabjoueur[indice]->classes.cord_x/50;
     int Y = tabjoueur[indice]->classes.cord_y/50;
-    int alea = 0;
     int comp = 0;
-    int oldcomp = tabjoueur[indice]->classes.PM;
-    for(int i = 0; i<200; i++)
+    int stop = 0;
+    while((X != (finishx/50) && Y != (finishy/50)) || stop != 1)
     {
-        tampon = (t_cases*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_cases));
-        while(comp < maxChemin)
+        if((finishx/50) > X)
         {
-            if(X == finishx/50 && Y == finishy/50)
+            if(tabcases[Y][X+1].obstacle == 0)
             {
-                if(comp <= oldcomp)
-                    oldcomp = comp;
-                    chemin = tampon;
+                X += 1;
+                Lechemin[comp].x = X;
+                Lechemin[comp].y = Y;
+                comp += 1;
             }
             else
             {
-                alea = rand()%4 + 1;
-                if(alea == 1 && tabcases[Y-1][X].obstacle == 0)
+                if((finishy/50) > Y)
                 {
-                    Y = Y-1;
-                    tampon[comp].x = X*50;
-                    tampon[comp].y = Y*50;
-                    comp +=1;
+                    if(tabcases[Y+1][X].obstacle == 0)
+                    {
+                        Y += 1;
+                        Lechemin[comp].x = X;
+                        Lechemin[comp].y = Y;
+                        comp += 1;
+                    }
+                    else
+                        stop = 1;
                 }
-                if(alea == 2 && tabcases[Y][X+1].obstacle == 0)
+                else if((finishy/50) < Y)
                 {
-                    X = X+1;
-                    tampon[comp].x = X*50;
-                    tampon[comp].y = Y*50;
-                    comp +=1;
-                }
-                if(alea == 3 && tabcases[Y+1][X].obstacle == 0)
-                {
-                    Y = Y+1;
-                    tampon[comp].x = X*50;
-                    tampon[comp].y = Y*50;
-                    comp +=1;
-                }
-                if(alea == 4 && tabcases[Y][X-1].obstacle == 0)
-                {
-                    X = X-1;
-                    tampon[comp].x = X*50;
-                    tampon[comp].y = Y*50;
-                    comp +=1;
+                    if(tabcases[Y-1][X].obstacle == 0)
+                    {
+                        Y -= 1;
+                        Lechemin[comp].x = X;
+                        Lechemin[comp].y = Y;
+                        comp += 1;
+                    }
+                    else
+                        stop = 1;
                 }
             }
         }
-        tampon = NULL;
-        comp = 0;
-        X = tabjoueur[indice]->classes.cord_x/50;
-        Y = tabjoueur[indice]->classes.cord_y/50;
+        else if((finishx/50) < X)
+        {
+            if(tabcases[Y][X-1].obstacle == 0)
+            {
+                X -= 1;
+                Lechemin[comp].x = X;
+                Lechemin[comp].y = Y;
+                comp += 1;
+            }
+            else
+            {
+                if((finishy/50) > Y)
+                {
+                    if(tabcases[Y+1][X].obstacle == 0)
+                    {
+                        Y += 1;
+                        Lechemin[comp].x = X;
+                        Lechemin[comp].y = Y;
+                        comp += 1;
+                    }
+                    else
+                        stop = 1;
+                }
+                else if((finishy/50) < Y)
+                {
+                    if(tabcases[Y-1][X].obstacle == 0)
+                    {
+                        Y -= 1;
+                        Lechemin[comp].x = X;
+                        Lechemin[comp].y = Y;
+                        comp += 1;
+                    }
+                    else
+                        stop = 1;
+                }
+            }
+        }
+        else
+        {
+            if((finishy/50) > Y)
+            {
+                if(tabcases[Y+1][X].obstacle == 0)
+                {
+                    Y += 1;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    stop = 1;
+            }
+            else if((finishy/50) < Y)
+            {
+                if(tabcases[Y-1][X].obstacle == 0)
+                {
+                    Y -= 1;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    stop = 1;
+            }
+        }
     }
-    //tampon = NULL;
-    //free(tampon);
-    return chemin;
+    return Lechemin;
 }

@@ -40,6 +40,12 @@ typedef struct joueur
     int perdu;
 }t_joueur;
 
+typedef struct chemin
+{
+    int x;
+    int y;
+}t_chemin;
+
 
 void initialisation();
 void logo();
@@ -65,7 +71,8 @@ int testbleu(int bleu);
 t_joueur** initialisation_joueur(int nbrjoueur);
 char* saisie_pseudo();
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
+void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
 
-t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
+t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
 
 #endif // HEADER_H_INCLUDED
