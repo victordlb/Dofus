@@ -8,7 +8,6 @@
 int random_commencer(int nbr)
 {
     int random = 0;
-    srand(time(NULL));
     random = rand()%nbr+1;
     return random;
 }

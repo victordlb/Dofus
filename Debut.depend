@@ -75,7 +75,7 @@
 	<string.h>
 	"header.h"
 
-1651781430 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
+1651875332 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -83,9 +83,9 @@
 	<synchapi.h>
 	"header.h"
 
-1651846795 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+1651875307 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
 
-1651842704 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
+1651871052 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -101,7 +101,7 @@
 	<string.h>
 	"header.h"
 
-1651847216 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\map.c
+1651875307 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\map.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
