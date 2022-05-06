@@ -346,14 +346,15 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
     int Y = tabjoueur[indice]->classes.cord_y;
     int alea = 0;
     int comp = 0;
-    int oldcomp = 0;
-    for(int i = 0; i<100; i++)
+    int oldcomp = tabjoueur[indice]->classes.PM;
+    for(int i = 0; i<200; i++)
     {
         while(comp < maxChemin)
         {
             if(X == finishx && Y == finishy)
             {
                 if(comp <= oldcomp)
+                    oldcomp = comp;
                     chemin = tampon;
             }
             else
@@ -380,7 +381,7 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
                     tampon[comp].y = Y;
                     comp +=1;
                 }
-                if(alea == 2 && tabcases[Y/50][(X/50)-1].obstacle == 0)
+                if(alea == 4 && tabcases[Y/50][(X/50)-1].obstacle == 0)
                 {
                     X = (X/50)-1;
                     tampon[comp].x = X;
@@ -389,6 +390,9 @@ t_cases* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int fi
                 }
             }
         }
+        comp = 0;
+        X = tabjoueur[indice]->classes.cord_x;
+        Y = tabjoueur[indice]->classes.cord_y;
     }
     tampon = NULL;
     free(tampon);
