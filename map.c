@@ -164,17 +164,15 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
             Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
             printf("test2\n");
             ind = 0;
-            while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 || tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
+            while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
             {
-                validation = 1;
+                tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
+                tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
                 printf("coordonne :%d/%d\n", Lechemin[ind].x, Lechemin[ind].y);
-                if(validation == 1)
-                {
-                    draw_sprite(buffer, personnage, Lechemin[ind].x, Lechemin[ind].y-50);
-                    Sleep(500);
-                    done = 1;
-                }
-                ind = ind +1;
+                draw_sprite(buffer, personnage, Lechemin[ind].x, Lechemin[ind].y-50);
+                Sleep(500);
+                done = 1;
+                ind += 1;
             }
         }
         blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
@@ -185,14 +183,12 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
             ind = 0;
             while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
             {
-                validation = 1;
+                tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
+                tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
                 printf("coordonne :%d/%d\n", Lechemin[ind].x, Lechemin[ind].y);
-                if(validation == 1)
-                {
-                    draw_sprite(buffer, personnage, Lechemin[ind].x, Lechemin[ind].y-50);
-                    Sleep(500);
-                    done = 1;
-                }
+                draw_sprite(buffer, personnage, Lechemin[ind].x, Lechemin[ind].y-50);
+                Sleep(500);
+                done = 1;
                 ind = ind +1;
             }
         }
@@ -320,11 +316,11 @@ void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* 
 {
     for(int i = 0; i<16; i++)
     {
-        for(int j=0; j<28;j++)
+        for(int j=0; j<28; j++)
         {
             if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
             {
-                rectfill(fond, tabcases[i][j].x+12.5, tabcases[i][j].y+12.5, tabcases[i][j].x+37.5 ,tabcases[i][j].y+37.5, makecol(38,200,94));
+                rectfill(fond, tabcases[i][j].x+12.5, tabcases[i][j].y+12.5, tabcases[i][j].x+37.5,tabcases[i][j].y+37.5, makecol(38,200,94));
             }
         }
     }
@@ -377,85 +373,40 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     int Y = tabjoueur[indice]->classes.cord_y/50;
     int comp = 0;
     int stop = 0;
-    while((X != (finishx/50) && Y != (finishy/50)) || stop != 1)
+    int obst = 0;
+    while(stop != 1)
     {
-        if((finishx/50) > X)
+        if(X == finishx/50 && Y == finishy/50)
         {
-            if(tabcases[Y][X+1].obstacle == 0)
-            {
-                X += 1;
-                Lechemin[comp].x = X;
-                Lechemin[comp].y = Y;
-                comp += 1;
-            }
-            else
-            {
-                if((finishy/50) > Y)
-                {
-                    if(tabcases[Y+1][X].obstacle == 0)
-                    {
-                        Y += 1;
-                        Lechemin[comp].x = X;
-                        Lechemin[comp].y = Y;
-                        comp += 1;
-                    }
-                    else
-                        stop = 1;
-                }
-                else if((finishy/50) < Y)
-                {
-                    if(tabcases[Y-1][X].obstacle == 0)
-                    {
-                        Y -= 1;
-                        Lechemin[comp].x = X;
-                        Lechemin[comp].y = Y;
-                        comp += 1;
-                    }
-                    else
-                        stop = 1;
-                }
-            }
-        }
-        else if((finishx/50) < X)
-        {
-            if(tabcases[Y][X-1].obstacle == 0)
-            {
-                X -= 1;
-                Lechemin[comp].x = X;
-                Lechemin[comp].y = Y;
-                comp += 1;
-            }
-            else
-            {
-                if((finishy/50) > Y)
-                {
-                    if(tabcases[Y+1][X].obstacle == 0)
-                    {
-                        Y += 1;
-                        Lechemin[comp].x = X;
-                        Lechemin[comp].y = Y;
-                        comp += 1;
-                    }
-                    else
-                        stop = 1;
-                }
-                else if((finishy/50) < Y)
-                {
-                    if(tabcases[Y-1][X].obstacle == 0)
-                    {
-                        Y -= 1;
-                        Lechemin[comp].x = X;
-                        Lechemin[comp].y = Y;
-                        comp += 1;
-                    }
-                    else
-                        stop = 1;
-                }
-            }
+            stop = 1;
         }
         else
         {
-            if((finishy/50) > Y)
+            if(X < finishx/50 && obst == 0)
+            {
+                if(tabcases[Y][X+1].obstacle == 0)
+                {
+                    X += 1;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    obst = 1;
+            }
+            else if(X > finishx/50 && obst == 0)
+            {
+                if(tabcases[Y][X-1].obstacle == 0)
+                {
+                    X -= 1;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    obst = 1;
+            }
+            else if(Y < finishy/50)
             {
                 if(tabcases[Y+1][X].obstacle == 0)
                 {
@@ -467,7 +418,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
                 else
                     stop = 1;
             }
-            else if((finishy/50) < Y)
+            else if(Y > finishy/50)
             {
                 if(tabcases[Y-1][X].obstacle == 0)
                 {
