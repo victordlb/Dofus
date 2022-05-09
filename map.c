@@ -150,7 +150,6 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         hline(fond, 0, y,1400, makecol(255,255,255));
     }
     couleur_case(tabjoueur, tabcases, indice, fond);
-    int validation = 0;
     int done = 0;
     int ind = 0;
     while(done == 0)
@@ -163,6 +162,10 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
             printf("test1\n");
             Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
             printf("test2\n");
+            for(int i = 0; i<Lechemin[0].taille; i++)
+            {
+                printf("coordonne :%d/%d\n", Lechemin[ind].x, Lechemin[ind].y);
+            }
             ind = 0;
             while(tabjoueur[indice]->classes.cord_x/50 != tabcases[mouse_y/50][mouse_x/50].x/50 && tabjoueur[indice]->classes.cord_y/50 != tabcases[mouse_y/50][mouse_x/50].y/50)
             {
@@ -432,5 +435,6 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
             }
         }
     }
+    Lechemin[0].taille = comp - 1;
     return Lechemin;
 }
