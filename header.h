@@ -44,6 +44,7 @@ typedef struct chemin
 {
     int x;
     int y;
+    int taille;
 }t_chemin;
 
 
