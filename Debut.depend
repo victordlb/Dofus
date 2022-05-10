@@ -41,9 +41,15 @@
 
 1651673183 ated upstream
 
+<<<<<<< Updated upstream
 1652134505 c:\users\victo\onedrive\documents\github\dofus\header.h
 
 1652175174 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+=======
+1651875589 c:\users\victo\onedrive\documents\github\dofus\header.h
+
+1651875615 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+>>>>>>> Stashed changes
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
