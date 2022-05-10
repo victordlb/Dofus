@@ -288,7 +288,7 @@ void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* 
         {
             if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
             {
-                rectfill(fond, tabcases[i][j].x+12.5, tabcases[i][j].y+12.5, tabcases[i][j].x+37.5,tabcases[i][j].y+37.5, makecol(38,200,94));
+                rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
             }
         }
     }
@@ -423,13 +423,13 @@ BITMAP* chargement_fond(t_cases** tabcases, t_joueur** tabjoueur, int indice, in
             personnage = load_bitmap("franky standby.bmp", NULL);
         draw_sprite(fond, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
     }
-    for(int x=50; x<1400; x = x+50)
+    /*for(int x=50; x<1400; x = x+50)
     {
         vline(fond, x, 0,800,makecol(255,255,255));
     }
     for(int y=0; y<800; y = y+50)
     {
         hline(fond, 0, y,1400, makecol(255,255,255));
-    }
+    }*/
     return fond;
 }
