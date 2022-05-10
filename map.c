@@ -128,7 +128,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         personnage = load_bitmap("sanji standby.bmp", NULL);
     else if(tabjoueur[indice]->classes.PV == 100)
         personnage = load_bitmap("franky standby.bmp", NULL);
-    fond = chargement_fond(tabcases,tabjoueur,indice,nbrjoueur);
+    fond = chargement_fond(tabcases);
     int done = 0;
     int ind = 0;
     while(done == 0)
@@ -136,6 +136,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         couleur_case(tabjoueur,tabcases,indice,buffer);
+        chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
             Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
@@ -149,8 +150,9 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
                 tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
                 clear_bitmap(buffer);
                 clear_bitmap(fond);
-                fond = chargement_fond(tabcases, tabjoueur, indice,nbrjoueur);
+                fond = chargement_fond(tabcases);
                 blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
+                chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
                 draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
                 blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 Sleep(500);
@@ -288,7 +290,10 @@ void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* 
         {
             if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
             {
-                rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
+                {
+                    rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                }
             }
         }
     }
@@ -406,11 +411,16 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     return Lechemin;
 }
 
-BITMAP* chargement_fond(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur)
+BITMAP* chargement_fond(t_cases** tabcases)
 {
     BITMAP* fond;
-    BITMAP* personnage;
     fond = charger_map(tabcases);
+    return fond;
+}
+
+void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer)
+{
+    BITMAP* personnage;
     for(int i=0; i<nbrjoueur; i++)
     {
         if(tabjoueur[i]->classes.PV == 70)
@@ -421,15 +431,6 @@ BITMAP* chargement_fond(t_cases** tabcases, t_joueur** tabjoueur, int indice, in
             personnage = load_bitmap("sanji standby.bmp", NULL);
         else if(tabjoueur[i]->classes.PV == 100)
             personnage = load_bitmap("franky standby.bmp", NULL);
-        draw_sprite(fond, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+        draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
     }
-    /*for(int x=50; x<1400; x = x+50)
-    {
-        vline(fond, x, 0,800,makecol(255,255,255));
-    }
-    for(int y=0; y<800; y = y+50)
-    {
-        hline(fond, 0, y,1400, makecol(255,255,255));
-    }*/
-    return fond;
 }
