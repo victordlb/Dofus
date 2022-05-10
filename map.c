@@ -119,21 +119,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     BITMAP* fond;
     BITMAP* personnage;
     BITMAP* buffer;
-    BITMAP* bufferPerso = create_bitmap(SCREEN_W, SCREEN_H);
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    fond = charger_map(tabcases);
-    for(int i=0; i<nbrjoueur; i++)
-    {
-        if(tabjoueur[i]->classes.PV == 70)
-            personnage = load_bitmap("luffy standby.bmp", NULL);
-        else if(tabjoueur[i]->classes.PV == 65)
-            personnage = load_bitmap("robin standby.bmp", NULL);
-        else if(tabjoueur[i]->classes.PV == 50)
-            personnage = load_bitmap("sanji standby.bmp", NULL);
-        else if(tabjoueur[i]->classes.PV == 100)
-            personnage = load_bitmap("franky standby.bmp", NULL);
-        draw_sprite(fond, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
-    }
     if(tabjoueur[indice]->classes.PV == 70)
         personnage = load_bitmap("luffy standby.bmp", NULL);
     else if(tabjoueur[indice]->classes.PV == 65)
@@ -142,24 +128,16 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         personnage = load_bitmap("sanji standby.bmp", NULL);
     else if(tabjoueur[indice]->classes.PV == 100)
         personnage = load_bitmap("franky standby.bmp", NULL);
-    for(int x=50; x<1400; x = x+50)
-    {
-        vline(fond, x, 0,800,makecol(255,255,255));
-    }
-    for(int y=0; y<800; y = y+50)
-    {
-        hline(fond, 0, y,1400, makecol(255,255,255));
-    }
-    couleur_case(tabjoueur, tabcases, indice, fond);
+    fond = chargement_fond(tabcases,tabjoueur,indice,nbrjoueur);
     int done = 0;
     int ind = 0;
     while(done == 0)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
+        couleur_case(tabjoueur,tabcases,indice,buffer);
         if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
         {
-            // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
             Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
             for(int i = 0; i<Lechemin[0].taille; i++)
             {
@@ -170,33 +148,17 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
                 tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
                 tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
                 clear_bitmap(buffer);
-                draw_sprite(fond, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases, tabjoueur, indice,nbrjoueur);
                 blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
-                blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done = 1;
-                ind += 1;
-            }
-        }
-        blit(buffer, screen,0,0,0,0,SCREEN_W, SCREEN_H);
-        if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
-        {
-            // faire un do while(oldmouse_y/50 -6 < mouse_y/50 < oldmouse_y +6 || oldmouse_x -6 < mouse_x - 6 < oldmouse_x +6);
-            Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
-            ind = 0;
-            while(ind < Lechemin[0].taille)
-            {
-                tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
-                tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
-                clear_bitmap(buffer);
-                draw_sprite(fond, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
-                blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
+                draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
                 blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 Sleep(500);
                 done = 1;
                 ind += 1;
             }
         }
+        blit(buffer, screen,0,0,0,0,SCREEN_W, SCREEN_H);
         clear_bitmap(buffer);
     }
     Sleep(1000);
@@ -249,12 +211,12 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
             blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
             time(&end);
             temps = difftime(end, start);
-            if(temps == 15)
+            if(temps >= 15)
             {
                 do
                 {
-                    tabjoueur[i]->classes.cord_x = tabcases[rand()%16][rand()%28].x;
-                    tabjoueur[i]->classes.cord_y = tabcases[rand()%16][rand()%28].y;
+                    tabjoueur[i]->classes.cord_x = tabcases[rand()%17][rand()%29].x;
+                    tabjoueur[i]->classes.cord_y = tabcases[rand()%17][rand()%29].y;
                 }
                 while(tabcases[tabjoueur[i]->classes.cord_x/50][tabjoueur[i]->classes.cord_y/50].obstacle==1);
                 validation = 1;
@@ -271,8 +233,6 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
 ///(tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) <= (X/50) && (X/50) <= (tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) &&
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
-    if(mouse_b&1)
-    {
         if(tabcases[Y/50][X/50].obstacle == 0)
         {
             if(tabjoueur[indice]->classes.cord_x/50 == X/50)
@@ -318,9 +278,6 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
             printf("Impossible\n");
             return 0;
         }
-    }
-    else
-        return 0;
 }
 
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
@@ -447,4 +404,32 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     }
     Lechemin[0].taille = comp;
     return Lechemin;
+}
+
+BITMAP* chargement_fond(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur)
+{
+    BITMAP* fond;
+    BITMAP* personnage;
+    fond = charger_map(tabcases);
+    for(int i=0; i<nbrjoueur; i++)
+    {
+        if(tabjoueur[i]->classes.PV == 70)
+            personnage = load_bitmap("luffy standby.bmp", NULL);
+        else if(tabjoueur[i]->classes.PV == 65)
+            personnage = load_bitmap("robin standby.bmp", NULL);
+        else if(tabjoueur[i]->classes.PV == 50)
+            personnage = load_bitmap("sanji standby.bmp", NULL);
+        else if(tabjoueur[i]->classes.PV == 100)
+            personnage = load_bitmap("franky standby.bmp", NULL);
+        draw_sprite(fond, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+    }
+    for(int x=50; x<1400; x = x+50)
+    {
+        vline(fond, x, 0,800,makecol(255,255,255));
+    }
+    for(int y=0; y<800; y = y+50)
+    {
+        hline(fond, 0, y,1400, makecol(255,255,255));
+    }
+    return fond;
 }

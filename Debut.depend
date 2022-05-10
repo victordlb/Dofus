@@ -31,7 +31,7 @@
 	<synchapi.h>
 	"header.h"
 
-1651704513 source:c:\users\victo\onedrive\documents\github\dofus\liste.c
+1651875589 source:c:\users\victo\onedrive\documents\github\dofus\liste.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -41,9 +41,15 @@
 
 1651673183 ated upstream
 
-1651842262 c:\users\victo\onedrive\documents\github\dofus\header.h
+<<<<<<< Updated upstream
+1652134505 c:\users\victo\onedrive\documents\github\dofus\header.h
 
-1651846323 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+1652175174 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+=======
+1651875589 c:\users\victo\onedrive\documents\github\dofus\header.h
+
+1651875615 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+>>>>>>> Stashed changes
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -59,14 +65,14 @@
 	<synchapi.h>
 	"header.h"
 
-1651842899 source:c:\users\victo\onedrive\documents\github\dofus\main.c
+1651875589 source:c:\users\victo\onedrive\documents\github\dofus\main.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	"header.h"
 	<time.h>
 
-1651704358 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
+1651871606 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>

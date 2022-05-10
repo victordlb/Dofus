@@ -75,5 +75,6 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
 
 t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
+BITMAP* chargement_fond(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur);
 
 #endif // HEADER_H_INCLUDED
