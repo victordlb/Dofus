@@ -344,22 +344,25 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     t_chemin* Lechemin = (t_chemin*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_chemin));
     int X = tabjoueur[indice]->classes.cord_x/50;
     int Y = tabjoueur[indice]->classes.cord_y/50;
+    int maxPM = tabjoueur[indice]->classes.PM;
     int comp = 0;
     int stop = 0;
     int obst = 0;
+    int obst2 = 0;
     while(stop != 1)
     {
-        if(X == finishx/50 && Y == finishy/50)
+        if((X == finishx/50 && Y == finishy/50) || comp == maxPM)
         {
             stop = 1;
         }
         else
         {
-            if(X < finishx/50 && obst == 0)
+            if((X < finishx/50 && obst == 0) || obst2 == 1)
             {
                 if(tabcases[Y][X+1].obstacle == 0)
                 {
                     X += 1;
+                    obst2 = 0;
                     Lechemin[comp].x = X;
                     Lechemin[comp].y = Y;
                     comp += 1;
@@ -372,6 +375,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
                 if(tabcases[Y][X-1].obstacle == 0)
                 {
                     X -= 1;
+                    obst2 = 0;
                     Lechemin[comp].x = X;
                     Lechemin[comp].y = Y;
                     comp += 1;
@@ -379,7 +383,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
                 else
                     obst = 1;
             }
-            else if(Y < finishy/50)
+            else if(Y < finishy/50 || obst == 1)
             {
                 if(tabcases[Y+1][X].obstacle == 0)
                 {
@@ -390,9 +394,9 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
                     comp += 1;
                 }
                 else
-                    stop = 1;
+                    obst2 = 1;
             }
-            else if(Y > finishy/50)
+            else if(Y > finishy/50 || obst == 1)
             {
                 if(tabcases[Y-1][X].obstacle == 0)
                 {
@@ -403,7 +407,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
                     comp += 1;
                 }
                 else
-                    stop = 1;
+                    obst2 = 1;
             }
         }
     }

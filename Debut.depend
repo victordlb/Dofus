@@ -41,23 +41,17 @@
 
 1651673183 ated upstream
 
-<<<<<<< Updated upstream
-1652199752 c:\users\victo\onedrive\documents\github\dofus\header.h
-
-1652199766 source:c:\users\victo\onedrive\documents\github\dofus\map.c
-=======
 1652188983 c:\users\victo\onedrive\documents\github\dofus\header.h
 
 1652188983 source:c:\users\victo\onedrive\documents\github\dofus\map.c
->>>>>>> Stashed changes
+
+1651678690 shed changes
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	<time.h>
 	<synchapi.h>
 	"header.h"
-
-1651678690 shed changes
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -95,7 +89,7 @@
 	<synchapi.h>
 	"header.h"
 
-1652189162 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+1652200067 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
 
 1651871052 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
 	<stdio.h>
