@@ -235,35 +235,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
 ///(tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) <= (X/50) && (X/50) <= (tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) &&
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
-        if(tabcases[Y/50][X/50].obstacle == 0)
+    if(tabcases[Y/50][X/50].obstacle == 0)
+    {
+        if(tabjoueur[indice]->classes.cord_x/50 == X/50)
         {
-            if(tabjoueur[indice]->classes.cord_x/50 == X/50)
-            {
-                if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
-                {
-                    printf("Possible\n");
-                    return 1;
-                }
-                else
-                {
-                    printf("Impossible\n");
-                    return 0;
-                }
-            }
-            else if(tabjoueur[indice]->classes.cord_y/50 == Y/50 )
-            {
-                if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
-                {
-                    printf("Possible\n");
-                    return 1;
-                }
-                else
-                {
-                    printf("Impossible\n");
-                    return 0;
-                }
-            }
-            else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
+            if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
             {
                 printf("Possible\n");
                 return 1;
@@ -274,25 +250,57 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
                 return 0;
             }
         }
-
+        else if(tabjoueur[indice]->classes.cord_y/50 == Y/50 )
+        {
+            if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
+            {
+                printf("Possible\n");
+                return 1;
+            }
+            else
+            {
+                printf("Impossible\n");
+                return 0;
+            }
+        }
+        else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
+        {
+            printf("Possible\n");
+            return 1;
+        }
         else
         {
             printf("Impossible\n");
             return 0;
         }
+    }
+
+    else
+    {
+        printf("Impossible\n");
+        return 0;
+    }
 }
 
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
 {
+    t_chemin* Lechemin;
     for(int i = 0; i<16; i++)
     {
         for(int j=0; j<28; j++)
         {
-            if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
+            Lechemin = itineraire(tabcases,tabjoueur,indice, j*50, i*50);
+            for(int z = 0; z< Lechemin[0].taille ; z++)
             {
-                if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
+                if(Lechemin[z].x == tabcases[i][j].x/50 && Lechemin[z].y == tabcases[i][j].y/50)
                 {
-                    rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                    if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
+                    {
+                        if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
+                        {
+                            rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                        }
+                    }
                 }
             }
         }
@@ -425,16 +433,45 @@ BITMAP* chargement_fond(t_cases** tabcases)
 void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer)
 {
     BITMAP* personnage;
+    BITMAP* tete_perso;
+    BITMAP* curseur;
+    curseur = load_bitmap("curseur.bmp", NULL);
+    int x;
     for(int i=0; i<nbrjoueur; i++)
     {
         if(tabjoueur[i]->classes.PV == 70)
+        {
             personnage = load_bitmap("luffy standby.bmp", NULL);
+            tete_perso = load_bitmap("luffy tour.bmp", NULL);
+        }
         else if(tabjoueur[i]->classes.PV == 65)
+        {
             personnage = load_bitmap("robin standby.bmp", NULL);
+            tete_perso = load_bitmap("robin tour.bmp", NULL);
+        }
         else if(tabjoueur[i]->classes.PV == 50)
+        {
             personnage = load_bitmap("sanji standby.bmp", NULL);
+            tete_perso = load_bitmap("sanji tour.bmp", NULL);
+        }
         else if(tabjoueur[i]->classes.PV == 100)
+        {
             personnage = load_bitmap("franky standby.bmp", NULL);
+            tete_perso = load_bitmap("franky tour.bmp", NULL);
+        }
+        if(tabjoueur[i]->classes.ID == 1)
+            x = 20;
+        else if(tabjoueur[i]->classes.ID == 2)
+            x = 90;
+        else if(tabjoueur[i]->classes.ID == 3)
+            x = 160;
+        else if(tabjoueur[i]->classes.ID == 4)
+            x = 230;
+        if(indice == tabjoueur[i]->classes.ID-1)
+        {
+            draw_sprite(buffer, curseur, x +20, 65);
+        }
         draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+        draw_sprite(buffer, tete_perso, x, 20);
     }
 }
