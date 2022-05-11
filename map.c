@@ -434,30 +434,38 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
 {
     BITMAP* personnage;
     BITMAP* tete_perso;
+    BITMAP* tete_perso_c;
     BITMAP* curseur;
+    //BITMAP* fond;
     curseur = load_bitmap("curseur.bmp", NULL);
+    //fond = load_bitmap("fond tete.bmp", NULL);
     int x;
+    //draw_sprite(buffer, fond, 0,10);
     for(int i=0; i<nbrjoueur; i++)
     {
         if(tabjoueur[i]->classes.PV == 70)
         {
             personnage = load_bitmap("luffy standby.bmp", NULL);
             tete_perso = load_bitmap("luffy tour.bmp", NULL);
+            tete_perso_c = load_bitmap("luffy tour_c.bmp", NULL);
         }
         else if(tabjoueur[i]->classes.PV == 65)
         {
             personnage = load_bitmap("robin standby.bmp", NULL);
             tete_perso = load_bitmap("robin tour.bmp", NULL);
+            tete_perso_c = load_bitmap("robin tour_c.bmp", NULL);
         }
         else if(tabjoueur[i]->classes.PV == 50)
         {
             personnage = load_bitmap("sanji standby.bmp", NULL);
             tete_perso = load_bitmap("sanji tour.bmp", NULL);
+            tete_perso_c = load_bitmap("sanji tour_c.bmp", NULL);
         }
         else if(tabjoueur[i]->classes.PV == 100)
         {
             personnage = load_bitmap("franky standby.bmp", NULL);
             tete_perso = load_bitmap("franky tour.bmp", NULL);
+            tete_perso_c = load_bitmap("franky tour_c.bmp", NULL);
         }
         if(tabjoueur[i]->classes.ID == 1)
             x = 20;
@@ -470,8 +478,10 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
         if(indice == tabjoueur[i]->classes.ID-1)
         {
             draw_sprite(buffer, curseur, x +20, 65);
+            draw_sprite(buffer, tete_perso, x, 20);
         }
         draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
-        draw_sprite(buffer, tete_perso, x, 20);
+        if(indice != tabjoueur[i]->classes.ID-1)
+            draw_sprite(buffer, tete_perso_c, x, 20);
     }
 }
