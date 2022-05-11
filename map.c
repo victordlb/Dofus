@@ -436,6 +436,7 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* tete_perso;
     BITMAP* tete_perso_c;
     BITMAP* curseur;
+    BITMAP* casesort = load_bitmap("case sort.bmp", NULL);
     //BITMAP* fond;
     curseur = load_bitmap("curseur.bmp", NULL);
     //fond = load_bitmap("fond tete.bmp", NULL);
@@ -483,5 +484,9 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
         draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
         if(indice != tabjoueur[i]->classes.ID-1)
             draw_sprite(buffer, tete_perso_c, x, 20);
+        for(int i = 0 ; i<5; i++)
+        {
+            draw_sprite(buffer, casesort, 495 + (i*75), 730);
+        }
     }
 }
