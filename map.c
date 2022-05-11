@@ -437,11 +437,11 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* tete_perso_c;
     BITMAP* curseur;
     BITMAP* casesort = load_bitmap("case sort.bmp", NULL);
-    //BITMAP* fond;
+    BITMAP* fond;
     curseur = load_bitmap("curseur.bmp", NULL);
-    //fond = load_bitmap("fond tete.bmp", NULL);
+    fond = load_bitmap("fond tete.bmp", NULL);
     int x;
-    //draw_sprite(buffer, fond, 0,10);
+    draw_sprite(buffer, fond, 10,10);
     for(int i=0; i<nbrjoueur; i++)
     {
         if(tabjoueur[i]->classes.PV == 70)
