@@ -55,22 +55,31 @@ t_cases** chargement_map()
         }
         ligne = ligne +50;
     }
+    for(int z=9 ; z<18; z++)
+    {
+        tabcases[14][z].obstacle = 1;
+        tabcases[15][z].obstacle = 1;
+    }
+    for(int g = 0; g<6; g++)
+    {
+        tabcases[1][g].obstacle = 1;
+    }
     fclose(pf);
     return tabcases;
 }
 
 BITMAP* charger_map(t_cases** tabcases)
 {
-    BITMAP* un = load_bitmap("1.bmp", NULL);
-    BITMAP* deux = load_bitmap("2.bmp", NULL);
-    BITMAP* trois = load_bitmap("3.bmp", NULL);
-    BITMAP* quatre = load_bitmap("4.bmp", NULL);
-    BITMAP* cinq = load_bitmap("5.bmp", NULL);
-    BITMAP* six = load_bitmap("6.bmp", NULL);
-    BITMAP* sept = load_bitmap("7.bmp", NULL);
-    BITMAP* huit = load_bitmap("8.bmp", NULL);
-    BITMAP* neuf = load_bitmap("9.bmp", NULL);
-    BITMAP* zero = load_bitmap("0.bmp", NULL);
+    BITMAP* un = load_bitmap("tuile/1.bmp", NULL);
+    BITMAP* deux = load_bitmap("tuile/2.bmp", NULL);
+    BITMAP* trois = load_bitmap("tuile/3.bmp", NULL);
+    BITMAP* quatre = load_bitmap("tuile/4.bmp", NULL);
+    BITMAP* cinq = load_bitmap("tuile/5.bmp", NULL);
+    BITMAP* six = load_bitmap("tuile/6.bmp", NULL);
+    BITMAP* sept = load_bitmap("tuile/7.bmp", NULL);
+    BITMAP* huit = load_bitmap("tuile/8.bmp", NULL);
+    BITMAP* neuf = load_bitmap("tuile/9.bmp", NULL);
+    BITMAP* zero = load_bitmap("tuile/0.bmp", NULL);
     BITMAP* fond = create_bitmap(SCREEN_W, SCREEN_H);
     for(int i =0; i<16; i++)
     {
@@ -120,13 +129,13 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     BITMAP* personnage;
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    if(tabjoueur[indice]->classes.PV == 70)
+    if(strcmp(tabjoueur[indice]->classes.nom, "luffy")==0)
         personnage = load_bitmap("luffy standby.bmp", NULL);
-    else if(tabjoueur[indice]->classes.PV == 65)
+    else if(strcmp(tabjoueur[indice]->classes.nom, "robin")==0)
         personnage = load_bitmap("robin standby.bmp", NULL);
-    else if(tabjoueur[indice]->classes.PV == 50)
+    else if(strcmp(tabjoueur[indice]->classes.nom,"sanji") == 0)
         personnage = load_bitmap("sanji standby.bmp", NULL);
-    else if(tabjoueur[indice]->classes.PV == 100)
+    else if(strcmp(tabjoueur[indice]->classes.nom, "franky") == 0)
         personnage = load_bitmap("franky standby.bmp", NULL);
     fond = chargement_fond(tabcases);
     int done = 0;
@@ -185,13 +194,13 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
         textprintf_ex(fond, font, 300,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART DANS LE MEME ORDRE QUE VOS CHOIX DE PERSONNAGES (vous avez 15secondes)");
         done = 0;
         validation = 0;
-        if(tabjoueur[i]->classes.PV == 70)
+        if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
             personnage = load_bitmap("luffy standby.bmp", NULL);
-        else if(tabjoueur[i]->classes.PV == 65)
+        else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
             personnage = load_bitmap("robin standby.bmp", NULL);
-        else if(tabjoueur[i]->classes.PV == 50)
+        else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
             personnage = load_bitmap("sanji standby.bmp", NULL);
-        else if(tabjoueur[i]->classes.PV == 100)
+        else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
             personnage = load_bitmap("franky standby.bmp", NULL);
         time_t start, end;
         time(&start);
@@ -444,25 +453,25 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     draw_sprite(buffer, fond, 10,10);
     for(int i=0; i<nbrjoueur; i++)
     {
-        if(tabjoueur[i]->classes.PV == 70)
+        if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
         {
             personnage = load_bitmap("luffy standby.bmp", NULL);
             tete_perso = load_bitmap("luffy tour.bmp", NULL);
             tete_perso_c = load_bitmap("luffy tour_c.bmp", NULL);
         }
-        else if(tabjoueur[i]->classes.PV == 65)
+        else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
         {
             personnage = load_bitmap("robin standby.bmp", NULL);
             tete_perso = load_bitmap("robin tour.bmp", NULL);
             tete_perso_c = load_bitmap("robin tour_c.bmp", NULL);
         }
-        else if(tabjoueur[i]->classes.PV == 50)
+        else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
         {
             personnage = load_bitmap("sanji standby.bmp", NULL);
             tete_perso = load_bitmap("sanji tour.bmp", NULL);
             tete_perso_c = load_bitmap("sanji tour_c.bmp", NULL);
         }
-        else if(tabjoueur[i]->classes.PV == 100)
+        else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
         {
             personnage = load_bitmap("franky standby.bmp", NULL);
             tete_perso = load_bitmap("franky tour.bmp", NULL);
