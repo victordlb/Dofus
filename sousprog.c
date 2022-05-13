@@ -18,7 +18,10 @@ void initialisation()
     }
     install_keyboard();
     install_mouse();
+    BITMAP* curseur_souris = load_bitmap("documents/props/curseur_brasFranky.bmp", NULL);
+    set_mouse_sprite(curseur_souris);
     show_mouse(screen);
+    destroy_bitmap(curseur_souris);
 }
 
 void logo()
@@ -30,10 +33,10 @@ void logo()
     int color1 = 0;
     BITMAP* dofus;
     BITMAP* mugiwara_edition;
-    dofus = load_bitmap("dofus.bmp", NULL);
-    mugiwara_edition = load_bitmap("mugiwara edition.bmp", NULL);
+    dofus = load_bitmap("documents/fond/dofus.bmp", NULL);
+    mugiwara_edition = load_bitmap("documents/fond/mugiwara edition.bmp", NULL);
     BITMAP* fond;
-    fond = load_bitmap("fond.bmp", NULL);
+    fond = load_bitmap("documents/fond/fond logo.bmp", NULL);
     for(int i = 0; i < SCREEN_W; i++)
     {
         for(int j = 0; j< SCREEN_H; j++)
@@ -88,7 +91,7 @@ void menu_principal()
     int couleur4 = 0;
     int stop = 0;
     BITMAP* fond;
-    fond = load_bitmap("menu_luffy.bmp", NULL);
+    fond = load_bitmap("documents/fond/menu_principal.bmp", NULL);
     while(stop == 0)
     {
         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
@@ -175,7 +178,7 @@ void lancement()
 
 void quitter()
 {
-    BITMAP* fond = load_bitmap("quitter.bmp", NULL);
+    BITMAP* fond = load_bitmap("documents/fond/quitter.bmp", NULL);
     {
         blit(fond, screen, 0,0,0,0, SCREEN_W, SCREEN_H);
         textprintf_ex(screen, font, 700, 400, makecol(255,255,255),-1, "AU REVOIR");
@@ -192,7 +195,7 @@ void quitter()
 
 void regle()
 {
-    BITMAP* regle = load_bitmap("regle.bmp", NULL);
+    BITMAP* regle = load_bitmap("documents/fond/regle.bmp", NULL);
     int stop = 0;
     while( stop == 0)
     {
@@ -212,7 +215,7 @@ int nombre_joueur()
     int couleur2 = 0;
     int couleur3 = 0;
     int stop = 0;
-    BITMAP* fond = load_bitmap("question.bmp", NULL);
+    BITMAP* fond = load_bitmap("documents/fond/question.bmp", NULL);
     while(stop == 0)
     {
         textprintf_ex(fond, font,400 - text_length(font, "COMBIEN DE JOUEUR ETES-VOUS ?"), 100, makecol(0,0,0), -1, "COMBIEN DE JOUEUR ETES-VOUS ?" );
@@ -274,15 +277,15 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
     FILE* san = NULL;
     FILE* rob = NULL;
     FILE* fra = NULL;
-    BITMAP* fond = load_bitmap("choix.bmp", NULL);
-    BITMAP* luffy = load_bitmap("luffy.bmp", NULL);
-    BITMAP* robin = load_bitmap("robin.bmp", NULL);
-    BITMAP* sanji = load_bitmap("sanji.bmp", NULL);
-    BITMAP* franky = load_bitmap("franky.bmp", NULL);
-    BITMAP* luffy_c = load_bitmap("luffy_c.bmp", NULL);
-    BITMAP* robin_c = load_bitmap("robin_c.bmp", NULL);
-    BITMAP* sanji_c = load_bitmap("sanji_c.bmp", NULL);
-    BITMAP* franky_c = load_bitmap("franky_c.bmp", NULL);
+    BITMAP* fond = load_bitmap("documents/fond/choix.bmp", NULL);
+    BITMAP* luffy = load_bitmap("documents/perso/luffy/choix_luffy.bmp", NULL);
+    BITMAP* robin = load_bitmap("documents/perso/robin/choix_robin.bmp", NULL);
+    BITMAP* sanji = load_bitmap("documents/perso/sanji/choix_sanji.bmp", NULL);
+    BITMAP* franky = load_bitmap("documents/perso/franky/choix_franky.bmp", NULL);
+    BITMAP* luffy_c = load_bitmap("documents/perso/luffy/choix_luffy_c.bmp", NULL);
+    BITMAP* robin_c = load_bitmap("documents/perso/robin/choix_robin_c.bmp", NULL);
+    BITMAP* sanji_c = load_bitmap("documents/perso/sanji/choix_sanji_c.bmp", NULL);
+    BITMAP* franky_c = load_bitmap("documents/perso/franky/choix_franky_c.bmp", NULL);
     int stop = 0;
     int test1 = 0;
     int test2 = 0;
@@ -396,7 +399,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
-            luf = fopen("luffy.txt", "r+");
+            luf = fopen("documents/perso/luffy/luffy.txt", "r+");
             if(luf == NULL)
             {
                 printf("Erreur d'ouverture fichier luffy\n");
@@ -412,7 +415,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
-            rob = fopen("robin.txt", "r+");
+            rob = fopen("documents/perso/robin/robin.txt", "r+");
             if(rob == NULL)
             {
                 printf("Erreur d'ouverture fichier robin\n");
@@ -428,7 +431,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            san = fopen("sanji.txt", "r+");
+            san = fopen("documents/perso/sanji/sanji.txt", "r+");
             if(san == NULL)
             {
                 printf("Erreur d'ouverture fichier sanji\n");
@@ -444,7 +447,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
-            fra = fopen("franky.txt", "r+");
+            fra = fopen("documents/perso/franky/franky.txt", "r+");
             if(fra == NULL)
             {
                 printf("Erreur d'ouverture fichier francky\n");
@@ -474,7 +477,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 void menu_pause(t_joueur** tabjoueur, int nbrjoueur)
 {
     BITMAP* fond;
-    fond = load_bitmap("menu pause.bmp", NULL);
+    fond = load_bitmap("documents/fond/menu pause.bmp", NULL);
     int couleur1 = 0;
     int couleur2 = 0;
     int couleur3 = 0;
@@ -565,7 +568,7 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur)
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
 {
     BITMAP* fond;
-    fond = load_bitmap("info joueur.bmp", NULL);
+    fond = load_bitmap("documents/fond/info joueur.bmp", NULL);
     int stop = 0;
     int x = 150;
     int compteur = 0;
@@ -605,7 +608,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
 char* saisie_pseudo()
 {
     BITMAP* fond;
-    fond = load_bitmap("fond pseudo.bmp", NULL);
+    fond = load_bitmap("documents/fond/fond pseudo.bmp", NULL);
     char* pseudo;
     int touche, touche1, touche2;
     int i=0;

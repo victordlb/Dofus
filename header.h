@@ -47,6 +47,14 @@ typedef struct chemin
     int taille;
 }t_chemin;
 
+/*typedef struct djikstra
+{
+    int chemin_trouve;
+    int distance[16][28];
+    int visite[16][28];
+    int mapa[16][28];
+    int predecesseur[16][28];
+}t_djikstra;*/
 
 void initialisation();
 void logo();

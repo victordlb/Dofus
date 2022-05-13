@@ -27,7 +27,7 @@ void dessin_ligne()
 t_cases** chargement_map()
 {
     t_cases** tabcases = (t_cases**)malloc(16 * sizeof(t_cases*));
-    FILE* pf = fopen("lamapa.txt", "r+");
+    FILE* pf = fopen("documents/lamap/lamapa.txt", "r+");
     if(pf == NULL)
     {
         printf("Erreur d'ouverture\n");
@@ -70,16 +70,16 @@ t_cases** chargement_map()
 
 BITMAP* charger_map(t_cases** tabcases)
 {
-    BITMAP* un = load_bitmap("tuile/1.bmp", NULL);
-    BITMAP* deux = load_bitmap("tuile/2.bmp", NULL);
-    BITMAP* trois = load_bitmap("tuile/3.bmp", NULL);
-    BITMAP* quatre = load_bitmap("tuile/4.bmp", NULL);
-    BITMAP* cinq = load_bitmap("tuile/5.bmp", NULL);
-    BITMAP* six = load_bitmap("tuile/6.bmp", NULL);
-    BITMAP* sept = load_bitmap("tuile/7.bmp", NULL);
-    BITMAP* huit = load_bitmap("tuile/8.bmp", NULL);
-    BITMAP* neuf = load_bitmap("tuile/9.bmp", NULL);
-    BITMAP* zero = load_bitmap("tuile/0.bmp", NULL);
+    BITMAP* un = load_bitmap("documents/lamap/1.bmp", NULL);
+    BITMAP* deux = load_bitmap("documents/lamap/2.bmp", NULL);
+    BITMAP* trois = load_bitmap("documents/lamap/3.bmp", NULL);
+    BITMAP* quatre = load_bitmap("documents/lamap/4.bmp", NULL);
+    BITMAP* cinq = load_bitmap("documents/lamap/5.bmp", NULL);
+    BITMAP* six = load_bitmap("documents/lamap/6.bmp", NULL);
+    BITMAP* sept = load_bitmap("documents/lamap/7.bmp", NULL);
+    BITMAP* huit = load_bitmap("documents/lamap/8.bmp", NULL);
+    BITMAP* neuf = load_bitmap("documents/lamap/9.bmp", NULL);
+    BITMAP* zero = load_bitmap("documents/lamap/0.bmp", NULL);
     BITMAP* fond = create_bitmap(SCREEN_W, SCREEN_H);
     for(int i =0; i<16; i++)
     {
@@ -130,13 +130,13 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
     if(strcmp(tabjoueur[indice]->classes.nom, "luffy")==0)
-        personnage = load_bitmap("luffy standby.bmp", NULL);
+        personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
     else if(strcmp(tabjoueur[indice]->classes.nom, "robin")==0)
-        personnage = load_bitmap("robin standby.bmp", NULL);
+        personnage = load_bitmap("documents/perso/robin/robin standby.bmp", NULL);
     else if(strcmp(tabjoueur[indice]->classes.nom,"sanji") == 0)
-        personnage = load_bitmap("sanji standby.bmp", NULL);
+        personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
     else if(strcmp(tabjoueur[indice]->classes.nom, "franky") == 0)
-        personnage = load_bitmap("franky standby.bmp", NULL);
+        personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
     fond = chargement_fond(tabcases);
     int done = 0;
     int ind = 0;
@@ -195,13 +195,13 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
         done = 0;
         validation = 0;
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
-            personnage = load_bitmap("luffy standby.bmp", NULL);
+            personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
-            personnage = load_bitmap("robin standby.bmp", NULL);
+            personnage = load_bitmap("documents/perso/robin/robin standby.bmp", NULL);
         else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
-            personnage = load_bitmap("sanji standby.bmp", NULL);
+            personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
-            personnage = load_bitmap("franky standby.bmp", NULL);
+            personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
         time_t start, end;
         time(&start);
         while(done==0 && temps <=16)
@@ -445,37 +445,37 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* tete_perso;
     BITMAP* tete_perso_c;
     BITMAP* curseur;
-    BITMAP* casesort = load_bitmap("case sort.bmp", NULL);
+    BITMAP* casesort = load_bitmap("documents/props/case sort.bmp", NULL);
     BITMAP* fond;
-    curseur = load_bitmap("curseur.bmp", NULL);
-    fond = load_bitmap("fond tete.bmp", NULL);
+    curseur = load_bitmap("documents/props/curseur_perso.bmp", NULL);
+    fond = load_bitmap("documents/fond/fond tete.bmp", NULL);
     int x;
     draw_sprite(buffer, fond, 10,10);
     for(int i=0; i<nbrjoueur; i++)
     {
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
         {
-            personnage = load_bitmap("luffy standby.bmp", NULL);
-            tete_perso = load_bitmap("luffy tour.bmp", NULL);
-            tete_perso_c = load_bitmap("luffy tour_c.bmp", NULL);
+            personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
+            tete_perso = load_bitmap("documents/perso/luffy/luffy tour.bmp", NULL);
+            tete_perso_c = load_bitmap("documents/perso/luffy/luffy tour_c.bmp", NULL);
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
         {
-            personnage = load_bitmap("robin standby.bmp", NULL);
-            tete_perso = load_bitmap("robin tour.bmp", NULL);
-            tete_perso_c = load_bitmap("robin tour_c.bmp", NULL);
+            personnage = load_bitmap("documents/perso/robin/robin standby.bmp", NULL);
+            tete_perso = load_bitmap("documents/perso/robin/robin tour.bmp", NULL);
+            tete_perso_c = load_bitmap("documents/perso/robin/robin tour_c.bmp", NULL);
         }
         else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
         {
-            personnage = load_bitmap("sanji standby.bmp", NULL);
-            tete_perso = load_bitmap("sanji tour.bmp", NULL);
-            tete_perso_c = load_bitmap("sanji tour_c.bmp", NULL);
+            personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
+            tete_perso = load_bitmap("documents/perso/sanji/sanji tour.bmp", NULL);
+            tete_perso_c = load_bitmap("documents/perso/sanji/sanji tour_c.bmp", NULL);
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
         {
-            personnage = load_bitmap("franky standby.bmp", NULL);
-            tete_perso = load_bitmap("franky tour.bmp", NULL);
-            tete_perso_c = load_bitmap("franky tour_c.bmp", NULL);
+            personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
+            tete_perso = load_bitmap("documents/perso/franky/franky tour.bmp", NULL);
+            tete_perso_c = load_bitmap("documents/perso/franky/franky tour_c.bmp", NULL);
         }
         if(tabjoueur[i]->classes.ID == 1)
             x = 20;
@@ -498,4 +498,48 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
             draw_sprite(buffer, casesort, 495 + (i*75), 730);
         }
     }
+    destroy_bitmap(fond);
+    destroy_bitmap(personnage);
+    destroy_bitmap(tete_perso);
+    destroy_bitmap(tete_perso_c);
+    destroy_bitmap(casesort);
+    destroy_bitmap(curseur);
 }
+
+/*t_djikstra djikstra_init(t_joueur** tabjoueur, int indice)
+{
+    t_djikstra chemin;
+    chemin.chemin_trouve = 0;
+    for(int i=0; i<16; i++)
+    {
+        for(int j= 0; j<28; j++)
+        {
+            chemin.distance[i][j] = 99999;
+            chemin.visite[i][j] = 0;
+            if(chemin.mapa[i][j]== 8)
+            {
+                chemin.mapa[i][j] = 0;
+            }
+        }
+    }
+    chemin.distance[tabjoueur[indice]->classes.cord_y/50][tabjoueur[indice]->classes.cord_x/50] = 0;
+    return chemin;
+}
+
+int djikstra_tout_parcourue(t_djikstra chemin)
+{
+    int toutparcouru = 1;
+    for(int i=0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            if(chemin.visite[i][j] == 0)
+            {
+                toutparcouru = 0;
+            }
+        }
+    }
+    return toutparcouru;
+}*/
+
+
