@@ -29,6 +29,7 @@ typedef struct cases
     int y;
     int obstacle;
     int cases;
+    int indice;
 }t_cases;
 
 /// fin de la partie : on sauvegarde le pseudo avec la classe qu'il a choisit et son niveau

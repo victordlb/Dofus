@@ -140,33 +140,41 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
     fond = chargement_fond(tabcases);
     int done = 0;
     int ind = 0;
+    // djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50);
     while(done == 0)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         couleur_case(tabjoueur,tabcases,indice,buffer);
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
-        if(mouse_b&1 && possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
+        if(mouse_b&1)
         {
-            Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
-            for(int i = 0; i<Lechemin[0].taille; i++)
+            if(mouse_x > 1340 && mouse_x < 1380 && mouse_y >5 && mouse_y < 45)
             {
-                printf("coordonne :%d/%d\n", Lechemin[i].x, Lechemin[i].y);
+                menu_pause(tabjoueur,nbrjoueur);
             }
-            while(ind < Lechemin[0].taille)
+            if(possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
             {
-                tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
-                tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
-                clear_bitmap(buffer);
-                clear_bitmap(fond);
-                fond = chargement_fond(tabcases);
-                blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
-                chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
-                draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
-                blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(500);
-                done = 1;
-                ind += 1;
+                Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
+                for(int i = 0; i<Lechemin[0].taille; i++)
+                {
+                    printf("coordonne :%d/%d\n", Lechemin[i].x, Lechemin[i].y);
+                }
+                while(ind < Lechemin[0].taille)
+                {
+                    tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
+                    tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
+                    clear_bitmap(buffer);
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases);
+                    blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
+                    blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                    done = 1;
+                    ind += 1;
+                }
             }
         }
         blit(buffer, screen,0,0,0,0,SCREEN_W, SCREEN_H);
@@ -447,10 +455,13 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* curseur;
     BITMAP* casesort = load_bitmap("documents/props/case sort.bmp", NULL);
     BITMAP* fond;
+    BITMAP* pause;
+    pause = load_bitmap("documents/props/pause.bmp", NULL);
     curseur = load_bitmap("documents/props/curseur_perso.bmp", NULL);
     fond = load_bitmap("documents/fond/fond tete.bmp", NULL);
     int x;
     draw_sprite(buffer, fond, 10,10);
+    draw_sprite(buffer, pause, 1340,5);
     for(int i=0; i<nbrjoueur; i++)
     {
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
@@ -504,6 +515,7 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     destroy_bitmap(tete_perso_c);
     destroy_bitmap(casesort);
     destroy_bitmap(curseur);
+    destroy_bitmap(pause);
 }
 
 /*t_djikstra djikstra_init(t_joueur** tabjoueur, int indice)
@@ -542,4 +554,163 @@ int djikstra_tout_parcourue(t_djikstra chemin)
     return toutparcouru;
 }*/
 
+
+void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
+{
+    int pos_x_actuelle=pos_x_pers,pos_y_actuelle=pos_y_pers;
+    int distance[16][28];
+    int verif[16][28];
+    int predecesseur_x[16][28],predecesseur_y[16][28];
+    int arrivee_x, arrivee_y;
+    int new_x,new_y;
+
+
+
+    for(int i=0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            distance[i][j]=1000;
+            verif[i][j]=0;//non gris
+            predecesseur_x[i][j]=-1;
+            predecesseur_y[i][j]=-1;
+            printf("%d\n", tabcases[i][j].obstacle);
+        }
+    }
+    printf("coord_x :%d / coord_y :%d\n",pos_y_actuelle,pos_x_actuelle);
+
+    printf("Saisir le sommet d'arrivee en x\n");
+    scanf("%d",&arrivee_x);
+
+    printf("Saisir le sommet d'arrivee en y\n");
+    scanf("%d",&arrivee_y);
+
+    distance[pos_y_pers][pos_x_pers]=0;
+    predecesseur_x[pos_y_pers][pos_x_pers]=-2;
+    predecesseur_y[pos_y_pers][pos_x_pers]=-2;
+    verif[pos_y_pers][pos_x_pers]=1;
+
+    do
+    {
+
+        //predecesseur a gauche
+        if(pos_y_actuelle-1!=-1)//depassement tab
+        {
+
+            if(tabcases[pos_y_actuelle-1][pos_x_actuelle].obstacle==0)//obstacle ?
+            {
+
+                if(distance[pos_y_actuelle-1][pos_x_actuelle]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+                {
+                    //si oui
+
+                    distance[pos_y_actuelle-1][pos_x_actuelle]=distance[pos_y_actuelle][pos_x_actuelle]+1;
+                    predecesseur_x[pos_y_actuelle-1][pos_x_actuelle]=pos_y_actuelle;
+                    predecesseur_y[pos_y_actuelle-1][pos_x_actuelle]=pos_x_actuelle;
+                    printf("test1 \n");
+                }
+            }
+        }
+
+        //predecesseur en haut
+        if(pos_x_actuelle-1!=-1)//depassement tab
+        {
+            if(tabcases[pos_y_actuelle][pos_x_actuelle-1].obstacle==0)//obstacle ?
+            {
+                if(distance[pos_y_actuelle][pos_x_actuelle-1]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+                {
+                    //si oui
+                    distance[pos_y_actuelle][pos_x_actuelle-1]=distance[pos_y_actuelle][pos_x_actuelle]+1;
+                    predecesseur_x[pos_y_actuelle][pos_x_actuelle-1]=pos_y_actuelle;
+                    predecesseur_y[pos_y_actuelle][pos_x_actuelle-1]=pos_x_actuelle;
+                }
+            }
+        }
+
+
+        //predecesseur a droite
+        if(pos_y_actuelle+1!=28)//depassement tab
+        {
+            if(tabcases[pos_y_actuelle+1][pos_x_actuelle].obstacle==0)//obstacle ?
+            {
+                if(distance[pos_y_actuelle+1][pos_x_actuelle]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+                {
+                    //si oui
+                    distance[pos_y_actuelle+1][pos_x_actuelle]=distance[pos_y_actuelle][pos_x_actuelle]+1;
+                    predecesseur_x[pos_y_actuelle+1][pos_x_actuelle]=pos_y_actuelle;
+                    predecesseur_y[pos_y_actuelle+1][pos_x_actuelle]=pos_x_actuelle;
+                }
+            }
+        }
+
+
+        //predecesseur en bas
+        if(pos_x_actuelle+1!=16)//depassement tab
+        {
+            if(tabcases[pos_y_actuelle][pos_x_actuelle+1].obstacle==0)//obstacle ?
+            {
+                if(distance[pos_y_actuelle][pos_x_actuelle+1]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+                {
+                    //si oui
+                    distance[pos_y_actuelle][pos_x_actuelle+1]=distance[pos_y_actuelle][pos_x_actuelle]+1;
+                    predecesseur_x[pos_y_actuelle][pos_x_actuelle+1]=pos_y_actuelle;
+                    predecesseur_y[pos_y_actuelle][pos_x_actuelle+1]=pos_x_actuelle;
+                }
+            }
+        }
+
+
+
+        int minimum=1000;
+        int indice_min_x,indice_min_y;
+        for(int i=0; i<16; i++)
+        {
+            for(int j=0; j<28; j++)
+            {
+                if(verif[i][j]==0)
+                {
+                    if(minimum>distance[i][j])
+                    {
+                        minimum=distance[i][j];
+                        indice_min_x=i;
+                        indice_min_y=j;
+                    }
+                }
+
+            }
+        }
+
+
+        verif[indice_min_x][indice_min_y]=1;
+        pos_y_actuelle=indice_min_x;
+        pos_x_actuelle=indice_min_y;
+
+
+    }
+    while(verif[arrivee_y][arrivee_x]==0);
+    printf("test2\n");
+
+    tabcases[arrivee_x][arrivee_y];
+    printf("%dx %dy|",predecesseur_x[arrivee_y][arrivee_x],predecesseur_y[arrivee_y][arrivee_x]);
+    printf("test3\n");
+    int compteur = 0;
+    do
+    {
+
+        new_x=predecesseur_x[predecesseur_x[arrivee_y][arrivee_x]][predecesseur_y[arrivee_y][arrivee_x]];
+
+        new_y=predecesseur_y[predecesseur_x[arrivee_y][arrivee_x]][predecesseur_y[arrivee_y][arrivee_x]];
+
+        printf("%dx %dy poids %d|\n",new_x,new_y,distance[new_x][new_y]);
+        compteur++;
+
+
+    }
+    while(new_x!=-2 && compteur != 10);
+
+
+
+
+
+}
 
