@@ -84,7 +84,6 @@ void logo()
 
 void menu_principal()
 {
-    t_joueur** tab_joueur;
     int couleur1 = 0;
     int couleur2 = 0;
     int couleur3 = 0;
@@ -143,6 +142,7 @@ void menu_principal()
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
             /// a definir
+            t_joueur** tab_joueur;
             int nbrjoueur;
             int premier_joueur;
             nbrjoueur = nombre_joueur();
@@ -157,8 +157,19 @@ void menu_principal()
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            /// a definir
-            stop = 1;
+            t_joueur** tab_joueur;
+            int nbrjoueur;
+            int premier_joueur;
+            t_charge Unecharge;
+            Unecharge = chargement();
+            tab_joueur = Unecharge.tabjoueur;
+            nbrjoueur = Unecharge.nbrjoueur;
+            premier_joueur = Unecharge.indice;
+            for(int x = 0; x<nbrjoueur; x++)
+            {
+                printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
+            }
+            tour(tab_joueur, nbrjoueur, premier_joueur, 0);
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
@@ -474,7 +485,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
     return uneclasse;
 }
 
-void menu_pause(t_joueur** tabjoueur, int nbrjoueur)
+void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
 {
     BITMAP* fond;
     fond = load_bitmap("documents/fond/menu pause.bmp", NULL);
@@ -559,7 +570,7 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur)
         }
         if(couleur5 == makecol(255,0,0) && mouse_b&1)
         {
-            stop = 1;
+            sauvegarde(tabjoueur,nbrjoueur,indice);
         }
     }
     destroy_bitmap(fond);

@@ -41,6 +41,9 @@
 		<Unit filename="map.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sauvegarde et chargement.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="sousprog.c">
 			<Option compilerVar="CC" />
 		</Unit>
