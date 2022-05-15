@@ -64,6 +64,10 @@ t_cases** chargement_map()
     {
         tabcases[1][g].obstacle = 1;
     }
+    for(int a = 25; a<28; a++)
+    {
+        tabcases[15][a].obstacle = 1;
+    }
     fclose(pf);
     return tabcases;
 }
@@ -120,12 +124,12 @@ BITMAP* charger_map(t_cases** tabcases)
     return fond;
 }
 
-void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
+void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond)
 {
-    t_cases** tabcases;
+    //t_cases** tabcases;
     t_chemin* Lechemin;
-    tabcases = chargement_map();
-    BITMAP* fond;
+    //tabcases = chargement_map();
+    // BITMAP* fond;
     BITMAP* personnage;
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
@@ -137,6 +141,7 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
     else if(strcmp(tabjoueur[indice]->classes.nom, "franky") == 0)
         personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
+    clear_bitmap(fond);
     fond = chargement_fond(tabcases);
     int done = 0;
     int ind = 0;
@@ -149,10 +154,6 @@ void deplacement(t_joueur** tabjoueur, int indice, int nbrjoueur)
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
         if(mouse_b&1)
         {
-            if(mouse_x > 1340 && mouse_x < 1380 && mouse_y >5 && mouse_y < 45)
-            {
-                menu_pause(tabjoueur,nbrjoueur);
-            }
             if(possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
             {
                 Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
@@ -459,9 +460,23 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     pause = load_bitmap("documents/props/pause.bmp", NULL);
     curseur = load_bitmap("documents/props/curseur_perso.bmp", NULL);
     fond = load_bitmap("documents/fond/fond tete.bmp", NULL);
+    BITMAP* logodpl;
+    logodpl = load_bitmap("documents/props/logo deplacement.bmp", NULL);
+    BITMAP* logoatt;
+    logoatt = load_bitmap("documents/props/logo attaque.bmp", NULL);
+    BITMAP* logopass;
+    logopass = load_bitmap("documents/props/logo passtour.bmp", NULL);
+    BITMAP* cadre;
+    cadre = load_bitmap("documents/props/cadre blanc.bmp", NULL);
     int x;
     draw_sprite(buffer, fond, 10,10);
     draw_sprite(buffer, pause, 1340,5);
+    draw_sprite(buffer, cadre, 1250,750);
+    draw_sprite(buffer, cadre, 1300,750);
+    draw_sprite(buffer, cadre, 1350,750);
+    draw_sprite(buffer, logodpl, 1260,760);
+    draw_sprite(buffer, logoatt, 1310, 760);
+    draw_sprite(buffer, logopass, 1360,760);
     for(int i=0; i<nbrjoueur; i++)
     {
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
@@ -516,6 +531,50 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     destroy_bitmap(casesort);
     destroy_bitmap(curseur);
     destroy_bitmap(pause);
+    destroy_bitmap(logoatt);
+    destroy_bitmap(logodpl);
+    destroy_bitmap(logopass);
+    destroy_bitmap(cadre);
+}
+
+void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
+{
+    t_cases** tabcases;
+    BITMAP* fond;
+    tabcases = chargement_map();
+    fond = chargement_fond(tabcases);
+    chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+    blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
+    int done = 0;
+    while(done == 0)
+    {
+        if(mouse_b&1)
+        {
+            if(mouse_x > 1340 && mouse_x < 1380 && mouse_y >5 && mouse_y < 45)
+            {
+                menu_pause(tabjoueur,nbrjoueur,indice);
+                blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
+            }
+            if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
+            {
+                deplacement(tabcases,tabjoueur,indice,nbrjoueur,fond);
+                done = 2;
+            }
+            if(mouse_x > 1300 && mouse_x < 1350 && mouse_y >750 && mouse_y < 800)
+            {
+                // attaque();
+                done = 2;
+            }
+            if(mouse_x > 1350 && mouse_x < 1400 && mouse_y >750 && mouse_y < 800)
+            {
+                indice +1;
+                done = 2;
+            }
+            Sleep(500);
+        }
+    }
+
+
 }
 
 /*t_djikstra djikstra_init(t_joueur** tabjoueur, int indice)
