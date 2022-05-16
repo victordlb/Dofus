@@ -11,6 +11,7 @@ typedef struct attaque
     int porte;
     int consequence_PM; //1 = plus de mouvement, 0 = rien, 2 = avance de cases, 3 = plus 5 PM
     int effet_spe; // 1 = augmentation echec, 2 = blessure, 3 = defense, 4 = critique, 5 = enflamme, 6 = bloque les PM
+    BITMAP* image;
 }t_attaque;
 
 typedef struct classe

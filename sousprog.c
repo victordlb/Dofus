@@ -431,13 +431,25 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
                 tmp = (char*)malloc(sizeof(char) * 6);
                 tmp2 = (char*)malloc(sizeof(char) * 50);
                 if(i == 1)
+                {
                     strcpy(tmp,"1.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/luffy/sortL/1.bmp", NULL);
+                }
                 else if(i == 2)
+                {
                     strcpy(tmp,"2.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/luffy/sortL/2.bmp", NULL);
+                }
                 else if(i == 3)
+                {
                     strcpy(tmp,"3.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/luffy/sortL/3.bmp", NULL);
+                }
                 else if(i == 4)
+                {
                     strcpy(tmp,"4.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/luffy/sortL/4.bmp", NULL);
+                }
                 strcpy(cheminement, "documents/perso/luffy/sortL/");
                 strcat(cheminement, tmp);
                 luf = fopen(cheminement, "r+");
@@ -485,13 +497,25 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
                 tmp = (char*)malloc(sizeof(char) * 6);
                 tmp2 = (char*)malloc(sizeof(char) * 50);
                 if(i == 1)
+                {
                     strcpy(tmp,"1.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/robin/sortR/1.bmp", NULL);
+                }
                 else if(i == 2)
+                {
                     strcpy(tmp,"2.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/robin/sortR/2.bmp", NULL);
+                }
                 else if(i == 3)
+                {
                     strcpy(tmp,"3.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/robin/sortR/3.bmp", NULL);
+                }
                 else if(i == 4)
+                {
                     strcpy(tmp,"4.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/robin/sortR/4.bmp", NULL);
+                }
                 strcpy(cheminement, "documents/perso/robin/sortR/");
                 strcat(cheminement, tmp);
                 rob = fopen(cheminement, "r+");
@@ -539,13 +563,25 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
                 tmp = (char*)malloc(sizeof(char) * 6);
                 tmp2 = (char*)malloc(sizeof(char) * 50);
                 if(i == 1)
+                {
                     strcpy(tmp,"1.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/sanji/sortS/1.bmp", NULL);
+                }
                 else if(i == 2)
+                {
                     strcpy(tmp,"2.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/sanji/sortS/2.bmp", NULL);
+                }
                 else if(i == 3)
+                {
                     strcpy(tmp,"3.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/sanji/sortS/3.bmp", NULL);
+                }
                 else if(i == 4)
+                {
                     strcpy(tmp,"4.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/sanji/sortS/4.bmp", NULL);
+                }
                 strcpy(cheminement, "documents/perso/sanji/sortS/");
                 strcat(cheminement, tmp);
                 san = fopen(cheminement, "r+");
@@ -593,13 +629,25 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
                 tmp = (char*)malloc(sizeof(char) * 6);
                 tmp2 = (char*)malloc(sizeof(char) * 50);
                 if(i == 1)
+                {
                     strcpy(tmp,"1.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/franky/sortF/1.bmp", NULL);
+                }
                 else if(i == 2)
+                {
                     strcpy(tmp,"2.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/franky/sortF/2.bmp", NULL);
+                }
                 else if(i == 3)
+                {
                     strcpy(tmp,"3.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/franky/sortF/3.bmp", NULL);
+                }
                 else if(i == 4)
+                {
                     strcpy(tmp,"4.txt");
+                    uneclasse.mesattaques[i-1].image = load_bitmap("documents/perso/franky/sortF/4.bmp", NULL);
+                }
                 strcpy(cheminement, "documents/perso/franky/sortF/");
                 strcat(cheminement, tmp);
                 fra = fopen(cheminement, "r+");
