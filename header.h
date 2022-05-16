@@ -7,8 +7,10 @@ typedef struct attaque
     int consequence_PA;
     int modulo_echec;
     int degats;
+    int type;  //1 = croix, 2 = cercle, 3 = zone + cercle
     int porte;
-    int consequence_PM;
+    int consequence_PM; //1 = plus de mouvement, 0 = rien, 2 = avance de cases, 3 = plus 5 PM
+    int effet_spe; // 1 = augmentation echec, 2 = blessure, 3 = defense, 4 = critique, 5 = enflamme, 6 = bloque les PM
 }t_attaque;
 
 typedef struct classe
@@ -18,7 +20,7 @@ typedef struct classe
     int PV;
     int PM;
     int PA;
-    t_attaque** mesattaques;
+    t_attaque* mesattaques;
     int cord_x;
     int cord_y;
 }t_classe;
@@ -102,5 +104,9 @@ void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet);
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet);
 void sauvegarde_tour(int indice, char* trajet);
 t_charge chargement();
+
+///Combat
+void chargerSort(t_joueur** tabjoueur, int indice);
+void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
 
 #endif // HEADER_H_INCLUDED
