@@ -157,19 +157,19 @@ void menu_principal()
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            t_joueur** tab_joueur;
+            t_joueur** tabjoueur;
             int nbrjoueur;
             int premier_joueur;
             t_charge Unecharge;
             Unecharge = chargement();
-            tab_joueur = Unecharge.tabjoueur;
+            tabjoueur = Unecharge.tabjoueur;
             nbrjoueur = Unecharge.nbrjoueur;
             premier_joueur = Unecharge.indice;
             for(int x = 0; x<nbrjoueur; x++)
             {
-                printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
+                printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
             }
-            tour(tab_joueur, nbrjoueur, premier_joueur, 0);
+            tour(tabjoueur, nbrjoueur, premier_joueur, 0);
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {

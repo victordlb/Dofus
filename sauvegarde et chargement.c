@@ -34,18 +34,22 @@ void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
     strcat(strcpy(tpm, trajet), nom);
     printf("test1\n");
     printf("%s\n", tpm);
-    FILE* fichier = NULL;
-    fichier = fopen(tpm, "wba");
-    if(fichier == NULL)
+    FILE* fichier1 = NULL;
+    fichier1 = fopen(tpm, "wba");
+    if(fichier1 == NULL)
     {
         printf("Erreur de creation du fichier\n");
         exit(EXIT_FAILURE);
     }
     else
     {
+<<<<<<< Updated upstream
         fwrite(tabjoueur, sizeof(t_joueur), nbrjoueur, fichier);
+=======
+        fwrite(tabjoueur, sizeof(t_joueur*), nbrjoueur, fichier1);
+>>>>>>> Stashed changes
     }
-    fclose(fichier);
+    fclose(fichier1);
 }
 
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
@@ -54,18 +58,19 @@ void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
     char tpm[500];
     nom = "/saveNbrjoueur.bin";
     strcat(strcpy(tpm,trajet), "/saveNbrjoueur.bin");
-    FILE* fichier = NULL;
-    fichier = fopen(tpm, "wba");
-    if(fichier == NULL)
+    FILE* fichier2 = NULL;
+    printf("%s\n", tpm);
+    fichier2 = fopen(tpm, "wba");
+    if(fichier2 == NULL)
     {
         printf("Erreur de creation du fichier\n");
         exit(EXIT_FAILURE);
     }
     else
     {
-        fwrite(&nbrjoueur, sizeof(int), 1, fichier);
+        fwrite(&nbrjoueur, sizeof(int), 1, fichier2);
     }
-    fclose(fichier);
+    fclose(fichier2);
 }
 
 void sauvegarde_tour(int indice, char* trajet)
@@ -74,18 +79,19 @@ void sauvegarde_tour(int indice, char* trajet)
     char tpm[500];
     nom = "/saveTour.bin";
     strcat(strcpy(tpm, trajet), "/saveTour.bin");
-    FILE* fichier = NULL;
-    fichier = fopen(tpm, "wba");
-    if(fichier == NULL)
+    FILE* fichier3 = NULL;
+    printf("%s\n", tpm);
+    fichier3 = fopen(tpm, "wba");
+    if(fichier3 == NULL)
     {
         printf("Erreur de creation du fichier\n");
         exit(EXIT_FAILURE);
     }
     else
     {
-        fwrite(&indice, sizeof(int), 1, fichier);
+        fwrite(&indice, sizeof(int), 1, fichier3);
     }
-    fclose(fichier);
+    fclose(fichier3);
 }
 
 t_charge chargement()
@@ -147,18 +153,18 @@ t_charge chargement()
         printf("nbr :%d\n", maCharge.nbrjoueur);
         printf("test\n");
         fread(maCharge.tabjoueur, sizeof(t_joueur), maCharge.nbrjoueur, fichier1);
-        /*for(int i=0; i<maCharge.nbrjoueur;i++)
+        for(int i=0; i<maCharge.nbrjoueur;i++)
         {
-            printf("Joueur %d,%s\n", maCharge.tabjoueur[i]->classes.ID, maCharge.tabjoueur[i].pseudo);
-        }*/
+            printf("Joueur %d,%s\n", maCharge.tabjoueur[i]->classes.ID, maCharge.tabjoueur[i]->pseudo);
+        }
         printf("test\n");
         fread(&maCharge.indice, sizeof(int), 1, fichier3);
+        printf("indice :%d\n", maCharge.nbrjoueur);
         printf("test\n");
     }
     fclose(fichier1);
     fclose(fichier2);
     fclose(fichier3);
-
     return maCharge;
 }
 
