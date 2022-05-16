@@ -93,7 +93,7 @@
 	<string.h>
 	"header.h"
 
-1651875332 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
+1652704118 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -101,7 +101,7 @@
 	<synchapi.h>
 	"header.h"
 
-1652200067 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+1652710023 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
 
 1651871052 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
 	<stdio.h>
@@ -119,7 +119,7 @@
 	<string.h>
 	"header.h"
 
-1652190390 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\map.c
+1652704118 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\map.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -135,5 +135,21 @@
 	<synchapi.h>
 	<string.h>
 	<sys/stat.h>
+	"header.h"
+
+1652704118 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\sauvegarde et chargement.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	<sys/stat.h>
+	"header.h"
+
+1652709800 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\attaque.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
 	"header.h"
 
