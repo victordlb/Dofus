@@ -101,7 +101,7 @@
 	<synchapi.h>
 	"header.h"
 
-1652710023 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+1652722067 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
 
 1651871052 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
 	<stdio.h>
@@ -147,7 +147,7 @@
 	<sys/stat.h>
 	"header.h"
 
-1652709800 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\attaque.c
+1652722067 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\attaque.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
