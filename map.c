@@ -540,12 +540,16 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
 void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
 {
     t_cases** tabcases;
+    int fin;
     BITMAP* fond;
     tabcases = chargement_map();
     fond = chargement_fond(tabcases);
+    float temps = 0;
     chargement_perso(tabjoueur,indice,nbrjoueur,fond);
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
+    /*time_t start, end;
+    time(&start);*/
     while(done == 0)
     {
         if(mouse_b&1)
@@ -567,16 +571,114 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             }
             if(mouse_x > 1350 && mouse_x < 1400 && mouse_y >750 && mouse_y < 800)
             {
-                indice +1;
                 done = 2;
             }
             Sleep(500);
         }
+        /*time(&end);
+        temps = difftime(end, start);
+        fin = compte_temps(temps, fond);*/
     }
 
 
 }
 
+/*int compte_temps(float temps, BITMAP* buffer)
+{
+    BITMAP* chrono;
+    if(temps == 1)
+    {
+        chrono = load_bitmap("documents/props/chrono 1.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 2)
+    {
+        chrono = load_bitmap("documents/props/chrono 2.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 3)
+    {
+        chrono = load_bitmap("documents/props/chrono 3.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 4)
+    {
+        chrono = load_bitmap("documents/props/chrono 4.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 5)
+    {
+        chrono = load_bitmap("documents/props/chrono 5.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 6)
+    {
+        chrono = load_bitmap("documents/props/chrono 6.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 7)
+    {
+        chrono = load_bitmap("documents/props/chrono 7.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 8)
+    {
+        chrono = load_bitmap("documents/props/chrono 8.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 9)
+    {
+        chrono = load_bitmap("documents/props/chrono 9.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 10)
+    {
+        chrono = load_bitmap("documents/props/chrono 10.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 11)
+    {
+        chrono = load_bitmap("documents/props/chrono 11.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 12)
+    {
+        chrono = load_bitmap("documents/props/chrono 12.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 13)
+    {
+        chrono = load_bitmap("documents/props/chrono 13.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 14)
+    {
+        chrono = load_bitmap("documents/props/chrono 14.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 0;
+    }
+    if(temps == 15)
+    {
+        chrono = load_bitmap("documents/props/chrono 15.bmp", NULL);
+        draw_sprite(buffer, chrono, 10,1350);
+        return 1;
+    }
+    destroy_bitmap(chrono);
+
+}*/
 /*t_djikstra djikstra_init(t_joueur** tabjoueur, int indice)
 {
     t_djikstra chemin;

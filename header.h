@@ -101,10 +101,13 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur);
 
 ///sauvegarde et chargement
 void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice);
-void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet);
+void sauvegarde_tabjoueur(t_joueur** , int nbrjoueur, char* trajet);
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet);
 void sauvegarde_tour(int indice, char* trajet);
 t_charge chargement();
+char* saisie_nom_sauvegarde();
+char* saisie_nom_chargement();
+int compte_temps(float temps, BITMAP* buffer);
 
 ///Combat
 void chargerSort(t_joueur** tabjoueur, int indice);
