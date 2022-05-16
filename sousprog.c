@@ -422,12 +422,14 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             fclose(luf);
             luf = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
-            char* cheminement = (char*)malloc(sizeof(char) * 60);
-            char* tmp = (char*)malloc(sizeof(char) * 6);
+            char* cheminement;
+            char* tmp;
+            char* tmp2;
             for(int i = 1; i <=4; i++)
             {
                 cheminement = (char*)malloc(sizeof(char) * 60);
                 tmp = (char*)malloc(sizeof(char) * 6);
+                tmp2 = (char*)malloc(sizeof(char) * 50);
                 if(i == 1)
                     strcpy(tmp,"1.txt");
                 else if(i == 2)
@@ -441,14 +443,18 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
                 luf = fopen(cheminement, "r+");
                 if(luf == NULL)
                 {
-                    printf("Erreur d'ouverture fichier luffy\n");
+                    printf("Erreur d'ouverture fichier luffy sort\n");
                 }
                 else
                 {
+                    fgets(tmp2, 50, luf);
+                    uneclasse.mesattaques[i-1].nom = (char*)malloc(sizeof(char)*(strlen(tmp2))+1);
+                    strcpy(uneclasse.mesattaques[i-1].nom, tmp2);
                     fscanf(luf,"%d %d %d %d %d %d %d", &uneclasse.mesattaques[i-1].consequence_PA, &uneclasse.mesattaques[i-1].modulo_echec, &uneclasse.mesattaques[i-1].degats, &uneclasse.mesattaques[i-1].type, &uneclasse.mesattaques[i-1].porte, &uneclasse.mesattaques[i-1].consequence_PM, &uneclasse.mesattaques[i-1].effet_spe);
                 }
                 cheminement = NULL;
                 tmp = NULL;
+                tmp2 = NULL;
                 fclose(luf);
                 luf = NULL;
             }
@@ -468,6 +474,44 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(rob, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(rob);
+            rob = NULL;
+            uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
+            char* cheminement;
+            char* tmp;
+            char* tmp2;
+            for(int i = 1; i <=4; i++)
+            {
+                cheminement = (char*)malloc(sizeof(char) * 60);
+                tmp = (char*)malloc(sizeof(char) * 6);
+                tmp2 = (char*)malloc(sizeof(char) * 50);
+                if(i == 1)
+                    strcpy(tmp,"1.txt");
+                else if(i == 2)
+                    strcpy(tmp,"2.txt");
+                else if(i == 3)
+                    strcpy(tmp,"3.txt");
+                else if(i == 4)
+                    strcpy(tmp,"4.txt");
+                strcpy(cheminement, "documents/perso/robin/sortR/");
+                strcat(cheminement, tmp);
+                rob = fopen(cheminement, "r+");
+                if(rob == NULL)
+                {
+                    printf("Erreur d'ouverture fichier robin sort\n");
+                }
+                else
+                {
+                    fgets(tmp2, 50, rob);
+                    uneclasse.mesattaques[i-1].nom = (char*)malloc(sizeof(char)*(strlen(tmp2))+1);
+                    strcpy(uneclasse.mesattaques[i-1].nom, tmp2);
+                    fscanf(rob,"%d %d %d %d %d %d %d", &uneclasse.mesattaques[i-1].consequence_PA, &uneclasse.mesattaques[i-1].modulo_echec, &uneclasse.mesattaques[i-1].degats, &uneclasse.mesattaques[i-1].type, &uneclasse.mesattaques[i-1].porte, &uneclasse.mesattaques[i-1].consequence_PM, &uneclasse.mesattaques[i-1].effet_spe);
+                }
+                cheminement = NULL;
+                tmp = NULL;
+                tmp2 = NULL;
+                fclose(rob);
+                rob = NULL;
+            }
             clear_bitmap(robin);
             Sleep(500);
             stop++;
@@ -484,6 +528,44 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(san, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(san);
+            san = NULL;
+            uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
+            char* cheminement;
+            char* tmp;
+            char* tmp2;
+            for(int i = 1; i <=4; i++)
+            {
+                cheminement = (char*)malloc(sizeof(char) * 60);
+                tmp = (char*)malloc(sizeof(char) * 6);
+                tmp2 = (char*)malloc(sizeof(char) * 50);
+                if(i == 1)
+                    strcpy(tmp,"1.txt");
+                else if(i == 2)
+                    strcpy(tmp,"2.txt");
+                else if(i == 3)
+                    strcpy(tmp,"3.txt");
+                else if(i == 4)
+                    strcpy(tmp,"4.txt");
+                strcpy(cheminement, "documents/perso/sanji/sortS/");
+                strcat(cheminement, tmp);
+                san = fopen(cheminement, "r+");
+                if(san == NULL)
+                {
+                    printf("Erreur d'ouverture fichier sanji sort\n");
+                }
+                else
+                {
+                    fgets(tmp2, 50, san);
+                    uneclasse.mesattaques[i-1].nom = (char*)malloc(sizeof(char)*(strlen(tmp2))+1);
+                    strcpy(uneclasse.mesattaques[i-1].nom, tmp2);
+                    fscanf(san,"%d %d %d %d %d %d %d", &uneclasse.mesattaques[i-1].consequence_PA, &uneclasse.mesattaques[i-1].modulo_echec, &uneclasse.mesattaques[i-1].degats, &uneclasse.mesattaques[i-1].type, &uneclasse.mesattaques[i-1].porte, &uneclasse.mesattaques[i-1].consequence_PM, &uneclasse.mesattaques[i-1].effet_spe);
+                }
+                cheminement = NULL;
+                tmp = NULL;
+                tmp2 = NULL;
+                fclose(san);
+                san = NULL;
+            }
             clear_bitmap(sanji);
             Sleep(500);
             stop++;
@@ -493,13 +575,51 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             fra = fopen("documents/perso/franky/franky.txt", "r+");
             if(fra == NULL)
             {
-                printf("Erreur d'ouverture fichier francky\n");
+                printf("Erreur d'ouverture fichier franky\n");
             }
             uneclasse.nom = (char*)malloc(6*sizeof(char));
             uneclasse.nom = "franky";
             uneclasse.ID = i+1;
             fscanf(fra, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             fclose(fra);
+            fra = NULL;
+            uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
+            char* cheminement;
+            char* tmp;
+            char* tmp2;
+            for(int i = 1; i <=4; i++)
+            {
+                cheminement = (char*)malloc(sizeof(char) * 60);
+                tmp = (char*)malloc(sizeof(char) * 6);
+                tmp2 = (char*)malloc(sizeof(char) * 50);
+                if(i == 1)
+                    strcpy(tmp,"1.txt");
+                else if(i == 2)
+                    strcpy(tmp,"2.txt");
+                else if(i == 3)
+                    strcpy(tmp,"3.txt");
+                else if(i == 4)
+                    strcpy(tmp,"4.txt");
+                strcpy(cheminement, "documents/perso/franky/sortF/");
+                strcat(cheminement, tmp);
+                fra = fopen(cheminement, "r+");
+                if(fra == NULL)
+                {
+                    printf("Erreur d'ouverture fichier franky sort\n");
+                }
+                else
+                {
+                    fgets(tmp2, 50, fra);
+                    uneclasse.mesattaques[i-1].nom = (char*)malloc(sizeof(char)*(strlen(tmp2))+1);
+                    strcpy(uneclasse.mesattaques[i-1].nom, tmp2);
+                    fscanf(fra,"%d %d %d %d %d %d %d", &uneclasse.mesattaques[i-1].consequence_PA, &uneclasse.mesattaques[i-1].modulo_echec, &uneclasse.mesattaques[i-1].degats, &uneclasse.mesattaques[i-1].type, &uneclasse.mesattaques[i-1].porte, &uneclasse.mesattaques[i-1].consequence_PM, &uneclasse.mesattaques[i-1].effet_spe);
+                }
+                cheminement = NULL;
+                tmp = NULL;
+                tmp2 = NULL;
+                fclose(fra);
+                fra = NULL;
+            }
             clear_bitmap(franky);
             Sleep(500);
             stop++;
