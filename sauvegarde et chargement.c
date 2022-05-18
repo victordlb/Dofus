@@ -20,12 +20,12 @@ void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice)
     mkdir(tpm);
     //trajet = tpm;
     printf("test1\n");
-    sauvegarde_tabjoueur(tabjoueur,nbrjoueur, tpm);
+    //sauvegarde_tabjoueur(tabjoueur,nbrjoueur, tpm);
     sauvegarde_nbrjoueur(nbrjoueur, tpm);
     sauvegarde_tour(indice,tpm);
 }
 
-void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
+/*void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
 {
     char* nom;
     char tpm[500];
@@ -43,14 +43,11 @@ void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
     }
     else
     {
-<<<<<<< Updated upstream
         fwrite(tabjoueur, sizeof(t_joueur), nbrjoueur, fichier);
-=======
         fwrite(tabjoueur, sizeof(t_joueur*), nbrjoueur, fichier1);
->>>>>>> Stashed changes
     }
     fclose(fichier1);
-}
+}*/
 
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
 {
