@@ -152,6 +152,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         couleur_case(tabjoueur,tabcases,indice,buffer);
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+        afficherSort(tabjoueur, indice, buffer);
         if(mouse_b&1)
         {
             if(possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
@@ -186,6 +187,8 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     destroy_bitmap(personnage);
     destroy_bitmap(buffer);
 }
+
+
 
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
 {
