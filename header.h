@@ -112,5 +112,6 @@ void compte_temps(float temps, BITMAP* buffer);
 void chargerSort(t_joueur** tabjoueur, int indice);
 void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
 void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond);
+void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond);
 
 #endif // HEADER_H_INCLUDED
