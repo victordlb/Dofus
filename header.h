@@ -116,5 +116,7 @@ void chargerSort(t_joueur** tabjoueur, int indice);
 void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
 void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond);
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond);
+void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond);
+void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond);
 
 #endif // HEADER_H_INCLUDED

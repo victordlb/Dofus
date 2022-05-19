@@ -15,8 +15,8 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
             if(mouse_x>502 && mouse_x<572 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495, 730);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 porteSort(tabcases, tabjoueur, indice, 0, fond);
+                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 Sleep(1000);
                 done =1;
 
@@ -24,24 +24,24 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
             if(mouse_x>577 && mouse_x<647 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495 + (1*75), 730);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 porteSort(tabcases, tabjoueur, indice, 1, fond);
+                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 Sleep(1000);
                 done =1;
             }
             if(mouse_x>652 && mouse_x<722 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495 + (2*75), 730);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 porteSort(tabcases, tabjoueur, indice, 2, fond);
+                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 Sleep(1000);
                 done =1;
             }
             if(mouse_x>727 && mouse_x<797 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495 + (3*75), 730);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 porteSort(tabcases, tabjoueur, indice, 3, fond);
+                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 Sleep(1000);
                 done =1;
             }
@@ -115,25 +115,56 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
 
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond)
 {
-    int paraTab[16][28] = {0};
     if(tabjoueur[indice]->classes.mesattaques[numsort].type == 1)
     {
-        for(int i = 1; i<=tabjoueur[indice]->classes.mesattaques[numsort].porte; i++)
-        {
-            paraTab[tabjoueur[indice]->classes.cord_y-i][tabjoueur[indice]->classes.cord_x] = 1;
-            paraTab[tabjoueur[indice]->classes.cord_y+i][tabjoueur[indice]->classes.cord_x] = 1;
-            paraTab[tabjoueur[indice]->classes.cord_y][tabjoueur[indice]->classes.cord_x-i] = 1;
-            paraTab[tabjoueur[indice]->classes.cord_y][tabjoueur[indice]->classes.cord_x+i] = 1;
-        }
-        for(int j = 0; j<16; j++)
-        {
-            for(int g = 0; g<28; g++)
-            {
-                if(paraTab[j][g] == 1 && tabcases[j][g].obstacle == 0)
-                    rectfill(fond, tabcases[j][g].x+5, tabcases[j][g].y+5, tabcases[j][g].x+45,tabcases[j][g].y+45, makecol(50,130,246));
-            }
-        }
-
+        dessinportecroix(tabjoueur,tabcases,indice,numsort,fond);
+    }
+    else if(tabjoueur[indice]->classes.mesattaques[numsort].type == 2)
+    {
+        dessinportecercle(tabjoueur,tabcases,indice,numsort,fond);
     }
 }
 
+void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
+{
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            if(tabcases[i][j].obstacle == 0)
+            {
+                if(tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+                {
+                    if(tabcases[i][j].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 == tabjoueur[indice]->classes.cord_y/50)
+                    {
+                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
+                    }
+                    if(tabcases[i][j].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].x/50 == tabjoueur[indice]->classes.cord_x/50)
+                    {
+                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
+                    }
+                }
+            }
+        }
+    }
+}
+
+void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
+{
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            if(tabcases[i][j].obstacle == 0)
+            {
+                if(tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+                {
+                    if(tabcases[i][j].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte)
+                    {
+                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
+                    }
+                }
+            }
+        }
+    }
+}
