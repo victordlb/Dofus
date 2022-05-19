@@ -20,41 +20,60 @@ void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice)
     mkdir(tpm);
     //trajet = tpm;
     printf("test1\n");
-    //sauvegarde_tabjoueur(tabjoueur,nbrjoueur, tpm);
+    sauvegarde_tabjoueur(tabjoueur,nbrjoueur, tpm);
     sauvegarde_nbrjoueur(nbrjoueur, tpm);
     sauvegarde_tour(indice,tpm);
 }
 
-/*void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
+void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
 {
-    char* nom;
-    char tpm[500];
-    nom = "/saveInfoJoueur.txt";
-    printf("test1\n");
-    strcat(strcpy(tpm, trajet), nom);
-    printf("test1\n");
-    printf("%s\n", tpm);
-    FILE* fichier1 = NULL;
-    fichier1 = fopen(tpm, "wba");
-    if(fichier1 == NULL)
+    for(int i=0; i<nbrjoueur; i++)
     {
-        printf("Erreur de creation du fichier\n");
-        exit(EXIT_FAILURE);
+        char* nom;
+        char tpm[500];
+        if(i == 0)
+        {
+            nom = "/saveInfoJoueur1.txt";
+        }
+        if(i == 1)
+        {
+            nom = "/saveInfoJoueur2.txt";
+        }
+        if(i == 2)
+        {
+            nom = "/saveInfoJoueur3.txt";
+        }
+        if(i == 3)
+        {
+            nom = "/saveInfoJoueur4.txt";
+        }
+        printf("test1\n");
+        strcat(strcpy(tpm, trajet), nom);
+        printf("test1\n");
+        printf("%s\n", tpm);
+        FILE* fichier1 = NULL;
+        fichier1 = fopen(tpm, "wba");
+        if(fichier1 == NULL)
+        {
+            printf("Erreur de creation du fichier\n");
+            exit(EXIT_FAILURE);
+        }
+        else
+        {
+            fprintf(fichier1, "%s\n", tabjoueur[i]->pseudo);
+            fprintf(fichier1, "%s\n", tabjoueur[i]->classes.nom);
+            fprintf(fichier1, "%d %d %d %d %d %d %d",  tabjoueur[i]->perdu, tabjoueur[i]->classes.PV,tabjoueur[i]->classes.PM,tabjoueur[i]->classes.PA,tabjoueur[i]->classes.ID, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
+        }
+        fclose(fichier1);
     }
-    else
-    {
-        fwrite(tabjoueur, sizeof(t_joueur), nbrjoueur, fichier);
-        fwrite(tabjoueur, sizeof(t_joueur*), nbrjoueur, fichier1);
-    }
-    fclose(fichier1);
-}*/
+}
 
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
 {
     char* nom;
     char tpm[500];
-    nom = "/saveNbrjoueur.bin";
-    strcat(strcpy(tpm,trajet), "/saveNbrjoueur.bin");
+    nom = "/saveNbrjoueur.txt";
+    strcat(strcpy(tpm,trajet), "/saveNbrjoueur.txt");
     FILE* fichier2 = NULL;
     printf("%s\n", tpm);
     fichier2 = fopen(tpm, "wba");
@@ -65,7 +84,7 @@ void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
     }
     else
     {
-        fwrite(&nbrjoueur, sizeof(int), 1, fichier2);
+        fprintf(fichier2, "%d", nbrjoueur);
     }
     fclose(fichier2);
 }
@@ -74,8 +93,8 @@ void sauvegarde_tour(int indice, char* trajet)
 {
     char* nom;
     char tpm[500];
-    nom = "/saveTour.bin";
-    strcat(strcpy(tpm, trajet), "/saveTour.bin");
+    nom = "/saveTour.txt";
+    strcat(strcpy(tpm, trajet), "/saveTour.txt");
     FILE* fichier3 = NULL;
     printf("%s\n", tpm);
     fichier3 = fopen(tpm, "wba");
@@ -86,9 +105,153 @@ void sauvegarde_tour(int indice, char* trajet)
     }
     else
     {
-        fwrite(&indice, sizeof(int), 1, fichier3);
+        fprintf(fichier3, "%d", indice);
     }
     fclose(fichier3);
+}
+
+int chargement_nbrjoueur(char* nom)
+{
+    char* trajet;
+    int validation = 2;
+    int nbrjoueur;
+    trajet = "sauvegarde/";
+    char* nom2;
+    char tampon2[500];
+    nom2 = "/saveNbrjoueur.txt";
+    FILE* fichier2;
+    strcat(strcpy(tampon2, trajet), nom);
+    strcat(tampon2, nom2);
+    printf("%s\n", tampon2);
+    fichier2 = fopen(tampon2, "rb");
+    if(fichier2 == NULL)
+    {
+        printf("Ce fichier n'existe pas\n");
+        validation = 0;
+    }
+    if(validation != 0)
+    {
+        fscanf(fichier2,"%d",&nbrjoueur);
+        fclose(fichier2);
+        printf("nbr :%d\n", nbrjoueur);
+    }
+    return nbrjoueur;
+}
+
+int chargement_indice(char* nom)
+{
+    char* trajet;
+    int validation = 2;
+    int indice;
+    trajet = "sauvegarde/";
+    char* nom3;
+    char tampon3[500];
+    nom3 = "/saveTour.txt";
+    FILE* fichier3;
+    strcat(strcpy(tampon3, trajet), nom);
+    strcat(tampon3, nom3);
+    printf("%s\n", tampon3);
+    fichier3 = fopen(tampon3, "rb");
+    if(fichier3 == NULL)
+    {
+        printf("Ce fichier n'existe pas\n");
+        validation = 0;
+    }
+    if(validation != 0)
+    {
+        fscanf(fichier3,"%d",&indice);
+        fclose(fichier3);
+        printf("indice :%d\n", indice);
+    }
+    return indice;
+}
+
+t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
+{
+    char* nom1;
+    int validation = 2;
+    t_joueur** tabjoueur;
+    char tampon1[500];
+    char* trajet;
+    trajet = "sauvegarde/";
+    FILE* fichier1;
+    strcat(strcpy(tampon1, trajet), nom);
+    char tpm1[500];
+    char tpm2[500];
+    char tpm3[500];
+    char tpm_pseudo[500];
+    char tpm_nom_classe[500];
+    for(int i=0; i<nbrjoueur; i++)
+    {
+        if(i == 0)
+        {
+            //strcpy(nom1, "/saveInfoJoueur1.txt" );
+            nom1 = "/saveInfoJoueur1.txt";
+            strcpy(tpm1, tampon1);
+            strcat(tampon1, nom1);
+            printf("%s\n", nom1);
+            printf("%s\n", tampon1);
+            fichier1 = fopen(tampon1, "rb");
+        }
+        else if(i==1)
+        {
+            //strcpy(nom1, "/saveInfoJoueur2.txt" );
+            nom1 = "/saveInfoJoueur2.txt";
+            strcpy(tpm2, tpm1);
+            printf("%s\n", tpm2);
+            strcat(tpm1, nom1);
+            printf("%s\n", tpm1);
+            fichier1 = fopen(tpm1, "rb");
+        }
+        else if(i==2)
+        {
+            //strcpy(nom1, "/saveInfoJoueur3.txt" );
+            nom1 = "/saveInfoJoueur3.txt";
+            strcpy(tpm3, tpm2);
+            strcat(tpm2, nom1);
+            printf("%s\n", tpm2);
+            fichier1 = fopen(tpm2, "rb");
+        }
+        else if(i==3)
+        {
+            //strcpy(nom1, "/saveInfoJoueur4.txt" );
+             nom1 = "/saveInfoJoueur4.txt";
+             strcat(tpm3, nom1);
+             printf("%s\n", tpm3);
+             fichier1 = fopen(tpm3, "rb");
+        }
+        if(fichier1 == NULL)
+        {
+            printf("Ce fichier n'existe pas\n");
+        }
+        else
+        {
+            char* test;
+            printf("test1\n");
+            fgets(tpm_pseudo, 500, fichier1);
+            printf("nom :%s\n", tpm_pseudo);
+            test = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
+            strcpy(test, tpm_pseudo);
+            printf("nom :%s\n", test);
+            printf("test4\n");
+
+            tabjoueur[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
+            printf("test6\n");
+            strcpy(tabjoueur[i]->pseudo, tpm_pseudo);
+            printf("nom :%s\n", tabjoueur[i]->pseudo);
+
+            fgets(tpm_nom_classe, 500, fichier1);
+            printf("test5\n");
+            tabjoueur[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe)) +1 );
+            strcpy(tabjoueur[i]->classes.nom, tpm_nom_classe);
+
+            printf("test3\n");
+
+            fscanf(fichier1, "%d %d %d %d %d %d %d", &tabjoueur[i]->perdu, &tabjoueur[i]->classes.PV, &tabjoueur[i]->classes.PM, &tabjoueur[i]->classes.PA, &tabjoueur[i]->classes.ID, &tabjoueur[i]->classes.cord_x, &tabjoueur[i]->classes.cord_y);
+            printf("test2\n");
+        }
+        fclose(fichier1);
+    }
 }
 
 t_charge chargement()
@@ -108,19 +271,15 @@ t_charge chargement()
     FILE* fichier2;
     FILE* fichier3;
     int validation = 1;
-    nom1 = "/saveInfoJoueur.bin";
-    nom2 = "/saveNbrjoueur.bin";
-    nom3 = "/saveTour.bin";
+    nom2 = "/saveNbrjoueur.txt";
+    nom3 = "/saveTour.txt";
     nom = saisie_nom_chargement();
     //tpm = tampon;
     strcat(strcpy(tampon1, trajet), nom);
     strcat(strcpy(tampon2, trajet), nom);
     strcat(strcpy(tampon3, trajet), nom);
     printf("%s\n", tampon1);
-    strcat(tampon1, nom1);
-    printf("%s\n", tampon1);
-    fichier1 = fopen(tampon1, "rb");
-   // tampon = tpm;
+    // tampon = tpm;
     strcat(tampon2, nom2);
     printf("%s\n", tampon2);
     fichier2 = fopen(tampon2, "rb");
@@ -128,11 +287,6 @@ t_charge chargement()
     strcat(tampon3, nom3);
     printf("%s\n", tampon3);
     fichier3 = fopen(tampon3, "rb");
-    if(fichier1 == NULL)
-    {
-        printf("Ce fichier n'existe pas\n");
-        validation = 0;
-    }
     if(fichier2 == NULL)
     {
         printf("Ce fichier n'existe pas\n");
@@ -146,22 +300,91 @@ t_charge chargement()
     if(validation != 0)
     {
         printf("test\n");
-        fread(&maCharge.nbrjoueur, sizeof(int), 1, fichier2);
+        fscanf(fichier2,"%d",&maCharge.nbrjoueur);
+        fclose(fichier2);
+        //fread(&maCharge.nbrjoueur, sizeof(int), 1, fichier2);
         printf("nbr :%d\n", maCharge.nbrjoueur);
         printf("test\n");
-        fread(maCharge.tabjoueur, sizeof(t_joueur), maCharge.nbrjoueur, fichier1);
-        for(int i=0; i<maCharge.nbrjoueur;i++)
+        //fread(maCharge.tabjoueur, sizeof(t_joueur), maCharge.nbrjoueur, fichier1);
+        /*for(int i=0; i<maCharge.nbrjoueur;i++)
         {
             printf("Joueur %d,%s\n", maCharge.tabjoueur[i]->classes.ID, maCharge.tabjoueur[i]->pseudo);
-        }
+        }*/
         printf("test\n");
-        fread(&maCharge.indice, sizeof(int), 1, fichier3);
-        printf("indice :%d\n", maCharge.nbrjoueur);
+        fscanf(fichier3, "%d", &maCharge.indice);
+        fclose(fichier3);
+        //fread(&maCharge.indice, sizeof(int), 1, fichier3);
+        printf("indice :%d\n", maCharge.indice);
         printf("test\n");
     }
-    fclose(fichier1);
-    fclose(fichier2);
-    fclose(fichier3);
+    char tpm1[500];
+    char tpm2[500];
+    char tpm3[500];
+    char tpm_pseudo[500];
+    char tpm_nom_classe[500];
+    for(int i=0; i<maCharge.nbrjoueur; i++)
+    {
+        if(i == 0)
+        {
+            //strcpy(nom1, "/saveInfoJoueur1.txt" );
+            nom1 = "/saveInfoJoueur1.txt";
+            strcpy(tpm1, tampon1);
+            strcat(tampon1, nom1);
+            printf("%s\n", nom1);
+            printf("%s\n", tampon1);
+            fichier1 = fopen(tampon1, "rb");
+        }
+        else if(i==1)
+        {
+            //strcpy(nom1, "/saveInfoJoueur2.txt" );
+            nom1 = "/saveInfoJoueur2.txt";
+            strcpy(tpm2, tpm1);
+            printf("%s\n", tpm2);
+            strcat(tpm1, nom1);
+            printf("%s\n", tpm1);
+            fichier1 = fopen(tpm1, "rb");
+        }
+        else if(i==2)
+        {
+            //strcpy(nom1, "/saveInfoJoueur3.txt" );
+            nom1 = "/saveInfoJoueur3.txt";
+            strcpy(tpm3, tpm2);
+            strcat(tpm2, nom1);
+            printf("%s\n", tpm2);
+            fichier1 = fopen(tpm2, "rb");
+        }
+        else if(i==3)
+        {
+            //strcpy(nom1, "/saveInfoJoueur4.txt" );
+             nom1 = "/saveInfoJoueur4.txt";
+             strcat(tpm3, nom1);
+             printf("%s\n", tpm3);
+             fichier1 = fopen(tpm3, "rb");
+        }
+        if(fichier1 == NULL)
+        {
+            printf("Ce fichier n'existe pas\n");
+        }
+        else
+        {
+            printf("test1\n");
+            fgets(tpm_pseudo, 500, fichier1);
+            printf("test4\n");
+            fgets(tpm_nom_classe, 500, fichier1);
+            printf("test5\n");
+            maCharge.tabjoueur[i]->pseudo = (char*)malloc((strlen(tpm_pseudo) +1 )* sizeof(char));
+            printf("test6\n");
+            strcpy(maCharge.tabjoueur[i]->pseudo, tpm_pseudo);
+            printf("test7\n");
+            maCharge.tabjoueur[i]->classes.nom = (char*)malloc((strlen(tpm_nom_classe) +1 )* sizeof(char));
+            strcpy(maCharge.tabjoueur[i]->classes.nom, tpm_nom_classe);
+            printf("test3\n");
+
+            fscanf(fichier1, "%d %d %d %d %d %d %d", &maCharge.tabjoueur[i]->perdu, &maCharge.tabjoueur[i]->classes.PV, &maCharge.tabjoueur[i]->classes.PM, &maCharge.tabjoueur[i]->classes.PA, &maCharge.tabjoueur[i]->classes.ID, &maCharge.tabjoueur[i]->classes.cord_x, &maCharge.tabjoueur[i]->classes.cord_y);
+            printf("test2\n");
+        }
+        fclose(fichier1);
+    }
     return maCharge;
 }
 
