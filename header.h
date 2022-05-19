@@ -107,6 +107,9 @@ t_charge chargement();
 char* saisie_nom_sauvegarde();
 char* saisie_nom_chargement();
 void compte_temps(float temps, BITMAP* buffer);
+t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur);
+int chargement_indice(char* nom);
+int chargement_nbrjoueur(char* nom);
 
 ///Combat
 void chargerSort(t_joueur** tabjoueur, int indice);
