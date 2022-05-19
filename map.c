@@ -564,6 +564,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
 {
     t_cases** tabcases;
     BITMAP* fond;
+    BITMAP* buffer;
     tabcases = chargement_map();
     fond = chargement_fond(tabcases);
     float temps = 0;
@@ -587,7 +588,11 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             }
             if(mouse_x > 1300 && mouse_x < 1350 && mouse_y >750 && mouse_y < 800)
             {
-                combat(tabcases,tabjoueur,indice,nbrjoueur,fond);
+                buffer = chargement_fond(tabcases);
+                chargement_perso(tabjoueur,indice,nbrjoueur, buffer);
+                combat(tabcases,tabjoueur,indice,nbrjoueur,buffer);
+                clear_bitmap(buffer);
+                blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
             }
             if(mouse_x > 1350 && mouse_x < 1400 && mouse_y >750 && mouse_y < 800)
             {
@@ -598,7 +603,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
         time(&end);
         temps = difftime(end, start);
         compte_temps(temps,screen);
-        if(temps == 15)
+        if(temps > 15)
         {
             done = 2;
         }
