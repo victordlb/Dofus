@@ -119,7 +119,7 @@ void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort
     {
         dessinportecroix(tabjoueur,tabcases,indice,numsort,fond);
     }
-    else if(tabjoueur[indice]->classes.mesattaques[numsort].type == 2)
+    else if(tabjoueur[indice]->classes.mesattaques[numsort].type == 2 || tabjoueur[indice]->classes.mesattaques[numsort].type == 3)
     {
         dessinportecercle(tabjoueur,tabcases,indice,numsort,fond);
     }
