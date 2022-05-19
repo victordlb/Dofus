@@ -106,7 +106,7 @@ void sauvegarde_tour(int indice, char* trajet);
 t_charge chargement();
 char* saisie_nom_sauvegarde();
 char* saisie_nom_chargement();
-int compte_temps(float temps, BITMAP* buffer);
+void compte_temps(float temps, BITMAP* buffer);
 
 ///Combat
 void chargerSort(t_joueur** tabjoueur, int indice);
