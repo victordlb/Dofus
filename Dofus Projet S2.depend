@@ -1,0 +1,176 @@
+# depslib dependency file v1.0
+1651498615 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\main.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+
+1651440952 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\sousprog.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1651504385 c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\header.h
+
+1651342787 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\liste.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1651506315 source:c:\users\victo\onedrive\documents\algo\projet 2 dofus\debut\map.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1652971797 source:c:\users\victo\onedrive\documents\github\dofus\liste.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1652704118 ated upstream
+
+1652970976 c:\users\victo\onedrive\documents\github\dofus\header.h
+
+1652724271 shed changes
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	"header.h"
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	<sys/stat.h>
+	"header.h"
+
+1652971555 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1651875589 source:c:\users\victo\onedrive\documents\github\dofus\main.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+	<time.h>
+
+1652971797 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	"header.h"
+
+1652961173 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1652968166 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+
+1651871052 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+	<time.h>
+
+1652882513 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\sousprog.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	"header.h"
+
+1652962295 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\map.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1652948354 source:c:\users\victo\onedrive\documents\github\dofus\sauvegarde et chargement.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	<sys/stat.h>
+	"header.h"
+
+1652882897 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\sauvegarde et chargement.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	<sys/stat.h>
+	"header.h"
+
+1652968274 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\attaque.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+
+1652970976 source:c:\users\victo\onedrive\documents\github\dofus\attaque.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	"header.h"
+
