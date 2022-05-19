@@ -160,11 +160,18 @@ void menu_principal()
             t_joueur** tabjoueur;
             int nbrjoueur;
             int premier_joueur;
-            t_charge Unecharge;
-            Unecharge = chargement();
-            tabjoueur = Unecharge.tabjoueur;
+            char* nom;
+            nom = saisie_nom_chargement();
+            //t_charge Unecharge;
+            printf("testdebut\n");
+            nbrjoueur = chargement_nbrjoueur(nom);
+            premier_joueur = chargement_indice(nom);
+            tabjoueur = chargement_infoJoueur(nom, nbrjoueur);
+            //Unecharge = chargement();
+            printf("testfin\n");
+            /*tabjoueur = Unecharge.tabjoueur;
             nbrjoueur = Unecharge.nbrjoueur;
-            premier_joueur = Unecharge.indice;
+            premier_joueur = Unecharge.indice;*/
             for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
@@ -875,6 +882,7 @@ t_joueur** initialisation_joueur(int nbrjoueur)
         tabjoueur[i] = (t_joueur*)malloc(sizeof(t_joueur));
         tabjoueur[i]->pseudo = saisie_pseudo();
         tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
+        tabjoueur[i]->perdu = 0;
     }
     premier_placement(tabjoueur, nbrjoueur);
     return tabjoueur;
