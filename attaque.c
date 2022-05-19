@@ -131,18 +131,11 @@ void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int n
     {
         for(int j=0; j<28; j++)
         {
-            if(tabcases[i][j].obstacle == 0)
+            if(possibcroix(tabcases, tabcases[i][j].x, tabcases[i][j].y, tabjoueur, indice, numsort) == 1)
             {
-                if(tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+                if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
                 {
-                    if(tabcases[i][j].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 == tabjoueur[indice]->classes.cord_y/50)
-                    {
-                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
-                    }
-                    if(tabcases[i][j].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].x/50 == tabjoueur[indice]->classes.cord_x/50)
-                    {
-                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
-                    }
+                    rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
                 }
             }
         }
@@ -155,16 +148,57 @@ void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int 
     {
         for(int j=0; j<28; j++)
         {
-            if(tabcases[i][j].obstacle == 0)
+            if(possibcercle(tabjoueur,tabcases[i][j].x, tabcases[i][j].y, tabcases, indice, numsort) == 1)
             {
-                if(tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[i][j].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[i][j].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+                if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
                 {
-                    if(tabcases[i][j].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[i][j].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte)
-                    {
-                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
-                    }
+                    rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
                 }
             }
         }
     }
+}
+
+int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice, int numsort)
+{
+    if(tabcases[Y/50][X/50].obstacle == 0)
+    {
+        if(tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+        {
+            if(tabcases[Y/50][X/50].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 == tabjoueur[indice]->classes.cord_y/50)
+            {
+                return 1;
+            }
+            else if(tabcases[Y/50][X/50].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].x/50 == tabjoueur[indice]->classes.cord_x/50)
+            {
+                return 1;
+            }
+            else
+                return 0;
+        }
+        else
+            return 0;
+    }
+    else
+        return 0;
+}
+
+int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
+{
+    if(tabcases[Y/50][X/50].obstacle == 0)
+    {
+        if(tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+        {
+            if(tabcases[Y/50][X/50].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte)
+            {
+                return 1;
+            }
+            else
+                return 0;
+        }
+        else
+            return 0;
+    }
+    else
+        return 0;
 }
