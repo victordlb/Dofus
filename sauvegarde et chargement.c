@@ -168,13 +168,23 @@ int chargement_indice(char* nom)
 
 t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
 {
-    char* nom1;
+    char nom1[500];
+    char nom2[500];
+    char nom3[500];
+    char nom4[500];
     int validation = 2;
-    t_joueur** tabjoueur;
+    t_joueur** tab;
+    FILE* fichier1;
+    tab = (t_joueur**)malloc(sizeof(t_joueur*)*1);
+    tab = (t_joueur*)malloc(sizeof(t_joueur)*nbrjoueur);
+    for(int j = 0; j<nbrjoueur; j++)
+    {
+        if(tab[j] == NULL)
+            printf("erreur\n");
+    }
     char tampon1[500];
     char* trajet;
     trajet = "sauvegarde/";
-    FILE* fichier1;
     strcat(strcpy(tampon1, trajet), nom);
     char tpm1[500];
     char tpm2[500];
@@ -185,38 +195,38 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
     {
         if(i == 0)
         {
-            //strcpy(nom1, "/saveInfoJoueur1.txt" );
-            nom1 = "/saveInfoJoueur1.txt";
+            strcpy(nom1, "/saveInfoJoueur1.txt" );
+            //nom1 = "/saveInfoJoueur1.txt";
             strcpy(tpm1, tampon1);
             strcat(tampon1, nom1);
             printf("%s\n", nom1);
             printf("%s\n", tampon1);
             fichier1 = fopen(tampon1, "rb");
         }
-        else if(i==1)
+        if(i==1)
         {
-            //strcpy(nom1, "/saveInfoJoueur2.txt" );
-            nom1 = "/saveInfoJoueur2.txt";
+            strcpy(nom2, "/saveInfoJoueur2.txt" );
+            //nom1 = "/saveInfoJoueur2.txt";
             strcpy(tpm2, tpm1);
             printf("%s\n", tpm2);
-            strcat(tpm1, nom1);
+            strcat(tpm1, nom2);
             printf("%s\n", tpm1);
             fichier1 = fopen(tpm1, "rb");
         }
-        else if(i==2)
+        if(i==2)
         {
-            //strcpy(nom1, "/saveInfoJoueur3.txt" );
-            nom1 = "/saveInfoJoueur3.txt";
+            strcpy(nom3, "/saveInfoJoueur3.txt" );
+            //nom1 = "/saveInfoJoueur3.txt";
             strcpy(tpm3, tpm2);
-            strcat(tpm2, nom1);
+            strcat(tpm2, nom3);
             printf("%s\n", tpm2);
             fichier1 = fopen(tpm2, "rb");
         }
-        else if(i==3)
+        if(i==3)
         {
-            //strcpy(nom1, "/saveInfoJoueur4.txt" );
-             nom1 = "/saveInfoJoueur4.txt";
-             strcat(tpm3, nom1);
+             strcpy(nom4, "/saveInfoJoueur4.txt" );
+             //nom1 = "/saveInfoJoueur4.txt";
+             strcat(tpm3, nom4);
              printf("%s\n", tpm3);
              fichier1 = fopen(tpm3, "rb");
         }
@@ -235,22 +245,24 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
             printf("nom :%s\n", test);
             printf("test4\n");
 
-            tabjoueur[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
+            tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
             printf("test6\n");
-            strcpy(tabjoueur[i]->pseudo, tpm_pseudo);
-            printf("nom :%s\n", tabjoueur[i]->pseudo);
+            strcpy(tab[i]->pseudo, tpm_pseudo);
+            printf("nom :%s\n", tab[i]->pseudo);
 
             fgets(tpm_nom_classe, 500, fichier1);
             printf("test5\n");
-            tabjoueur[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe)) +1 );
-            strcpy(tabjoueur[i]->classes.nom, tpm_nom_classe);
+            tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe)) +1 );
+            strcpy(tab[i]->classes.nom, tpm_nom_classe);
+            printf(" nom %s\n", tab[i]->classes.nom);
 
             printf("test3\n");
 
-            fscanf(fichier1, "%d %d %d %d %d %d %d", &tabjoueur[i]->perdu, &tabjoueur[i]->classes.PV, &tabjoueur[i]->classes.PM, &tabjoueur[i]->classes.PA, &tabjoueur[i]->classes.ID, &tabjoueur[i]->classes.cord_x, &tabjoueur[i]->classes.cord_y);
+            fscanf(fichier1, "%d %d %d %d %d %d %d", &tab[i]->perdu, &tab[i]->classes.PV, &tab[i]->classes.PM, &tab[i]->classes.PA, &tab[i]->classes.ID, &tab[i]->classes.cord_x, &tab[i]->classes.cord_y);
+            printf("PV :%d\n", tab[i]->classes.PV);
             printf("test2\n");
         }
-        fclose(fichier1);
+        //fclose(fichier1);
     }
 }
 
