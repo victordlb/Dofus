@@ -68,6 +68,10 @@ t_cases** chargement_map()
     {
         tabcases[15][a].obstacle = 1;
     }
+    for(int b = 0; b<3; b++)
+    {
+        tabcases[15][b].obstacle = 1;
+    }
     fclose(pf);
     return tabcases;
 }
@@ -195,28 +199,47 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     BITMAP* fond ;
     t_cases** tabcases;
     tabcases = chargement_map();
-    fond = charger_map(tabcases);
     BITMAP* personnage;
     float temps = 0;
     int validation = 0;
     int done = 0;
+    int defx;
+    int defy;
     for(int i=0; i<nbrjoueur; i++)
     {
+        fond = charger_map(tabcases);
+        chargement_perso(tabjoueur,i,nbrjoueur,fond);
         temps = 0;
-        textprintf_ex(fond, font, 300,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART DANS LE MEME ORDRE QUE VOS CHOIX DE PERSONNAGES (vous avez 15secondes)");
+        textprintf_ex(fond, font, 500,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART (vous avez 15secondes)");
         done = 0;
         validation = 0;
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
+        {
             personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
+            defx = 10;
+            defy = 6;
+        }
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
+        {
             personnage = load_bitmap("documents/perso/robin/robin standby.bmp", NULL);
+            defx = 18;
+            defy = 8;
+        }
         else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
+        {
             personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
+            defx = 16;
+            defy = 3;
+        }
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
+        {
             personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
+            defx = 14;
+            defy = 12;
+        }
         time_t start, end;
         time(&start);
-        while(done==0 && temps <=16)
+        while(done==0)
         {
             if(mouse_b&1 && tabcases[mouse_y/50][mouse_x/50].obstacle == 0)
             {
@@ -234,17 +257,15 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
             blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
             time(&end);
             temps = difftime(end, start);
-            if(temps >= 15)
+            compte_temps(temps,fond);
+            if(temps > 15)
             {
-                do
-                {
-                    tabjoueur[i]->classes.cord_x = tabcases[rand()%17][rand()%29].x;
-                    tabjoueur[i]->classes.cord_y = tabcases[rand()%17][rand()%29].y;
-                }
-                while(tabcases[tabjoueur[i]->classes.cord_x/50][tabjoueur[i]->classes.cord_y/50].obstacle==1);
+                tabjoueur[i]->classes.cord_x = tabcases[defy][defx].x;
+                tabjoueur[i]->classes.cord_y = tabcases[defy][defx].y;
                 validation = 1;
             }
         }
+        clear_bitmap(fond);
     }
     Sleep(1000);
     destroy_bitmap(personnage);
@@ -543,7 +564,6 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
 void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
 {
     t_cases** tabcases;
-    int fin;
     BITMAP* fond;
     tabcases = chargement_map();
     fond = chargement_fond(tabcases);
@@ -551,8 +571,8 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
     chargement_perso(tabjoueur,indice,nbrjoueur,fond);
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
-    /*time_t start, end;
-    time(&start);*/
+    time_t start, end;
+    time(&start);
     while(done == 0)
     {
         if(mouse_b&1)
@@ -565,12 +585,10 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
             {
                 deplacement(tabcases,tabjoueur,indice,nbrjoueur,fond);
-                done = 2;
             }
             if(mouse_x > 1300 && mouse_x < 1350 && mouse_y >750 && mouse_y < 800)
             {
                 // attaque();
-                done = 2;
             }
             if(mouse_x > 1350 && mouse_x < 1400 && mouse_y >750 && mouse_y < 800)
             {
@@ -578,110 +596,19 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             }
             Sleep(500);
         }
-        /*time(&end);
+        time(&end);
         temps = difftime(end, start);
-        fin = compte_temps(temps, fond);*/
+        compte_temps(temps,screen);
+        if(temps == 15)
+        {
+            done = 2;
+        }
     }
 
 
 }
 
-/*int compte_temps(float temps, BITMAP* buffer)
-{
-    BITMAP* chrono;
-    if(temps == 1)
-    {
-        chrono = load_bitmap("documents/props/chrono 1.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 2)
-    {
-        chrono = load_bitmap("documents/props/chrono 2.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 3)
-    {
-        chrono = load_bitmap("documents/props/chrono 3.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 4)
-    {
-        chrono = load_bitmap("documents/props/chrono 4.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 5)
-    {
-        chrono = load_bitmap("documents/props/chrono 5.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 6)
-    {
-        chrono = load_bitmap("documents/props/chrono 6.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 7)
-    {
-        chrono = load_bitmap("documents/props/chrono 7.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 8)
-    {
-        chrono = load_bitmap("documents/props/chrono 8.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 9)
-    {
-        chrono = load_bitmap("documents/props/chrono 9.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 10)
-    {
-        chrono = load_bitmap("documents/props/chrono 10.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 11)
-    {
-        chrono = load_bitmap("documents/props/chrono 11.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 12)
-    {
-        chrono = load_bitmap("documents/props/chrono 12.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 13)
-    {
-        chrono = load_bitmap("documents/props/chrono 13.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 14)
-    {
-        chrono = load_bitmap("documents/props/chrono 14.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 0;
-    }
-    if(temps == 15)
-    {
-        chrono = load_bitmap("documents/props/chrono 15.bmp", NULL);
-        draw_sprite(buffer, chrono, 10,1350);
-        return 1;
-    }
-    destroy_bitmap(chrono);
 
-}*/
 /*t_djikstra djikstra_init(t_joueur** tabjoueur, int indice)
 {
     t_djikstra chemin;
@@ -871,9 +798,6 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
 
     }
     while(new_x!=-2 && compteur != 10);
-
-
-
 
 
 }
