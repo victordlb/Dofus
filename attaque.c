@@ -15,6 +15,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
     {
         if(mouse_b&1)
         {
+            /// info sort
             if(mouse_y > 710 && mouse_y < 730)
             {
                 if(mouse_x > 490 && mouse_x < 510)
@@ -67,6 +68,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                     blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
                 }
+                ///
 
             }
             if(mouse_x>502 && mouse_x<572 && mouse_y>737 && mouse_y<800)
@@ -392,12 +394,10 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
     int pos_x_bis;
     int pos_y_bis;
     int stop = 0;
-    printf("test\n");
     if(num_info == 5)
     {
         strcpy(cheminement, "documents/perso/info5.bmp");
     }
-    printf("%s\n", cheminement);
     if(strcmp(tabjoueur[indice]->classes.nom, "luffy")==0)
     {
         if(num_info == 1)
@@ -417,7 +417,6 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
             strcpy(cheminement, "documents/perso/luffy/sortL/info4.bmp");
         }
     }
-     printf("%s\n", cheminement);
     if(strcmp(tabjoueur[indice]->classes.nom, "robin")==0)
     {
         if(num_info == 1)
@@ -437,7 +436,6 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
             strcpy(cheminement, "documents/perso/robin/sortR/info4.bmp");
         }
     }
- printf("%s\n", cheminement);
     if(strcmp(tabjoueur[indice]->classes.nom, "sanji")==0)
     {
         if(num_info == 1)
@@ -457,7 +455,6 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
             strcpy(cheminement, "documents/perso/sanji/sortS/info4.bmp");
         }
     }
- printf("%s\n", cheminement);
     if(strcmp(tabjoueur[indice]->classes.nom, "franky")==0)
     {
         if(num_info == 1)
@@ -477,7 +474,6 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
             strcpy(cheminement, "documents/perso/franky/sortF/info4.bmp");
         }
     }
-    printf("%s\n", cheminement);
     pos_y = 600;
     pos_y_bis = 590;
     if(num_info == 1)
