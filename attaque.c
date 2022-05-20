@@ -347,7 +347,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
-                                printf("%s : %d", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
+                                printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
                                     tabjoueur[i]->perdu = 1;
@@ -356,7 +356,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             }
                             else
                             {
-                                printf("raté");
+                                printf("raté\n");
                                 return 1;
                             }
                         }
