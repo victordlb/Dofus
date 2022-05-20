@@ -161,23 +161,29 @@ void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int 
 
 int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice, int numsort)
 {
+    int Ycase = tabcases[Y/50][X/50].y/50;
+    int Xcase = tabcases[Y/50][X/50].x/50;
+    int Yjoueur = tabjoueur[indice]->classes.cord_y/50;
+    int Xjoueur = tabjoueur[indice]->classes.cord_x/50;
     if(tabcases[Y/50][X/50].obstacle == 0)
     {
-        if(tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+        if((Xcase == Xjoueur && Ycase == Yjoueur-1) || (Xcase == Xjoueur-1 && Ycase == Yjoueur) ||(Xcase == Xjoueur && Ycase == Yjoueur+1)||(Xcase == Xjoueur+1 && Ycase == Yjoueur))
         {
-            if(tabcases[Y/50][X/50].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 == tabjoueur[indice]->classes.cord_y/50)
+            return 0;
+        }
+        else
+        {
+            if(Xcase > (Xjoueur)-tabjoueur[indice]->classes.mesattaques[numsort].porte && Xcase < (Xjoueur)+tabjoueur[indice]->classes.mesattaques[numsort].porte && Ycase == Yjoueur)
             {
                 return 1;
             }
-            else if(tabcases[Y/50][X/50].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].x/50 == tabjoueur[indice]->classes.cord_x/50)
+            else if(Ycase > (Yjoueur)-tabjoueur[indice]->classes.mesattaques[numsort].porte && Ycase < (Yjoueur)+tabjoueur[indice]->classes.mesattaques[numsort].porte && Xcase == Xjoueur)
             {
                 return 1;
             }
             else
                 return 0;
         }
-        else
-            return 0;
     }
     else
         return 0;
@@ -185,19 +191,25 @@ int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indic
 
 int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
 {
+    int Ycase = tabcases[Y/50][X/50].y/50;
+    int Xcase = tabcases[Y/50][X/50].x/50;
+    int Yjoueur = tabjoueur[indice]->classes.cord_y/50;
+    int Xjoueur = tabjoueur[indice]->classes.cord_x/50;
     if(tabcases[Y/50][X/50].obstacle == 0)
     {
-        if(tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)-1 && tabcases[Y/50][X/50].x/50 != (tabjoueur[indice]->classes.cord_x/50)+1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)-1 && tabcases[Y/50][X/50].y/50 != (tabjoueur[indice]->classes.cord_y/50)+1)
+        if((Xcase == Xjoueur-1 && Ycase == Yjoueur-1) || (Xcase == Xjoueur && Ycase == Yjoueur-1) || (Xcase == Xjoueur+1 && Ycase == Yjoueur-1) || (Xcase == Xjoueur-1 && Ycase == Yjoueur) || (Xcase == Xjoueur && Ycase == Yjoueur) || (Xcase == Xjoueur+1 && Ycase == Yjoueur) || (Xcase == Xjoueur-1 && Ycase == Yjoueur+1)||(Xcase == Xjoueur && Ycase == Yjoueur+1)||(Xcase == Xjoueur+1 && Ycase == Yjoueur+1))
         {
-            if(tabcases[Y/50][X/50].x/50 > (tabjoueur[indice]->classes.cord_x/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].x/50 < (tabjoueur[indice]->classes.cord_x/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 > (tabjoueur[indice]->classes.cord_y/50)-tabjoueur[indice]->classes.mesattaques[numsort].porte && tabcases[Y/50][X/50].y/50 < (tabjoueur[indice]->classes.cord_y/50)+tabjoueur[indice]->classes.mesattaques[numsort].porte)
+            return 0;
+        }
+        else
+        {
+            if(Xcase > (Xjoueur)-tabjoueur[indice]->classes.mesattaques[numsort].porte && Xcase < (Xjoueur)+tabjoueur[indice]->classes.mesattaques[numsort].porte && Ycase > (Yjoueur)-tabjoueur[indice]->classes.mesattaques[numsort].porte && Ycase < (Yjoueur)+tabjoueur[indice]->classes.mesattaques[numsort].porte)
             {
                 return 1;
             }
             else
                 return 0;
         }
-        else
-            return 0;
     }
     else
         return 0;
