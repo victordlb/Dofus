@@ -6,6 +6,8 @@
 void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond)
 {
     afficherSort(tabjoueur, indice, fond);
+    BITMAP* buffer;
+    buffer = create_bitmap(SCREEN_W, SCREEN_H);
     int done = 0;
     int done2 =0;
     BITMAP* select = load_bitmap("documents/props/css.bmp", NULL);
@@ -13,6 +15,62 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
     {
         if(mouse_b&1)
         {
+            /// info sort
+            if(mouse_y > 710 && mouse_y < 730)
+            {
+                if(mouse_x > 490 && mouse_x < 510)
+                {
+                    buffer = chargement_fond(tabcases);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    afficherSort(tabjoueur, indice, buffer);
+                    info_sort(tabjoueur,indice,1,buffer);
+                    clear_bitmap(buffer);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                }
+                if(mouse_x > 565 && mouse_x < 585)
+                {
+                    buffer = chargement_fond(tabcases);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    afficherSort(tabjoueur, indice, buffer);
+                    info_sort(tabjoueur, indice, 2, buffer);
+                    clear_bitmap(buffer);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                }
+                if(mouse_x > 640 && mouse_x < 660)
+                {
+                    buffer = chargement_fond(tabcases);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    afficherSort(tabjoueur, indice, buffer);
+                    info_sort(tabjoueur, indice, 3, buffer);
+                    clear_bitmap(buffer);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                }
+                if(mouse_x > 715 && mouse_x < 735)
+                {
+                    buffer = chargement_fond(tabcases);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    afficherSort(tabjoueur, indice, buffer);
+                    info_sort(tabjoueur, indice, 4, buffer);
+                    clear_bitmap(buffer);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                }
+                if(mouse_x > 792 && mouse_x < 812)
+                {
+                    buffer = chargement_fond(tabcases);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    afficherSort(tabjoueur, indice, buffer);
+                    info_sort(tabjoueur, indice, 5, buffer);
+                    clear_bitmap(buffer);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                }
+                ///
+
+            }
             if(mouse_x>502 && mouse_x<572 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495, 730);
@@ -82,6 +140,12 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
     BITMAP* sort3;
     BITMAP* sort4;
     BITMAP* poing = load_bitmap("documents/perso/poing.bmp", NULL);
+    BITMAP* logo_info = load_bitmap("documents/props/logo info.bmp", NULL);
+    draw_sprite(fond, logo_info, 490, 710);
+    draw_sprite(fond, logo_info, 565, 710);
+    draw_sprite(fond, logo_info, 640, 710);
+    draw_sprite(fond, logo_info, 715, 710);
+    draw_sprite(fond, logo_info,792, 710);
     if(strcmp(tabjoueur[indice]->classes.nom, "luffy") == 0)
     {
         sort1 = load_bitmap("documents/perso/luffy/sortL/1.bmp", NULL);
@@ -317,5 +381,137 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
         return 0;
 }
 
-
+void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
+{
+    BITMAP* info;
+    BITMAP* logo_croix;
+    logo_croix = load_bitmap("documents/props/logo croix.bmp", NULL);
+    char cheminement[500];
+    int pos_x;
+    int pos_y;
+    int pos_x_bis;
+    int pos_y_bis;
+    int stop = 0;
+    if(num_info == 5)
+    {
+        strcpy(cheminement, "documents/perso/info5.bmp");
+    }
+    if(strcmp(tabjoueur[indice]->classes.nom, "luffy")==0)
+    {
+        if(num_info == 1)
+        {
+            strcpy(cheminement, "documents/perso/luffy/sortL/info1.bmp");
+        }
+        if(num_info == 2)
+        {
+            strcpy(cheminement, "documents/perso/luffy/sortL/info2.bmp");
+        }
+        if(num_info == 3)
+        {
+            strcpy(cheminement, "documents/perso/luffy/sortL/info3.bmp");
+        }
+        if(num_info == 4)
+        {
+            strcpy(cheminement, "documents/perso/luffy/sortL/info4.bmp");
+        }
+    }
+    if(strcmp(tabjoueur[indice]->classes.nom, "robin")==0)
+    {
+        if(num_info == 1)
+        {
+            strcpy(cheminement, "documents/perso/robin/sortR/info1.bmp");
+        }
+        if(num_info == 2)
+        {
+            strcpy(cheminement, "documents/perso/robin/sortR/info2.bmp");
+        }
+        if(num_info == 3)
+        {
+            strcpy(cheminement, "documents/perso/robin/sortR/info3.bmp");
+        }
+        if(num_info == 4)
+        {
+            strcpy(cheminement, "documents/perso/robin/sortR/info4.bmp");
+        }
+    }
+    if(strcmp(tabjoueur[indice]->classes.nom, "sanji")==0)
+    {
+        if(num_info == 1)
+        {
+            strcpy(cheminement, "documents/perso/sanji/sortS/info1.bmp");
+        }
+        if(num_info == 2)
+        {
+            strcpy(cheminement, "documents/perso/sanji/sortS/info2.bmp");
+        }
+        if(num_info == 3)
+        {
+            strcpy(cheminement, "documents/perso/sanji/sortS/info3.bmp");
+        }
+        if(num_info == 4)
+        {
+            strcpy(cheminement, "documents/perso/sanji/sortS/info4.bmp");
+        }
+    }
+    if(strcmp(tabjoueur[indice]->classes.nom, "franky")==0)
+    {
+        if(num_info == 1)
+        {
+            strcpy(cheminement, "documents/perso/franky/sortF/info1.bmp");
+        }
+        if(num_info == 2)
+        {
+            strcpy(cheminement, "documents/perso/franky/sortF/info2.bmp");
+        }
+        if(num_info == 3)
+        {
+            strcpy(cheminement, "documents/perso/franky/sortF/info3.bmp");
+        }
+        if(num_info == 4)
+        {
+            strcpy(cheminement, "documents/perso/franky/sortF/info4.bmp");
+        }
+    }
+    pos_y = 600;
+    pos_y_bis = 590;
+    if(num_info == 1)
+    {
+        pos_x = 502;
+        pos_x_bis = 717;
+    }
+    if(num_info == 2)
+    {
+        pos_x = 577;
+        pos_x_bis = 802;
+    }
+    if(num_info == 3)
+    {
+        pos_x = 652;
+        pos_x_bis = 877;
+    }
+    if(num_info == 4)
+    {
+        pos_x = 727;
+        pos_x_bis = 952;
+    }
+    if(num_info == 5)
+    {
+        pos_x = 802;
+        pos_x_bis = 1027;
+    }
+    info = load_bitmap(cheminement, NULL);
+    draw_sprite(fond, info, pos_x, pos_y);
+    draw_sprite(fond, logo_croix, pos_x_bis, pos_y_bis);
+    while(stop == 0)
+    {
+        blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        if(mouse_b&1)
+        {
+            if(mouse_y > 590 && mouse_y < 620 && mouse_x > pos_x_bis && mouse_x < pos_x_bis+30)
+            {
+                 stop = 9;
+            }
+        }
+    }
+}
 
