@@ -700,8 +700,8 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
                     //si oui
 
                     distance[pos_y_actuelle-1][pos_x_actuelle]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle-1][pos_x_actuelle]=pos_y_actuelle;
-                    predecesseur_y[pos_y_actuelle-1][pos_x_actuelle]=pos_x_actuelle;
+                    predecesseur_x[pos_y_actuelle-1][pos_x_actuelle]=pos_x_actuelle;
+                    predecesseur_y[pos_y_actuelle-1][pos_x_actuelle]=pos_y_actuelle;
                     printf("test1 \n");
                 }
             }
@@ -716,15 +716,15 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
                 {
                     //si oui
                     distance[pos_y_actuelle][pos_x_actuelle-1]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle][pos_x_actuelle-1]=pos_y_actuelle;
-                    predecesseur_y[pos_y_actuelle][pos_x_actuelle-1]=pos_x_actuelle;
+                    predecesseur_x[pos_y_actuelle][pos_x_actuelle-1]=pos_x_actuelle;
+                    predecesseur_y[pos_y_actuelle][pos_x_actuelle-1]=pos_y_actuelle;
                 }
             }
         }
 
 
         //predecesseur a droite
-        if(pos_y_actuelle+1!=28)//depassement tab
+        if(pos_y_actuelle+1!=16)//depassement tab
         {
             if(tabcases[pos_y_actuelle+1][pos_x_actuelle].obstacle==0)//obstacle ?
             {
@@ -732,15 +732,15 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
                 {
                     //si oui
                     distance[pos_y_actuelle+1][pos_x_actuelle]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle+1][pos_x_actuelle]=pos_y_actuelle;
-                    predecesseur_y[pos_y_actuelle+1][pos_x_actuelle]=pos_x_actuelle;
+                    predecesseur_x[pos_y_actuelle+1][pos_x_actuelle]=pos_x_actuelle;
+                    predecesseur_y[pos_y_actuelle+1][pos_x_actuelle]=pos_y_actuelle;
                 }
             }
         }
 
 
         //predecesseur en bas
-        if(pos_x_actuelle+1!=16)//depassement tab
+        if(pos_x_actuelle+1!=28)//depassement tab
         {
             if(tabcases[pos_y_actuelle][pos_x_actuelle+1].obstacle==0)//obstacle ?
             {
@@ -748,8 +748,8 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
                 {
                     //si oui
                     distance[pos_y_actuelle][pos_x_actuelle+1]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle][pos_x_actuelle+1]=pos_y_actuelle;
-                    predecesseur_y[pos_y_actuelle][pos_x_actuelle+1]=pos_x_actuelle;
+                    predecesseur_x[pos_y_actuelle][pos_x_actuelle+1]=pos_x_actuelle;
+                    predecesseur_y[pos_y_actuelle][pos_x_actuelle+1]=pos_y_actuelle;
                 }
             }
         }
@@ -792,9 +792,9 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
     do
     {
 
-        new_x=predecesseur_x[predecesseur_x[arrivee_y][arrivee_x]][predecesseur_y[arrivee_y][arrivee_x]];
+        new_x=predecesseur_x[predecesseur_y[arrivee_y][arrivee_x]][predecesseur_x[arrivee_y][arrivee_x]];
 
-        new_y=predecesseur_y[predecesseur_x[arrivee_y][arrivee_x]][predecesseur_y[arrivee_y][arrivee_x]];
+        new_y=predecesseur_y[predecesseur_y[arrivee_y][arrivee_x]][predecesseur_x[arrivee_y][arrivee_x]];
 
         printf("%dx %dy poids %d|\n",new_x,new_y,distance[new_x][new_y]);
         compteur++;
