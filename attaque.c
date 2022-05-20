@@ -308,6 +308,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
+                                printf("%s : %d", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
                                     tabjoueur[i]->perdu = 1;
@@ -320,12 +321,9 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                                 return 1;
                             }
                         }
-                        else
-                        {
-                            printf("Personne n'est sur cette case");
-                            return 1;
-                        }
                     }
+                    printf("personne sur cette case\n");
+                    return 1;
                 }
                 else
                 {
@@ -336,7 +334,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
             else
                 return 0;
         }
-        else
+        else if(tabjoueur[indice]->classes.mesattaques[numsort].type == 2 || tabjoueur[indice]->classes.mesattaques[numsort].type == 3)
         {
             if(possibcercle(tabjoueur,mouse_x, mouse_y,tabcases,indice,numsort) == 1)
             {
@@ -349,6 +347,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
+                                printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
                                     tabjoueur[i]->perdu = 1;
@@ -357,16 +356,13 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             }
                             else
                             {
-                                printf("raté");
+                                printf("raté\n");
                                 return 1;
                             }
                         }
-                        else
-                        {
-                            printf("Personne n'est sur cette case");
-                            return 1;
-                        }
                     }
+                    printf("personne sur cette case\n");
+                    return 1;
                 }
                 else
                 {
@@ -377,6 +373,8 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
             else
                 return 0;
         }
+        else
+            return 0;
         return 0;
     }
     else
