@@ -175,8 +175,11 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
     int validation = 2;
     t_joueur** tab;
     FILE* fichier1;
+    FILE* fichier2;
+    FILE* fichier3;
+    FILE* fichier4;
     tab = (t_joueur**)malloc(sizeof(t_joueur*)*1);
-    tab = (t_joueur*)malloc(sizeof(t_joueur)*nbrjoueur);
+    tab = (t_joueur*)malloc(sizeof(t_joueur)*nbrjoueur+1);
     for(int j = 0; j<nbrjoueur; j++)
     {
         if(tab[j] == NULL)
@@ -186,13 +189,30 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
     char* trajet;
     trajet = "sauvegarde/";
     strcat(strcpy(tampon1, trajet), nom);
+    printf("tampon %s\n", tampon1);
     char tpm1[500];
     char tpm2[500];
     char tpm3[500];
-    char tpm_pseudo[500];
-    char tpm_nom_classe[500];
+    char* tpm_pseudo;
+    char* tpm_nom_classe;
+    char* tpm_pseudo1;
+    char* tpm_nom_classe1;
+    char* tpm_pseudo2;
+    char* tpm_nom_classe2;
+    char* tpm_pseudo3;
+    char* tpm_nom_classe3;
     for(int i=0; i<nbrjoueur; i++)
     {
+        printf("i :%d\n", i);
+        tpm_pseudo = (char*)malloc(sizeof(char)*500);
+        tpm_nom_classe = (char*)malloc(sizeof(char)*500);
+        tpm_pseudo1 = (char*)malloc(sizeof(char)*500);
+        tpm_nom_classe1 = (char*)malloc(sizeof(char)*500);
+        tpm_pseudo2 = (char*)malloc(sizeof(char)*500);
+        tpm_nom_classe2 = (char*)malloc(sizeof(char)*500);
+        tpm_pseudo3 = (char*)malloc(sizeof(char)*500);
+        tpm_nom_classe3 = (char*)malloc(sizeof(char)*500);
+        printf("slt\n");
         if(i == 0)
         {
             strcpy(nom1, "/saveInfoJoueur1.txt" );
@@ -201,9 +221,43 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
             strcat(tampon1, nom1);
             printf("%s\n", nom1);
             printf("%s\n", tampon1);
-            fichier1 = fopen(tampon1, "rb");
+            fichier1 = fopen(tampon1, "r+");
+            if(fichier1 == NULL)
+            {
+                printf("Ce fichier n'existe pas\n");
+            }
+            else
+            {
+                char* test;
+                printf("test1\n");
+                fgets(tpm_pseudo, 500, fichier1);
+                printf("nom :%s\n", tpm_pseudo);
+                test = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
+                strcpy(test, tpm_pseudo);
+                printf("nom :%s\n", test);
+                printf("test4\n");
+
+                tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
+                printf("test6\n");
+                strcpy(tab[i]->pseudo, tpm_pseudo);
+                printf("nom :%s\n", tab[i]->pseudo);
+
+                fgets(tpm_nom_classe, 500, fichier1);
+                printf("test5\n");
+                tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe)) +1 );
+                strcpy(tab[i]->classes.nom, tpm_nom_classe);
+                printf(" nom %s\n", tab[i]->classes.nom);
+
+                printf("test3\n");
+
+                fscanf(fichier1, "%d %d %d %d %d %d %d", &tab[i]->perdu, &tab[i]->classes.PV, &tab[i]->classes.PM, &tab[i]->classes.PA, &tab[i]->classes.ID, &tab[i]->classes.cord_x, &tab[i]->classes.cord_y);
+                printf("PV :%d\n", tab[i]->classes.PV);
+                printf("test2\n");
+                test = NULL;
+            }
+            fclose(fichier1);
         }
-        if(i==1)
+        else if(i==1)
         {
             strcpy(nom2, "/saveInfoJoueur2.txt" );
             //nom1 = "/saveInfoJoueur2.txt";
@@ -211,59 +265,142 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
             printf("%s\n", tpm2);
             strcat(tpm1, nom2);
             printf("%s\n", tpm1);
-            fichier1 = fopen(tpm1, "rb");
+            fichier2 = fopen(tpm1, "r+");
+            if(fichier2 == NULL)
+            {
+                printf("Ce fichier n'existe pas\n");
+            }
+            else
+            {
+                char* test;
+                printf("test1\n");
+                fgets(tpm_pseudo1, 500, fichier2);
+                printf("nom :%s\n", tpm_pseudo1);
+                test = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo1)) +1 );
+                strcpy(test, tpm_pseudo1);
+                printf("nom :%s\n", test);
+                printf("test4\n");
+
+                tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo1)) +1 );
+                printf("test6\n");
+                strcpy(tab[i]->pseudo, tpm_pseudo1);
+                printf("nom :%s\n", tab[i]->pseudo);
+
+                fgets(tpm_nom_classe1, 500, fichier2);
+                printf("test5\n");
+                tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe1)) +1 );
+                strcpy(tab[i]->classes.nom, tpm_nom_classe1);
+                printf(" nom %s\n", tab[i]->classes.nom);
+
+                printf("test3\n");
+
+                fscanf(fichier2, "%d %d %d %d %d %d %d", &tab[i]->perdu, &tab[i]->classes.PV, &tab[i]->classes.PM, &tab[i]->classes.PA, &tab[i]->classes.ID, &tab[i]->classes.cord_x, &tab[i]->classes.cord_y);
+                printf("PV :%d\n", tab[i]->classes.PV);
+                printf("test2\n");
+                test = NULL;
+            }
+            fclose(fichier2);
         }
-        if(i==2)
+        else if(i==2)
         {
+           // tab[i] = (t_joueur*)malloc(sizeof(t_joueur));
+            printf("pap\n");
             strcpy(nom3, "/saveInfoJoueur3.txt" );
             //nom1 = "/saveInfoJoueur3.txt";
             strcpy(tpm3, tpm2);
+            printf("%s\n", tpm3);
             strcat(tpm2, nom3);
             printf("%s\n", tpm2);
-            fichier1 = fopen(tpm2, "rb");
+            fichier3 = fopen(tpm2, "r+");
+            if(fichier3 == NULL)
+            {
+                printf("Ce fichier n'existe pas\n");
+            }
+            else
+            {
+                char* test;
+                printf("test1\n");
+                fgets(tpm_pseudo2, 500, fichier3);
+                printf("nom :%s\n", tpm_pseudo2);
+                test = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo2)) +1 );
+                strcpy(test, tpm_pseudo2);
+                printf("nom :%s\n", test);
+                printf("test4\n");
+
+                /*tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo2)) +1 );
+                printf("test6\n");
+                strcpy(tab[i]->pseudo, tpm_pseudo2);
+                printf("nom :%s\n", tab[i]->pseudo);
+
+                fgets(tpm_nom_classe2, 500, fichier3);
+                printf("test5\n");
+                tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe2)) +1 );
+                strcpy(tab[i]->classes.nom, tpm_nom_classe2);
+                printf(" nom %s\n", tab[i]->classes.nom);*/
+
+                printf("test3\n");
+
+                fscanf(fichier3, "%d %d %d %d %d %d %d", &tab[i]->perdu, &tab[i]->classes.PV, &tab[i]->classes.PM, &tab[i]->classes.PA, &tab[i]->classes.ID, &tab[i]->classes.cord_x, &tab[i]->classes.cord_y);
+                printf("PV :%d\n", tab[i]->classes.PV);
+                printf("test2\n");
+                test = NULL;
+            }
+            fclose(fichier3);
+
         }
-        if(i==3)
+        else if(i==3)
         {
-             strcpy(nom4, "/saveInfoJoueur4.txt" );
-             //nom1 = "/saveInfoJoueur4.txt";
-             strcat(tpm3, nom4);
-             printf("%s\n", tpm3);
-             fichier1 = fopen(tpm3, "rb");
+            strcpy(nom4, "/saveInfoJoueur4.txt" );
+            //nom1 = "/saveInfoJoueur4.txt";
+            strcat(tpm3, nom4);
+            printf("%s\n", tpm3);
+            fichier4 = fopen(tpm3, "r+");
+            if(fichier4 == NULL)
+            {
+                printf("Ce fichier n'existe pas\n");
+            }
+            else
+            {
+                char* test;
+                printf("test1\n");
+                fgets(tpm_pseudo3, 500, fichier4);
+                printf("nom :%s\n", tpm_pseudo3);
+                test = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo3)) +1 );
+                strcpy(test, tpm_pseudo3);
+                printf("nom :%s\n", test);
+                printf("test4\n");
+
+                tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo3)) +1 );
+                printf("test6\n");
+                strcpy(tab[i]->pseudo, tpm_pseudo3);
+                printf("nom :%s\n", tab[i]->pseudo);
+
+                fgets(tpm_nom_classe3, 500, fichier4);
+                printf("test5\n");
+                tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe3)) +1 );
+                strcpy(tab[i]->classes.nom, tpm_nom_classe3);
+                printf(" nom %s\n", tab[i]->classes.nom);
+
+                printf("test3\n");
+
+                fscanf(fichier4, "%d %d %d %d %d %d %d", &tab[i]->perdu, &tab[i]->classes.PV, &tab[i]->classes.PM, &tab[i]->classes.PA, &tab[i]->classes.ID, &tab[i]->classes.cord_x, &tab[i]->classes.cord_y);
+                printf("PV :%d\n", tab[i]->classes.PV);
+                printf("test2\n");
+                test = NULL;
+            }
+            fclose(fichier4);
         }
-        if(fichier1 == NULL)
-        {
-            printf("Ce fichier n'existe pas\n");
-        }
-        else
-        {
-            char* test;
-            printf("test1\n");
-            fgets(tpm_pseudo, 500, fichier1);
-            printf("nom :%s\n", tpm_pseudo);
-            test = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
-            strcpy(test, tpm_pseudo);
-            printf("nom :%s\n", test);
-            printf("test4\n");
-
-            tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo)) +1 );
-            printf("test6\n");
-            strcpy(tab[i]->pseudo, tpm_pseudo);
-            printf("nom :%s\n", tab[i]->pseudo);
-
-            fgets(tpm_nom_classe, 500, fichier1);
-            printf("test5\n");
-            tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe)) +1 );
-            strcpy(tab[i]->classes.nom, tpm_nom_classe);
-            printf(" nom %s\n", tab[i]->classes.nom);
-
-            printf("test3\n");
-
-            fscanf(fichier1, "%d %d %d %d %d %d %d", &tab[i]->perdu, &tab[i]->classes.PV, &tab[i]->classes.PM, &tab[i]->classes.PA, &tab[i]->classes.ID, &tab[i]->classes.cord_x, &tab[i]->classes.cord_y);
-            printf("PV :%d\n", tab[i]->classes.PV);
-            printf("test2\n");
-        }
-        //fclose(fichier1);
+        tpm_nom_classe = NULL;
+        tpm_pseudo = NULL;
+        tpm_nom_classe1 = NULL;
+        tpm_pseudo1 = NULL;
+        tpm_nom_classe2 = NULL;
+        tpm_pseudo2 = NULL;
+        tpm_nom_classe3 = NULL;
+        tpm_pseudo3 = NULL;
+        printf("joueur suivant\n");
     }
+    return tab;
 }
 
 t_charge chargement()
@@ -368,10 +505,10 @@ t_charge chargement()
         else if(i==3)
         {
             //strcpy(nom1, "/saveInfoJoueur4.txt" );
-             nom1 = "/saveInfoJoueur4.txt";
-             strcat(tpm3, nom1);
-             printf("%s\n", tpm3);
-             fichier1 = fopen(tpm3, "rb");
+            nom1 = "/saveInfoJoueur4.txt";
+            strcat(tpm3, nom1);
+            printf("%s\n", tpm3);
+            fichier1 = fopen(tpm3, "rb");
         }
         if(fichier1 == NULL)
         {
