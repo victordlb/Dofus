@@ -31,7 +31,7 @@ void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur)
         choix_action(tabjoueur,random-1,nbrjoueur);
         printf("joueur %d : %s a vous de jouer(saisir un entier)\n", tabjoueur[random-1]->classes.ID, tabjoueur[random-1]->classes.nom);
         //scanf("%d", &entier);
-        if(entier == 2)
+        if(tabjoueur[random-1]->classes.PV <= 0)
         {
             tabjoueur[random-1]->perdu = 1;
             compteur++;

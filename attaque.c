@@ -73,45 +73,61 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
             }
             if(mouse_x>502 && mouse_x<572 && mouse_y>737 && mouse_y<800)
             {
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495, 730);
                 porteSort(tabcases, tabjoueur, indice, 0, fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,0);
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,0, fond);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 }
                 done = 1;
             }
             if(mouse_x>577 && mouse_x<647 && mouse_y>737 && mouse_y<800)
             {
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (1*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 1, fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,1);
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,1,fond);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 }
                 done = 1;
             }
             if(mouse_x>652 && mouse_x<722 && mouse_y>737 && mouse_y<800)
             {
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (2*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 2, fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,2);
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,2, fond);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 }
                 done = 1;
             }
             if(mouse_x>727 && mouse_x<797 && mouse_y>737 && mouse_y<800)
             {
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (3*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 3, fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,3);
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,3,fond);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 }
                 done = 1;
             }
@@ -291,8 +307,10 @@ int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indi
         return 0;
 }
 
-int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, int numsort)
+int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, int numsort, BITMAP* fond)
 {
+    BITMAP* anime;
+    anime = load_bitmap("documents/props/anime feu.bmp", NULL);
     if(mouse_b&1)
     {
         if(tabjoueur[indice]->classes.mesattaques[numsort].type == 1)
@@ -308,6 +326,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
+                                draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
                                 printf("%s : %d", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
@@ -347,6 +366,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
+                                draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
                                 printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
