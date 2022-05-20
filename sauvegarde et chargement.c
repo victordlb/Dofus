@@ -327,7 +327,7 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
                 printf("nom :%s\n", test);
                 printf("test4\n");
 
-                /*tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo2)) +1 );
+                tab[i]->pseudo = (char*)malloc(sizeof(char)*(strlen(tpm_pseudo2)) +1 );
                 printf("test6\n");
                 strcpy(tab[i]->pseudo, tpm_pseudo2);
                 printf("nom :%s\n", tab[i]->pseudo);
@@ -336,7 +336,7 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
                 printf("test5\n");
                 tab[i]->classes.nom = (char*)malloc(sizeof(char)*(strlen(tpm_nom_classe2)) +1 );
                 strcpy(tab[i]->classes.nom, tpm_nom_classe2);
-                printf(" nom %s\n", tab[i]->classes.nom);*/
+                printf(" nom %s\n", tab[i]->classes.nom);
 
                 printf("test3\n");
 
