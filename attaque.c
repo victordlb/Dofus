@@ -7,6 +7,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
 {
     afficherSort(tabjoueur, indice, fond);
     int done = 0;
+    int done2 =0;
     BITMAP* select = load_bitmap("documents/props/css.bmp", NULL);
     while(done == 0)
     {
@@ -17,33 +18,44 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 draw_sprite(fond, select, 495, 730);
                 porteSort(tabcases, tabjoueur, indice, 0, fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done =1;
-
+                while(done2 == 0)
+                {
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,0);
+                }
+                done = 1;
             }
             if(mouse_x>577 && mouse_x<647 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495 + (1*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 1, fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done =1;
+                while(done2 == 0)
+                {
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,1);
+                }
+                done = 1;
             }
             if(mouse_x>652 && mouse_x<722 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495 + (2*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 2, fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done =1;
+                while(done2 == 0)
+                {
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,2);
+                }
+                done = 1;
             }
             if(mouse_x>727 && mouse_x<797 && mouse_y>737 && mouse_y<800)
             {
                 draw_sprite(fond, select, 495 + (3*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 3, fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done =1;
+                while(done2 == 0)
+                {
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,3);
+                }
+                done = 1;
             }
             if(mouse_x>802 && mouse_x<872 && mouse_y>737 && mouse_y<800)
             {
@@ -214,3 +226,98 @@ int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indi
     else
         return 0;
 }
+
+int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, int numsort)
+{
+    if(mouse_b&1)
+    {
+        if(tabjoueur[indice]->classes.mesattaques[numsort].type == 1)
+        {
+            if(possibcroix(tabcases,mouse_x, mouse_y,tabjoueur,indice,numsort) == 1)
+            {
+                if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
+                {
+                    for(int i = 0; i<nbrjoueur; i++)
+                    {
+                        if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
+                        {
+                            if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
+                            {
+                                tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
+                                if(tabjoueur[i]->classes.PV <=0)
+                                {
+                                    tabjoueur[i]->perdu = 1;
+                                }
+                                return 1;
+                            }
+                            else
+                            {
+                                printf("raté");
+                                return 1;
+                            }
+                        }
+                        else
+                        {
+                            printf("Personne n'est sur cette case");
+                            return 1;
+                        }
+                    }
+                }
+                else
+                {
+                    printf("pas assez de PA");
+                    return 1;
+                }
+            }
+            else
+                return 0;
+        }
+        else
+        {
+            if(possibcercle(tabjoueur,mouse_x, mouse_y,tabcases,indice,numsort) == 1)
+            {
+                if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
+                {
+                    for(int i = 0; i<nbrjoueur; i++)
+                    {
+                        if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
+                        {
+                            if(rand()%tabjoueur[indice]->classes.mesattaques[numsort].modulo_echec != 5)
+                            {
+                                tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
+                                if(tabjoueur[i]->classes.PV <=0)
+                                {
+                                    tabjoueur[i]->perdu = 1;
+                                }
+                                return 1;
+                            }
+                            else
+                            {
+                                printf("raté");
+                                return 1;
+                            }
+                        }
+                        else
+                        {
+                            printf("Personne n'est sur cette case");
+                            return 1;
+                        }
+                    }
+                }
+                else
+                {
+                    printf("pas assez de PA");
+                    return 1;
+                }
+            }
+            else
+                return 0;
+        }
+        return 0;
+    }
+    else
+        return 0;
+}
+
+
+
