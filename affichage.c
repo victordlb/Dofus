@@ -6,6 +6,7 @@
 #include <string.h>
 #include "header.h"
 
+/// initialisation d'allegro
 void initialisation()
 {
     allegro_init();
@@ -18,12 +19,13 @@ void initialisation()
     }
     install_keyboard();
     install_mouse();
-    BITMAP* curseur_souris = load_bitmap("documents/props/curseur_brasFranky.bmp", NULL);
+    BITMAP* curseur_souris = load_bitmap("documents/props/curseur ace.bmp", NULL); // utilisation d'une autre souris que de la souris de base
     set_mouse_sprite(curseur_souris);
     show_mouse(screen);
     destroy_bitmap(curseur_souris);
 }
 
+/// affichage d'un logo au lancement du jeu
 void logo()
 {
     int pixel = 0;
@@ -82,6 +84,7 @@ void logo()
     destroy_bitmap(mugiwara_edition);
 }
 
+/// affichage du menu principal et choix de l'action a faire
 void menu_principal()
 {
     int couleur1 = 0;
@@ -187,6 +190,7 @@ void menu_principal()
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page de fin de jeu
 void quitter()
 {
     BITMAP* fond = load_bitmap("documents/fond/quitter.bmp", NULL);
@@ -204,6 +208,7 @@ void quitter()
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page de regle du jeu
 void regle()
 {
     BITMAP* regle = load_bitmap("documents/fond/regle.bmp", NULL);
@@ -219,6 +224,7 @@ void regle()
     destroy_bitmap(regle);
 }
 
+/// affichage d'une page de choix du nombre de joueur
 int nombre_joueur()
 {
     int nbr = 0;
@@ -281,6 +287,7 @@ int nombre_joueur()
     return nbr;
 }
 
+/// affichage d'une page de choix de classe et initialisation des infos en fonction du choix de la classe
 t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 {
     t_classe uneclasse;
@@ -673,6 +680,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
     return uneclasse;
 }
 
+/// affichage d'un menu pause avec choix de l'action a faire
 void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
 {
     BITMAP* fond;
@@ -764,6 +772,7 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page des infos joueur
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
 {
     BITMAP* fond;
@@ -804,6 +813,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page de saisie qui return une chaine de caractere
 char* saisie_pseudo()
 {
     BITMAP* fond;

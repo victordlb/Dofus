@@ -91,6 +91,8 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     t_chemin* Lechemin;
     //tabcases = chargement_map();
     // BITMAP* fond;
+    BITMAP* croix;
+    croix = load_bitmap("documents/props/logo croix.bmp", NULL);
     BITMAP* personnage;
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
@@ -114,8 +116,21 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
         couleur_case(tabjoueur,tabcases,indice,buffer);
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
         dessin_haut_arbre(buffer,tabcases);
+        draw_sprite(buffer, croix, 1270,740);
         if(mouse_b&1)
         {
+            if(mouse_x > 1270 && mouse_x < 1300 && mouse_y > 740 && mouse_y < 770)
+            {
+                clear_bitmap(buffer);
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases);
+                blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
+                chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                dessin_haut_arbre(buffer,tabcases);
+                dessin_haut_arbre(buffer,tabcases);
+                blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                done = 3;
+            }
             if(possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
             {
                 Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
