@@ -187,13 +187,6 @@ void menu_principal()
     destroy_bitmap(fond);
 }
 
-void lancement()
-{
-    initialisation();
-    logo();
-    menu_principal();
-}
-
 void quitter()
 {
     BITMAP* fond = load_bitmap("documents/fond/quitter.bmp", NULL);
@@ -875,19 +868,4 @@ char* saisie_pseudo()
     clear_keybuf();
     clear_bitmap(fond);
     return pseudo;
-}
-
-t_joueur** initialisation_joueur(int nbrjoueur)
-{
-    t_joueur** tabjoueur;
-    tabjoueur =(t_joueur**)malloc(nbrjoueur * sizeof(t_joueur*));
-    for(int i = 0; i<nbrjoueur; i++)
-    {
-        tabjoueur[i] = (t_joueur*)malloc(sizeof(t_joueur));
-        tabjoueur[i]->pseudo = saisie_pseudo();
-        tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
-        tabjoueur[i]->perdu = 0;
-    }
-    premier_placement(tabjoueur, nbrjoueur);
-    return tabjoueur;
 }

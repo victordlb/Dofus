@@ -31,11 +31,17 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="affichage.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="attaque.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="deplacement.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="header.h" />
-		<Unit filename="liste.c">
+		<Unit filename="init.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="main.c">
@@ -47,7 +53,7 @@
 		<Unit filename="sauvegarde et chargement.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sousprog.c">
+		<Unit filename="tour.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

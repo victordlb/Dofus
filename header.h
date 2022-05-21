@@ -51,14 +51,6 @@ typedef struct chemin
     int taille;
 }t_chemin;
 
-/*typedef struct djikstra
-{
-    int chemin_trouve;
-    int distance[16][28];
-    int visite[16][28];
-    int mapa[16][28];
-    int predecesseur[16][28];
-}t_djikstra;*/
 
 typedef struct charge
 {
@@ -67,6 +59,7 @@ typedef struct charge
     int indice;
 }t_charge;
 
+///affichage_allegro
 void initialisation();
 void logo();
 void menu_principal();
@@ -75,30 +68,34 @@ void quitter();
 void regle();
 int nombre_joueur();
 t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur);
-int random_commencer(int nbr);
-void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur);
 void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice);
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
+
+///tour_joueur
+char* saisie_pseudo();
+t_joueur** initialisation_joueur(int nbrjoueur);
+int random_commencer(int nbr);
+void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur);
+void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur);
+void compte_temps(float temps, BITMAP* buffer);
+
+///LA MAP
 void dessin_ligne();
 t_cases** chargement_map();
 BITMAP* charger_map(t_cases** tabcases);
 void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases);
-
-
-void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
-int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice);
 int testvert(int vert);
 int testrouge(int rouge);
 int testbleu(int bleu);
-t_joueur** initialisation_joueur(int nbrjoueur);
-char* saisie_pseudo();
-void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
-void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
-
-t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
 BITMAP* chargement_fond(t_cases** tabcases);
 void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer);
-void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur);
+
+///deplacement
+void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
+int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice);
+void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
+void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
+t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
 
 ///sauvegarde et chargement
 void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice);
@@ -108,7 +105,6 @@ void sauvegarde_tour(int indice, char* trajet);
 t_charge chargement();
 char* saisie_nom_sauvegarde();
 char* saisie_nom_chargement();
-void compte_temps(float temps, BITMAP* buffer);
 t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur);
 int chargement_indice(char* nom);
 int chargement_nbrjoueur(char* nom);
