@@ -75,29 +75,30 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice);
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
 void classement(t_joueur** tabjoueur, int nbrjoueur);
 int menu_fin_de_jeu();
+int choix_map();
 
 ///tour_joueur
 char* saisie_pseudo();
-t_joueur** initialisation_joueur(int nbrjoueur);
+t_joueur** initialisation_joueur(int nbrjoueur,int choix);
 int random_commencer(int nbr);
-void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur);
-void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur);
+void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur,int choix_mapa);
+void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix);
 void compte_temps(float temps, BITMAP* buffer);
 
 ///LA MAP
 void dessin_ligne();
-t_cases** chargement_map();
-BITMAP* charger_map(t_cases** tabcases);
+t_cases** chargement_map(int choix);
+BITMAP* charger_map(t_cases** tabcases, int choix);
 void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases);
 int testvert(int vert);
 int testrouge(int rouge);
 int testbleu(int bleu);
-BITMAP* chargement_fond(t_cases** tabcases);
+BITMAP* chargement_fond(t_cases** tabcases,int choix);
 void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer, int etat);
 
 ///deplacement
-void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
-void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
+void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond, int choix);
+void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix);
 t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int arrivee_col, int arrivee_lig);
 void couleur_case_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
 int possibilite_deplacement_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, int X, int Y);
@@ -120,7 +121,7 @@ int chargement_nbrjoueur(char* nom);
 
 ///Combat
 void chargerSort(t_joueur** tabjoueur, int indice);
-void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
+void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond, int choix);
 void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond);
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond);
 void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond);

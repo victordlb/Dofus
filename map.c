@@ -24,10 +24,18 @@ void dessin_ligne()
     destroy_bitmap(fond);
 }
 
-t_cases** chargement_map()
+t_cases** chargement_map(int choix)
 {
     t_cases** tabcases = (t_cases**)malloc(16 * sizeof(t_cases*));
-    FILE* pf = fopen("documents/lamap/lamapa.txt", "r+");
+    FILE* pf;
+    if(choix == 1)
+    {
+        pf = fopen("documents/lamap/lamapa.txt", "r+");
+    }
+    else if(choix == 2)
+    {
+        pf = fopen("documents/lamap2/lamapa2.txt", "r+");
+    }
     if(pf == NULL)
     {
         printf("Erreur d'ouverture\n");
@@ -47,10 +55,20 @@ t_cases** chargement_map()
             tabcases[i][j].y = ligne;
             colonne = colonne +50;
             fscanf(pf, "%d", &tabcases[i][j].cases);
-            if(tabcases[i][j].cases <= 5)
-                tabcases[i][j].obstacle = 0;
-            else
-                tabcases[i][j].obstacle = 1;
+            if(choix == 1)
+            {
+                if(tabcases[i][j].cases <= 5)
+                    tabcases[i][j].obstacle = 0;
+                else
+                    tabcases[i][j].obstacle = 1;
+            }
+            else if(choix == 2)
+            {
+                if(tabcases[i][j].cases <= 4)
+                    tabcases[i][j].obstacle = 0;
+                else
+                    tabcases[i][j].obstacle = 1;
+            }
             tabcases[0][j].obstacle = 1;
         }
         ligne = ligne +50;
@@ -68,26 +86,54 @@ t_cases** chargement_map()
     {
         tabcases[15][a].obstacle = 1;
     }
-    for(int b = 0; b<3; b++)
+    for(int b = 0; b<2; b++)
     {
         tabcases[15][b].obstacle = 1;
+        tabcases[3][b].obstacle = 1;
+        tabcases[4][b].obstacle = 1;
     }
     fclose(pf);
     return tabcases;
 }
 
-BITMAP* charger_map(t_cases** tabcases)
+BITMAP* charger_map(t_cases** tabcases, int choix)
 {
-    BITMAP* un = load_bitmap("documents/lamap/1.bmp", NULL);
-    BITMAP* deux = load_bitmap("documents/lamap/2.bmp", NULL);
-    BITMAP* trois = load_bitmap("documents/lamap/3.bmp", NULL);
-    BITMAP* quatre = load_bitmap("documents/lamap/4.bmp", NULL);
-    BITMAP* cinq = load_bitmap("documents/lamap/5.bmp", NULL);
-    BITMAP* six = load_bitmap("documents/lamap/6.bmp", NULL);
-    BITMAP* sept = load_bitmap("documents/lamap/7.bmp", NULL);
-    BITMAP* huit = load_bitmap("documents/lamap/8.bmp", NULL);
-    BITMAP* neuf = load_bitmap("documents/lamap/9.bmp", NULL);
-    BITMAP* zero = load_bitmap("documents/lamap/0.bmp", NULL);
+    BITMAP* un;
+    BITMAP* deux;
+    BITMAP* trois;
+    BITMAP* quatre;
+    BITMAP* cinq ;
+    BITMAP* six;
+    BITMAP* sept ;
+    BITMAP* huit ;
+    BITMAP* neuf;
+    BITMAP* zero;
+    if(choix == 1)
+    {
+        un = load_bitmap("documents/lamap/1.bmp", NULL);
+        deux = load_bitmap("documents/lamap/2.bmp", NULL);
+        trois = load_bitmap("documents/lamap/3.bmp", NULL);
+        quatre = load_bitmap("documents/lamap/4.bmp", NULL);
+        cinq = load_bitmap("documents/lamap/5.bmp", NULL);
+        six = load_bitmap("documents/lamap/6.bmp", NULL);
+        sept = load_bitmap("documents/lamap/7.bmp", NULL);
+        huit = load_bitmap("documents/lamap/8.bmp", NULL);
+        neuf = load_bitmap("documents/lamap/9.bmp", NULL);
+        zero = load_bitmap("documents/lamap/0.bmp", NULL);
+    }
+    if(choix == 2)
+    {
+        un = load_bitmap("documents/lamap2/1.bmp", NULL);
+        deux = load_bitmap("documents/lamap2/2.bmp", NULL);
+        trois = load_bitmap("documents/lamap2/3.bmp", NULL);
+        quatre = load_bitmap("documents/lamap2/4.bmp", NULL);
+        cinq = load_bitmap("documents/lamap2/5.bmp", NULL);
+        six = load_bitmap("documents/lamap2/6.bmp", NULL);
+        sept = load_bitmap("documents/lamap2/7.bmp", NULL);
+        huit = load_bitmap("documents/lamap2/8.bmp", NULL);
+        neuf = load_bitmap("documents/lamap2/9.bmp", NULL);
+        zero = load_bitmap("documents/lamap2/0.bmp", NULL);
+    }
     BITMAP* fond = create_bitmap(SCREEN_W, SCREEN_H);
     for(int i =0; i<16; i++)
     {
@@ -184,10 +230,10 @@ int testbleu(int bleu)
 }
 
 
-BITMAP* chargement_fond(t_cases** tabcases)
+BITMAP* chargement_fond(t_cases** tabcases,int choix)
 {
     BITMAP* fond;
-    fond = charger_map(tabcases);
+    fond = charger_map(tabcases,choix);
     return fond;
 }
 

@@ -12,13 +12,13 @@ int random_commencer(int nbr)
     return random;
 }
 
-void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur)
+void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur, int choix_mapa)
 {
     if(tabjoueur[indice]->classes.PV > 0)
     {
         tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA_init;
         tabjoueur[indice]->classes.PM = tabjoueur[indice]->classes.PM_init;
-        choix_action(tabjoueur,indice,nbrjoueur);
+        choix_action(tabjoueur,indice,nbrjoueur,choix_mapa);
         if(tabjoueur[indice]->classes.PV <=0)
         {
             compteur++;
@@ -48,52 +48,17 @@ void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur)
         }
         if(indice + 1 == nbrjoueur)
         {
-            tour(tabjoueur,nbrjoueur,0,compteur);
+            tour(tabjoueur,nbrjoueur,0,compteur,choix_mapa);
         }
         else
         {
-            tour(tabjoueur,nbrjoueur,indice+1,compteur);
+            tour(tabjoueur,nbrjoueur,indice+1,compteur,choix_mapa);
         }
     }
     else
     {
-        tour(tabjoueur, nbrjoueur, indice+1, compteur);
+        tour(tabjoueur, nbrjoueur, indice+1, compteur,choix_mapa);
     }
-
-    /*
-    if(tabjoueur[indice]->classes.PV <= 0)
-    {
-        tabjoueur[indice]->perdu = 1;
-        compteur++;
-    }
-    if(compteur == nbrjoueur-1) // il ne reste plus qu'un joueur
-    {
-        for(int i=0; i<nbrjoueur; i++)
-        {
-            if(tabjoueur[i]->perdu != 1)
-            {
-                printf("joueur %d :%s, vous avez gagner !\n", tabjoueur[i]->classes.ID, tabjoueur[i]->classes.nom);
-            }
-        }
-    }
-    else if(tabjoueur[indice]->perdu != 1)
-    {
-        tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA_init;
-        tabjoueur[indice]->classes.PM = tabjoueur[indice]->classes.PM_init;
-        choix_action(tabjoueur,indice,nbrjoueur);
-    }
-    else
-    {
-
-    }
-    if(indice+1 == nbrjoueur)
-    {
-        tour(tabjoueur, nbrjoueur, 0, compteur);
-    }
-    else
-    {
-        tour(tabjoueur, nbrjoueur, indice + 1, compteur);
-    }*/
 
 }
 
@@ -168,16 +133,19 @@ void compte_temps(float temps, BITMAP* buffer)
     destroy_bitmap(chrono);
 }
 
-void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
+void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix)
 {
     t_cases** tabcases;
     BITMAP* fond;
     BITMAP* buffer;
-    tabcases = chargement_map();
-    fond = chargement_fond(tabcases);
+    tabcases = chargement_map(choix);
+    fond = chargement_fond(tabcases,choix);
     float temps = 0;
     chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
-    dessin_haut_arbre(fond,tabcases);
+    if(choix == 1)
+    {
+        dessin_haut_arbre(fond,tabcases);
+    }
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
     time_t start, end;
@@ -199,14 +167,17 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             }
             if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
             {
-                deplacement(tabcases,tabjoueur,indice,nbrjoueur,fond);
+                deplacement(tabcases,tabjoueur,indice,nbrjoueur,fond,choix);
             }
             if(mouse_x > 1300 && mouse_x < 1350 && mouse_y >750 && mouse_y < 800)
             {
-                buffer = chargement_fond(tabcases);
+                buffer = chargement_fond(tabcases,choix);
                 chargement_perso(tabjoueur,indice,nbrjoueur, buffer,0);
-                dessin_haut_arbre(buffer,tabcases);
-                combat(tabcases,tabjoueur,indice,nbrjoueur,buffer);
+                if(choix == 1)
+                {
+                    dessin_haut_arbre(buffer,tabcases);
+                }
+                combat(tabcases,tabjoueur,indice,nbrjoueur,buffer,choix);
                 clear_bitmap(buffer);
                 chargement_perso(tabjoueur,indice,nbrjoueur, fond,0);
                 blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);

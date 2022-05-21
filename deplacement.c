@@ -5,11 +5,11 @@
 #include <synchapi.h>
 #include "header.h"
 
-void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
+void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
 {
     BITMAP* fond ;
     t_cases** tabcases;
-    tabcases = chargement_map();
+    tabcases = chargement_map(choix);
     BITMAP* personnage;
     float temps = 0;
     int validation = 0;
@@ -18,9 +18,12 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     int defy;
     for(int i=0; i<nbrjoueur; i++)
     {
-        fond = charger_map(tabcases);
+        fond = charger_map(tabcases,choix);
         chargement_perso(tabjoueur,i,nbrjoueur,fond,0);
-        dessin_haut_arbre(fond, tabcases);
+        if(choix == 1)
+        {
+            dessin_haut_arbre(fond, tabcases);
+        }
         temps = 0;
         textprintf_ex(fond, font, 500,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART (vous avez 15secondes)");
         done = 0;
@@ -28,8 +31,16 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
         {
             personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
-            defx = 10;
-            defy = 6;
+            if(choix == 1)
+            {
+                defx = 10;
+                defy = 6;
+            }
+            else if(choix == 2)
+            {
+                defx = 4;
+                defy = 12;
+            }
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
         {
@@ -40,14 +51,30 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
         else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
         {
             personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
-            defx = 16;
-            defy = 3;
+            if(choix == 1)
+            {
+                defx = 16;
+                defy = 3;
+            }
+            else if(choix == 2)
+            {
+                defx = 22;
+                defy = 2;
+            }
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
         {
             personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
-            defx = 14;
-            defy = 12;
+            if(choix == 1)
+            {
+                defx = 14;
+                defy = 12;
+            }
+            else if(choix == 2)
+            {
+                defx = 12;
+                defy = 12;
+            }
         }
         time_t start, end;
         time(&start);
@@ -63,7 +90,10 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
             if(validation == 1)
             {
                 draw_sprite(fond, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
-                dessin_haut_arbre(fond, tabcases);
+                if(choix == 1)
+                {
+                    dessin_haut_arbre(fond, tabcases);
+                }
                 Sleep(500);
                 done = 1;
             }
@@ -85,7 +115,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(fond);
 }
 
-void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond)
+void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond,int choix)
 {
     //t_cases** tabcases;
     t_chemin* Lechemin;
@@ -113,7 +143,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
         personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
     }
     clear_bitmap(fond);
-    fond = chargement_fond(tabcases);
+    fond = chargement_fond(tabcases, choix);
     int done = 0;
     int ind = 2;
     int val = 0;
@@ -126,7 +156,10 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         couleur_case_bis(tabjoueur,tabcases,indice,buffer);
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
-        dessin_haut_arbre(buffer,tabcases);
+        if(choix == 1)
+        {
+            dessin_haut_arbre(buffer,tabcases);
+        }
         draw_sprite(buffer, croix, 1270,740);
         if(mouse_b&1)
         {
@@ -134,11 +167,13 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
             {
                 clear_bitmap(buffer);
                 clear_bitmap(fond);
-                fond = chargement_fond(tabcases);
+                fond = chargement_fond(tabcases, choix);
                 blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
                 chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
-                dessin_haut_arbre(buffer,tabcases);
-                dessin_haut_arbre(buffer,tabcases);
+                if(choix == 1)
+                {
+                    dessin_haut_arbre(buffer,tabcases);
+                }
                 blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 done = 3;
             }
@@ -159,7 +194,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                     tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
                     clear_bitmap(buffer);
                     clear_bitmap(fond);
-                    fond = chargement_fond(tabcases);
+                    fond = chargement_fond(tabcases, choix);
                     blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
                     if(Lechemin[ind+1].x == Lechemin[ind].x +1)
                     {
@@ -174,7 +209,10 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                         etat = 1;
                     }
                     chargement_perso(tabjoueur,indice,nbrjoueur,buffer, etat);
-                    dessin_haut_arbre(buffer,tabcases);
+                    if(choix == 1)
+                    {
+                        dessin_haut_arbre(buffer,tabcases);
+                    }
                     blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
                     done = 1;
@@ -187,12 +225,13 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                     tabjoueur[indice]->classes.cord_y = tabcases[cord_y/50][cord_x/50].y;
                     clear_bitmap(buffer);
                     clear_bitmap(fond);
-                    fond = chargement_fond(tabcases);
+                    fond = chargement_fond(tabcases, choix);
                     blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
                     chargement_perso(tabjoueur,indice,nbrjoueur,buffer, 0);
-                    dessin_haut_arbre(buffer,tabcases);
-                    //draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
-                    dessin_haut_arbre(buffer,tabcases);
+                    if(choix == 1)
+                    {
+                        dessin_haut_arbre(buffer,tabcases);
+                    }
                     blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
                     done = 1;
