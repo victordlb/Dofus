@@ -19,7 +19,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     for(int i=0; i<nbrjoueur; i++)
     {
         fond = charger_map(tabcases);
-        chargement_perso(tabjoueur,i,nbrjoueur,fond);
+        chargement_perso(tabjoueur,i,nbrjoueur,fond,0);
         dessin_haut_arbre(fond, tabcases);
         temps = 0;
         textprintf_ex(fond, font, 500,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART (vous avez 15secondes)");
@@ -97,25 +97,35 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     BITMAP* buffer;
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
     if(strcmp(tabjoueur[indice]->classes.nom, "luffy")==0)
+    {
         personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
+    }
     else if(strcmp(tabjoueur[indice]->classes.nom, "robin")==0)
+    {
         personnage = load_bitmap("documents/perso/robin/robin standby.bmp", NULL);
+    }
     else if(strcmp(tabjoueur[indice]->classes.nom,"sanji") == 0)
+    {
         personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
+    }
     else if(strcmp(tabjoueur[indice]->classes.nom, "franky") == 0)
+    {
         personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
+    }
     clear_bitmap(fond);
     fond = chargement_fond(tabcases);
     int done = 0;
     int ind = 2;
     int val = 0;
-    //djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50);
+    int cord_x;
+    int cord_y;
+    int etat;
     while(done == 0)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         couleur_case_bis(tabjoueur,tabcases,indice,buffer);
-        chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+        chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
         dessin_haut_arbre(buffer,tabcases);
         draw_sprite(buffer, croix, 1270,740);
         if(mouse_b&1)
@@ -126,7 +136,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                 clear_bitmap(fond);
                 fond = chargement_fond(tabcases);
                 blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
-                chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                 dessin_haut_arbre(buffer,tabcases);
                 dessin_haut_arbre(buffer,tabcases);
                 blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
@@ -134,25 +144,31 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
             }
             if(possibilite_deplacement_bis(tabjoueur, tabcases,indice,mouse_x, mouse_y)==1)
             {
+                cord_x = mouse_x;
+                cord_y = mouse_y;
                 Lechemin = djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50, mouse_x/50, mouse_y/50);
-                /*printf("depart :%d/%d\n",tabjoueur[indice]->classes.cord_x/50,tabjoueur[indice]->classes.cord_y/50  );
-                printf("arrivee : %d/%d\n",mouse_x/50, mouse_y/50 );
-                for(int i = 2; i<Lechemin[0].taille+1; i++)
+                while(ind <= Lechemin[0].taille)
                 {
-                    printf("coordonne :%d/%d\n", Lechemin[i].x, Lechemin[i].y);
-                }
-                printf("coordonne :%d/%d\n", mouse_x/50, mouse_y/50);*/
-                while(ind < Lechemin[0].taille+1)
-                {
+
                     tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
                     tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
                     clear_bitmap(buffer);
                     clear_bitmap(fond);
                     fond = chargement_fond(tabcases);
                     blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
-                    dessin_haut_arbre(buffer,tabcases);
-                    draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
+                    if(Lechemin[ind+1].x == Lechemin[ind].x +1)
+                    {
+                        etat = 2;
+                    }
+                    if(Lechemin[ind+1].x == Lechemin[ind].x -1)
+                    {
+                        etat = 3;
+                    }
+                    if(Lechemin[ind+1].y == Lechemin[ind].y +1 || Lechemin[ind+1].y == Lechemin[ind].y -1)
+                    {
+                        etat = 1;
+                    }
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer, etat);
                     dessin_haut_arbre(buffer,tabcases);
                     blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
@@ -162,15 +178,15 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                 }
                 if(val == 1)
                 {
-                    tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
-                    tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
+                    tabjoueur[indice]->classes.cord_x = tabcases[cord_y/50][cord_x/50].x;
+                    tabjoueur[indice]->classes.cord_y = tabcases[cord_y/50][cord_x/50].y;
                     clear_bitmap(buffer);
                     clear_bitmap(fond);
                     fond = chargement_fond(tabcases);
                     blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer, 0);
                     dessin_haut_arbre(buffer,tabcases);
-                    draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
+                    //draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
                     dessin_haut_arbre(buffer,tabcases);
                     blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
