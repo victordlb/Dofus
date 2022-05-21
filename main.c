@@ -6,11 +6,7 @@
 
 int main()
 {
-    //lancement();
-    //initialisation();
-    //deplacement();
-    printf("Salut a tous\n");
-    dessin_ligne();
-    ///ROBIN
+    lancement();
     return 0;
 }END_OF_MAIN();
+

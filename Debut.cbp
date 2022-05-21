@@ -31,6 +31,9 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="attaque.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="header.h" />
 		<Unit filename="liste.c">
 			<Option compilerVar="CC" />
@@ -39,6 +42,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="map.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sauvegarde et chargement.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="sousprog.c">
