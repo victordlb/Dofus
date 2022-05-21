@@ -282,7 +282,11 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
             draw_sprite(buffer, curseur, x +20, 65);
             draw_sprite(buffer, tete_perso, x, 20);
         }
-        if(indice != tabjoueur[i]->classes.ID-1)
+        if(tabjoueur[i]->classes.PV <=0)
+        {
+            draw_sprite(buffer, personnage4, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
+        }
+        else if(indice != tabjoueur[i]->classes.ID-1)
         {
             draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
         }
@@ -312,8 +316,16 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
         pourcent_pv = (tabjoueur[i]->classes.PV*100)/tabjoueur[i]->classes.PV_init;
         cord_pourcent_pv = (36*pourcent_pv)/100;
         cord_pourcent_pv = cord_pourcent_pv + 8;
-        draw_sprite(buffer, pv,tabjoueur[i]->classes.cord_x-10, tabjoueur[i]->classes.cord_y-65 );
-        rectfill(buffer,tabjoueur[i]->classes.cord_x+8, tabjoueur[i]->classes.cord_y-61, tabjoueur[i]->classes.cord_x+cord_pourcent_pv, tabjoueur[i]->classes.cord_y-54, makecol(10,224,44));
+        if(tabjoueur[i]->classes.PV <= 0)
+        {
+            draw_sprite(buffer, pv,tabjoueur[i]->classes.cord_x-10, tabjoueur[i]->classes.cord_y-15 );
+            rectfill(buffer,tabjoueur[i]->classes.cord_x+8, tabjoueur[i]->classes.cord_y-11, tabjoueur[i]->classes.cord_x+cord_pourcent_pv, tabjoueur[i]->classes.cord_y-4, makecol(10,224,44));
+        }
+        else
+        {
+            draw_sprite(buffer, pv,tabjoueur[i]->classes.cord_x-10, tabjoueur[i]->classes.cord_y-65 );
+            rectfill(buffer,tabjoueur[i]->classes.cord_x+8, tabjoueur[i]->classes.cord_y-61, tabjoueur[i]->classes.cord_x+cord_pourcent_pv, tabjoueur[i]->classes.cord_y-54, makecol(10,224,44));
+        }
         if(indice != tabjoueur[i]->classes.ID-1)
             draw_sprite(buffer, tete_perso_c, x, 20);
         for(int i = 0 ; i<5; i++)
