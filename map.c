@@ -227,6 +227,11 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     draw_sprite(buffer, logodpl, 1260,760);
     draw_sprite(buffer, logoatt, 1310, 760);
     draw_sprite(buffer, logopass, 1360,760);
+    rectfill(buffer, 5, 160, 120,230, makecol(255,185,61));
+    textprintf_ex(buffer,font,8,170,makecol(255,255,255),-1,"%s", tabjoueur[indice]->pseudo);
+    textprintf_ex(buffer,font,8,190,makecol(255,255,255),-1,"PV : %d", tabjoueur[indice]->classes.PV);
+    textprintf_ex(buffer,font,8,200,makecol(255,255,255),-1,"PM : %d", tabjoueur[indice]->classes.PM);
+    textprintf_ex(buffer,font,8,210,makecol(255,255,255),-1,"PA : %d", tabjoueur[indice]->classes.PA);
     for(int i=0; i<nbrjoueur; i++)
     {
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
