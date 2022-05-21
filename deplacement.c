@@ -108,7 +108,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     fond = chargement_fond(tabcases);
     int done = 0;
     int ind = 0;
-    // djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50);
+    //djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50);
     while(done == 0)
     {
         ///ici pour la map
@@ -337,15 +337,15 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     return Lechemin;
 }
 
-void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
+/*t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers)
 {
-    int pos_x_actuelle=pos_x_pers,pos_y_actuelle=pos_y_pers;
+    int pos_col_actuelle=pos_col_pers,pos_lig_actuelle=pos_lig_pers;
     int distance[16][28];
     int verif[16][28];
-    int predecesseur_x[16][28],predecesseur_y[16][28];
-    int arrivee_x, arrivee_y;
-    int new_x,new_y;
-
+    int predecesseur_col[16][28],predecesseur_lig[16][28];
+    int arrivee_col, arrivee_lig;
+    int new_col,new_lig;
+    t_chemin* monchemin;
 
 
     for(int i=0; i<16; i++)
@@ -354,89 +354,89 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
         {
             distance[i][j]=1000;
             verif[i][j]=0;//non gris
-            predecesseur_x[i][j]=-1;
-            predecesseur_y[i][j]=-1;
-            printf("%d\n", tabcases[i][j].obstacle);
+            predecesseur_col[i][j]=-1;
+            predecesseur_lig[i][j]=-1;
+            //printf("%d\n", tabcases[i][j].obstacle);
         }
     }
-    printf("coord_x :%d / coord_y :%d\n",pos_y_actuelle,pos_x_actuelle);
+    printf("coord_x :%d / coord_y :%d\n",pos_col_actuelle,pos_lig_actuelle);
 
     printf("Saisir le sommet d'arrivee en x\n");
-    scanf("%d",&arrivee_x);
+    scanf("%d",&arrivee_col);
 
     printf("Saisir le sommet d'arrivee en y\n");
-    scanf("%d",&arrivee_y);
+    scanf("%d",&arrivee_lig);
 
-    distance[pos_y_pers][pos_x_pers]=0;
-    predecesseur_x[pos_y_pers][pos_x_pers]=-2;
-    predecesseur_y[pos_y_pers][pos_x_pers]=-2;
-    verif[pos_y_pers][pos_x_pers]=1;
+    distance[pos_lig_pers][pos_col_pers]=0;
+    predecesseur_col[pos_lig_pers][pos_col_pers]=-2;
+    predecesseur_lig[pos_lig_pers][pos_col_pers]=-2;
+    printf("predecesseur : %d\n", predecesseur_lig[pos_lig_pers][pos_col_pers]);
+    verif[pos_lig_pers][pos_col_pers]=1;
 
     do
     {
 
-        //predecesseur a gauche
-        if(pos_y_actuelle-1!=-1)//depassement tab
-        {
-
-            if(tabcases[pos_y_actuelle-1][pos_x_actuelle].obstacle==0)//obstacle ?
-            {
-
-                if(distance[pos_y_actuelle-1][pos_x_actuelle]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
-                {
-                    //si oui
-
-                    distance[pos_y_actuelle-1][pos_x_actuelle]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle-1][pos_x_actuelle]=pos_x_actuelle;
-                    predecesseur_y[pos_y_actuelle-1][pos_x_actuelle]=pos_y_actuelle;
-                    printf("test1 \n");
-                }
-            }
-        }
-
         //predecesseur en haut
-        if(pos_x_actuelle-1!=-1)//depassement tab
+        if(pos_lig_actuelle-1 >= 0)//depassement tab
         {
-            if(tabcases[pos_y_actuelle][pos_x_actuelle-1].obstacle==0)//obstacle ?
+
+            if(tabcases[pos_lig_actuelle-1][pos_col_actuelle].obstacle==0)//obstacle ?
             {
-                if(distance[pos_y_actuelle][pos_x_actuelle-1]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+
+                if(distance[pos_lig_actuelle-1][pos_col_actuelle]>distance[pos_lig_actuelle][pos_col_actuelle]+1)//meilleur chemin ?
                 {
                     //si oui
-                    distance[pos_y_actuelle][pos_x_actuelle-1]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle][pos_x_actuelle-1]=pos_x_actuelle;
-                    predecesseur_y[pos_y_actuelle][pos_x_actuelle-1]=pos_y_actuelle;
+
+                    distance[pos_lig_actuelle-1][pos_col_actuelle]=distance[pos_lig_actuelle][pos_col_actuelle]+1;
+                    predecesseur_col[pos_lig_actuelle-1][pos_col_actuelle]=pos_col_actuelle;
+                    predecesseur_lig[pos_lig_actuelle-1][pos_col_actuelle]=pos_lig_actuelle;
                 }
             }
         }
 
-
-        //predecesseur a droite
-        if(pos_y_actuelle+1!=16)//depassement tab
+        //predecesseur a gauche
+        if(pos_col_actuelle-1 >=0)//depassement tab
         {
-            if(tabcases[pos_y_actuelle+1][pos_x_actuelle].obstacle==0)//obstacle ?
+            if(tabcases[pos_lig_actuelle][pos_col_actuelle-1].obstacle==0)//obstacle ?
             {
-                if(distance[pos_y_actuelle+1][pos_x_actuelle]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+                if(distance[pos_lig_actuelle][pos_col_actuelle-1]>distance[pos_lig_actuelle][pos_col_actuelle]+1)//meilleur chemin ?
                 {
                     //si oui
-                    distance[pos_y_actuelle+1][pos_x_actuelle]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle+1][pos_x_actuelle]=pos_x_actuelle;
-                    predecesseur_y[pos_y_actuelle+1][pos_x_actuelle]=pos_y_actuelle;
+                    distance[pos_lig_actuelle][pos_col_actuelle-1]=distance[pos_lig_actuelle][pos_col_actuelle]+1;
+                    predecesseur_col[pos_lig_actuelle][pos_col_actuelle-1]=pos_col_actuelle;
+                    predecesseur_lig[pos_lig_actuelle][pos_col_actuelle-1]=pos_lig_actuelle;
                 }
             }
         }
 
 
         //predecesseur en bas
-        if(pos_x_actuelle+1!=28)//depassement tab
+        if(pos_lig_actuelle+1 < 16)//depassement tab
         {
-            if(tabcases[pos_y_actuelle][pos_x_actuelle+1].obstacle==0)//obstacle ?
+            if(tabcases[pos_lig_actuelle+1][pos_col_actuelle].obstacle==0)//obstacle ?
             {
-                if(distance[pos_y_actuelle][pos_x_actuelle+1]>distance[pos_y_actuelle][pos_x_actuelle]+1)//meilleur chemin ?
+                if(distance[pos_lig_actuelle+1][pos_col_actuelle]>distance[pos_lig_actuelle][pos_col_actuelle]+1)//meilleur chemin ?
                 {
                     //si oui
-                    distance[pos_y_actuelle][pos_x_actuelle+1]=distance[pos_y_actuelle][pos_x_actuelle]+1;
-                    predecesseur_x[pos_y_actuelle][pos_x_actuelle+1]=pos_x_actuelle;
-                    predecesseur_y[pos_y_actuelle][pos_x_actuelle+1]=pos_y_actuelle;
+                    distance[pos_lig_actuelle+1][pos_col_actuelle]=distance[pos_lig_actuelle][pos_col_actuelle]+1;
+                    predecesseur_col[pos_lig_actuelle+1][pos_col_actuelle]=pos_col_actuelle;
+                    predecesseur_lig[pos_lig_actuelle+1][pos_col_actuelle]=pos_lig_actuelle;
+                }
+            }
+        }
+
+
+        //predecesseur a droite
+        if(pos_col_actuelle+1 < 28)//depassement tab
+        {
+            if(tabcases[pos_lig_actuelle][pos_col_actuelle+1].obstacle==0)//obstacle ?
+            {
+                if(distance[pos_lig_actuelle][pos_col_actuelle+1]>distance[pos_lig_actuelle][pos_col_actuelle]+1)//meilleur chemin ?
+                {
+                    //si oui
+                    distance[pos_lig_actuelle][pos_col_actuelle+1]=distance[pos_lig_actuelle][pos_col_actuelle]+1;
+                    predecesseur_col[pos_lig_actuelle][pos_col_actuelle+1]=pos_col_actuelle;
+                    predecesseur_lig[pos_lig_actuelle][pos_col_actuelle+1]=pos_lig_actuelle;
                 }
             }
         }
@@ -444,7 +444,7 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
 
 
         int minimum=1000;
-        int indice_min_x,indice_min_y;
+        int indice_min_col,indice_min_lig;
         for(int i=0; i<16; i++)
         {
             for(int j=0; j<28; j++)
@@ -454,8 +454,8 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
                     if(minimum>distance[i][j])
                     {
                         minimum=distance[i][j];
-                        indice_min_x=i;
-                        indice_min_y=j;
+                        indice_min_col=j;
+                        indice_min_lig=i;
                     }
                 }
 
@@ -463,32 +463,33 @@ void djikstra(t_cases** tabcases, int pos_x_pers,int pos_y_pers)
         }
 
 
-        verif[indice_min_x][indice_min_y]=1;
-        pos_y_actuelle=indice_min_x;
-        pos_x_actuelle=indice_min_y;
+        verif[indice_min_lig][indice_min_col]=1;
+        pos_lig_actuelle=indice_min_lig;
+        pos_col_actuelle=indice_min_col;
 
 
     }
-    while(verif[arrivee_y][arrivee_x]==0);
+    while(verif[arrivee_lig][arrivee_col]==0);
     printf("test2\n");
-
-    tabcases[arrivee_x][arrivee_y];
-    printf("%dx %dy|",predecesseur_x[arrivee_y][arrivee_x],predecesseur_y[arrivee_y][arrivee_x]);
-    printf("test3\n");
-    int compteur = 0;
-    do
+    monchemin = (t_chemin*)malloc(sizeof(t_chemin)*distance[arrivee_lig][arrivee_col]+1 );
+    monchemin[0].taille = distance[arrivee_lig][arrivee_col];
+    int indice = distance[arrivee_lig][arrivee_col];
+    printf("%dx %dy %d|\n",arrivee_col,arrivee_lig, distance[arrivee_lig][arrivee_col]);
+    new_col=predecesseur_col[arrivee_lig][arrivee_col];
+    int tampon = 0;
+    new_lig=predecesseur_lig[arrivee_lig][arrivee_col];
+    while(new_col!=-2 && new_lig != -2)
     {
-
-        new_x=predecesseur_x[predecesseur_y[arrivee_y][arrivee_x]][predecesseur_x[arrivee_y][arrivee_x]];
-
-        new_y=predecesseur_y[predecesseur_y[arrivee_y][arrivee_x]][predecesseur_x[arrivee_y][arrivee_x]];
-
-        printf("%dx %dy poids %d|\n",new_x,new_y,distance[new_x][new_y]);
-        compteur++;
-
-
+        printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
+        tampon = new_col;
+        monchemin[indice].x/50 = new_col;
+        monchemin[indice].y/50 = new_lig;
+        new_col = predecesseur_col[new_lig][new_col];
+        new_lig = predecesseur_lig[new_lig][tampon];
+        indice--;
     }
-    while(new_x!=-2 && compteur != 10);
+   // printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
 
 
-}
+ return monchemin;
+}*/
