@@ -137,10 +137,18 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
             }
             if(mouse_x>802 && mouse_x<872 && mouse_y>737 && mouse_y<800)
             {
-                draw_sprite(fond, select, 495 + (4*75), 730);
+                clear_bitmap(fond);
+                fond = chargement_fond(tabcases);
+                draw_sprite(fond, select, 495 + (3*75), 730);
+                dessinportemelee(tabjoueur,tabcases,indice,8,fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done =1;
+                while(done2 == 0)
+                {
+                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,8,fond);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                }
+                done = 1;
             }
             if(mouse_x > 1320 && mouse_x < 1350 && mouse_y >740 && mouse_y < 770)
             {
@@ -312,6 +320,42 @@ int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indi
         return 0;
 }
 
+int possibmelee(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
+{
+    int Ycase = tabcases[Y/50][X/50].y/50;
+    int Xcase = tabcases[Y/50][X/50].x/50;
+    int Yjoueur = tabjoueur[indice]->classes.cord_y/50;
+    int Xjoueur = tabjoueur[indice]->classes.cord_x/50;
+    if(tabcases[Y/50][X/50].obstacle == 0)
+    {
+        if((Xcase == Xjoueur && Ycase == Yjoueur-1) || (Xcase == Xjoueur-1 && Ycase == Yjoueur) ||(Xcase == Xjoueur && Ycase == Yjoueur+1)||(Xcase == Xjoueur+1 && Ycase == Yjoueur))
+        {
+            return 1;
+        }
+        else
+            return 0;
+    }
+    else
+        return 0;
+}
+
+void dessinportemelee(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
+{
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            if(possibmelee(tabjoueur,tabcases[i][j].x, tabcases[i][j].y, tabcases, indice, numsort) == 1)
+            {
+                if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
+                {
+                    rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
+                }
+            }
+        }
+    }
+}
+
 int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, int numsort, BITMAP* fond)
 {
     BITMAP* anime;
@@ -399,7 +443,27 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                 return 0;
         }
         else
-            return 0;
+        {
+            if(possibmelee(tabjoueur,mouse_x,mouse_y,tabcases,indice,8) == 1)
+            {
+                for(int i = 0; i<nbrjoueur; i++)
+                {
+                    if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
+                    {
+                        tabjoueur[i]->classes.PV -= 3;
+                        draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
+                        printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
+                        if(tabjoueur[i]->classes.PV <=0)
+                        {
+                            tabjoueur[i]->perdu = 1;
+                        }
+                        return 1;
+                    }
+                }
+                printf("personne sur cette case\n");
+                return 1;
+            }
+        }
         return 0;
     }
     else
@@ -534,7 +598,7 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
         {
             if(mouse_y > 590 && mouse_y < 620 && mouse_x > pos_x_bis && mouse_x < pos_x_bis+30)
             {
-                 stop = 9;
+                stop = 9;
             }
         }
     }
