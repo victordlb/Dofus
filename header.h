@@ -18,6 +18,7 @@ typedef struct classe
     char* nom;
     int ID;
     int PV;
+    int PV_init;
     int PM;
     int PA;
     t_attaque* mesattaques;

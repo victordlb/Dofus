@@ -143,6 +143,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 done = 1;
             }
         }
+
     }
     Sleep(1000);
     destroy_bitmap(select);

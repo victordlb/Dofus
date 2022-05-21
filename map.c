@@ -480,6 +480,8 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* casesort = load_bitmap("documents/props/case sort.bmp", NULL);
     BITMAP* fond;
     BITMAP* pause;
+    BITMAP* pv;
+    pv = load_bitmap("documents/props/pv barre.bmp", NULL);
     pause = load_bitmap("documents/props/pause.bmp", NULL);
     curseur = load_bitmap("documents/props/curseur_perso.bmp", NULL);
     fond = load_bitmap("documents/fond/fond tete.bmp", NULL);
@@ -492,6 +494,8 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* cadre;
     cadre = load_bitmap("documents/props/cadre blanc.bmp", NULL);
     int x;
+    int pourcent_pv;
+    int cord_pourcent_pv;
     draw_sprite(buffer, fond, 10,10);
     draw_sprite(buffer, pause, 1340,5);
     draw_sprite(buffer, cadre, 1250,750);
@@ -540,6 +544,11 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
             draw_sprite(buffer, tete_perso, x, 20);
         }
         draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+        draw_sprite(buffer, pv,tabjoueur[i]->classes.cord_x-10, tabjoueur[i]->classes.cord_y-65 );
+        pourcent_pv = (tabjoueur[i]->classes.PV*100)/tabjoueur[i]->classes.PV_init;
+        cord_pourcent_pv = (36*pourcent_pv)/100;
+        cord_pourcent_pv = cord_pourcent_pv + 8;
+        rectfill(buffer,tabjoueur[i]->classes.cord_x+8, tabjoueur[i]->classes.cord_y-61, tabjoueur[i]->classes.cord_x+cord_pourcent_pv, tabjoueur[i]->classes.cord_y-54, makecol(10,224,44));
         if(indice != tabjoueur[i]->classes.ID-1)
             draw_sprite(buffer, tete_perso_c, x, 20);
         for(int i = 0 ; i<5; i++)
