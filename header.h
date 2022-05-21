@@ -88,7 +88,7 @@ int testvert(int vert);
 int testrouge(int rouge);
 int testbleu(int bleu);
 BITMAP* chargement_fond(t_cases** tabcases);
-void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer);
+void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer, int etat);
 
 ///deplacement
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);

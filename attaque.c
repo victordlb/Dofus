@@ -25,7 +25,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 if(mouse_x > 490 && mouse_x < 510)
                 {
                     buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer, 0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur,indice,1,buffer);
                     clear_bitmap(buffer);
@@ -35,7 +35,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 if(mouse_x > 565 && mouse_x < 585)
                 {
                     buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 2, buffer);
                     clear_bitmap(buffer);
@@ -45,7 +45,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 if(mouse_x > 640 && mouse_x < 660)
                 {
                     buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 3, buffer);
                     clear_bitmap(buffer);
@@ -55,7 +55,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 if(mouse_x > 715 && mouse_x < 735)
                 {
                     buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 4, buffer);
                     clear_bitmap(buffer);
@@ -65,7 +65,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 if(mouse_x > 792 && mouse_x < 812)
                 {
                     buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 5, buffer);
                     clear_bitmap(buffer);
@@ -81,7 +81,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495, 730);
                 porteSort(tabcases, tabjoueur, indice, 0, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
@@ -96,7 +96,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (1*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 1, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
@@ -111,7 +111,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (2*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 2, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
@@ -126,7 +126,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (3*75), 730);
                 porteSort(tabcases, tabjoueur, indice, 3, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {
@@ -141,7 +141,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 fond = chargement_fond(tabcases);
                 draw_sprite(fond, select, 495 + (3*75), 730);
                 dessinportemelee(tabjoueur,tabcases,indice,8,fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+                chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                 blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 while(done2 == 0)
                 {

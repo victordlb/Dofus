@@ -130,7 +130,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
     tabcases = chargement_map();
     fond = chargement_fond(tabcases);
     float temps = 0;
-    chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
     dessin_haut_arbre(fond,tabcases);
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
@@ -138,6 +138,11 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
     time(&start);
     while(done == 0)
     {
+        if(key[KEY_P])
+        {
+            tabjoueur[indice]->classes.PV = 0;
+            done = 8;
+        }
         if(mouse_b&1)
         {
             if(mouse_x > 1340 && mouse_x < 1380 && mouse_y >5 && mouse_y < 45)
@@ -152,7 +157,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             if(mouse_x > 1300 && mouse_x < 1350 && mouse_y >750 && mouse_y < 800)
             {
                 buffer = chargement_fond(tabcases);
-                chargement_perso(tabjoueur,indice,nbrjoueur, buffer);
+                chargement_perso(tabjoueur,indice,nbrjoueur, buffer,0);
                 dessin_haut_arbre(buffer,tabcases);
                 combat(tabcases,tabjoueur,indice,nbrjoueur,buffer);
                 clear_bitmap(buffer);

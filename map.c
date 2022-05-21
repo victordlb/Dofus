@@ -131,9 +131,9 @@ BITMAP* charger_map(t_cases** tabcases)
 void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases)
 {
     BITMAP* cinq = load_bitmap("documents/lamap/5.bmp", NULL);
-    for(int i=0; i<16;i++)
+    for(int i=0; i<16; i++)
     {
-        for(int j=0; j<28;j++)
+        for(int j=0; j<28; j++)
         {
             if(tabcases[i][j].cases == 5)
             {
@@ -191,7 +191,7 @@ BITMAP* chargement_fond(t_cases** tabcases)
     return fond;
 }
 
-void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer)
+void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer, int etat)
 {
     BITMAP* personnage;
     BITMAP* tete_perso;
@@ -201,6 +201,9 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     BITMAP* fond;
     BITMAP* pause;
     BITMAP* pv;
+    BITMAP* personnage1;
+    BITMAP* personnage2;
+    BITMAP* personnage4;
     pv = load_bitmap("documents/props/pv barre.bmp", NULL);
     pause = load_bitmap("documents/props/pause.bmp", NULL);
     curseur = load_bitmap("documents/props/curseur_perso.bmp", NULL);
@@ -229,24 +232,40 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
         if(strcmp(tabjoueur[i]->classes.nom, "luffy")==0)
         {
             personnage = load_bitmap("documents/perso/luffy/luffy standby.bmp", NULL);
+            personnage1 = load_bitmap("documents/perso/luffy/luffy jump.bmp", NULL);
+            personnage2 = load_bitmap("documents/perso/luffy/luffy dep1.bmp", NULL);
+            personnage4 = load_bitmap("documents/perso/luffy/luffy dead.bmp", NULL);
+
             tete_perso = load_bitmap("documents/perso/luffy/luffy tour.bmp", NULL);
             tete_perso_c = load_bitmap("documents/perso/luffy/luffy tour_c.bmp", NULL);
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
         {
             personnage = load_bitmap("documents/perso/robin/robin standby.bmp", NULL);
+            personnage1 = load_bitmap("documents/perso/robin/robin jump.bmp", NULL);
+            personnage2 = load_bitmap("documents/perso/robin/robin dep1.bmp", NULL);
+            personnage4 = load_bitmap("documents/perso/robin/robin dead.bmp", NULL);
+
             tete_perso = load_bitmap("documents/perso/robin/robin tour.bmp", NULL);
             tete_perso_c = load_bitmap("documents/perso/robin/robin tour_c.bmp", NULL);
         }
         else if(strcmp(tabjoueur[i]->classes.nom,"sanji") == 0)
         {
             personnage = load_bitmap("documents/perso/sanji/sanji standby.bmp", NULL);
+            personnage1 = load_bitmap("documents/perso/sanji/sanji jump.bmp", NULL);
+            personnage2 = load_bitmap("documents/perso/sanji/sanji dep1.bmp", NULL);
+            personnage4 = load_bitmap("documents/perso/sanji/sanji dead.bmp", NULL);
+
             tete_perso = load_bitmap("documents/perso/sanji/sanji tour.bmp", NULL);
             tete_perso_c = load_bitmap("documents/perso/sanji/sanji tour_c.bmp", NULL);
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
         {
             personnage = load_bitmap("documents/perso/franky/franky standby.bmp", NULL);
+            personnage1 = load_bitmap("documents/perso/franky/franky jump.bmp", NULL);
+            personnage2 = load_bitmap("documents/perso/franky/franky dep1.bmp", NULL);
+            personnage4 = load_bitmap("documents/perso/franky/franky dead.bmp", NULL);
+
             tete_perso = load_bitmap("documents/perso/franky/franky tour.bmp", NULL);
             tete_perso_c = load_bitmap("documents/perso/franky/franky tour_c.bmp", NULL);
         }
@@ -263,11 +282,37 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
             draw_sprite(buffer, curseur, x +20, 65);
             draw_sprite(buffer, tete_perso, x, 20);
         }
-        draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
-        draw_sprite(buffer, pv,tabjoueur[i]->classes.cord_x-10, tabjoueur[i]->classes.cord_y-65 );
+        if(indice != tabjoueur[i]->classes.ID-1)
+        {
+            draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+        }
+        else
+        {
+            if(etat == 0)
+            {
+                draw_sprite(buffer, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+            }
+            if(etat == 1)
+            {
+                draw_sprite(buffer, personnage1, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+            }
+            if(etat == 2)
+            {
+                draw_sprite(buffer, personnage2, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+            }
+            if(etat == 3)
+            {
+                draw_sprite_h_flip(buffer,personnage2,tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+            }
+            if(etat == 4)
+            {
+                draw_sprite(buffer, personnage4, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
+            }
+        }
         pourcent_pv = (tabjoueur[i]->classes.PV*100)/tabjoueur[i]->classes.PV_init;
         cord_pourcent_pv = (36*pourcent_pv)/100;
         cord_pourcent_pv = cord_pourcent_pv + 8;
+        draw_sprite(buffer, pv,tabjoueur[i]->classes.cord_x-10, tabjoueur[i]->classes.cord_y-65 );
         rectfill(buffer,tabjoueur[i]->classes.cord_x+8, tabjoueur[i]->classes.cord_y-61, tabjoueur[i]->classes.cord_x+cord_pourcent_pv, tabjoueur[i]->classes.cord_y-54, makecol(10,224,44));
         if(indice != tabjoueur[i]->classes.ID-1)
             draw_sprite(buffer, tete_perso_c, x, 20);
