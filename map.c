@@ -128,6 +128,21 @@ BITMAP* charger_map(t_cases** tabcases)
     return fond;
 }
 
+void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases)
+{
+    BITMAP* cinq = load_bitmap("documents/lamap/5.bmp", NULL);
+    for(int i=0; i<16;i++)
+    {
+        for(int j=0; j<28;j++)
+        {
+            if(tabcases[i][j].cases == 5)
+            {
+                draw_sprite(fond, cinq, tabcases[i][j].x, tabcases[i][j].y);
+            }
+        }
+    }
+}
+
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond)
 {
     //t_cases** tabcases;
@@ -156,6 +171,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
         couleur_case(tabjoueur,tabcases,indice,buffer);
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+        dessin_haut_arbre(buffer,tabcases);
         if(mouse_b&1)
         {
             if(possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
@@ -174,7 +190,9 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                     fond = chargement_fond(tabcases);
                     blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
                     chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    dessin_haut_arbre(buffer,tabcases);
                     draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
+                    dessin_haut_arbre(buffer,tabcases);
                     blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
                     done = 1;
@@ -208,6 +226,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
     {
         fond = charger_map(tabcases);
         chargement_perso(tabjoueur,i,nbrjoueur,fond);
+        dessin_haut_arbre(fond, tabcases);
         temps = 0;
         textprintf_ex(fond, font, 500,20,makecol(0,0,0), -1, "CHOISISSEZ VOTRE POSITION DE DEPART (vous avez 15secondes)");
         done = 0;
@@ -250,6 +269,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur)
             if(validation == 1)
             {
                 draw_sprite(fond, personnage, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y-50);
+                dessin_haut_arbre(fond, tabcases);
                 Sleep(500);
                 done = 1;
             }
@@ -339,7 +359,26 @@ void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* 
                     {
                         if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
                         {
-                            rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                            if(tabcases[i][j].cases == 5)
+                            {
+                                hline(fond, tabcases[i][j].x, tabcases[i][j].y-2,tabcases[i][j].x+50, makecol(38,200,94));
+                                hline(fond, tabcases[i][j].x, tabcases[i][j].y-1,tabcases[i][j].x+50, makecol(38,200,94));
+                                hline(fond, tabcases[i][j].x, tabcases[i][j].y,tabcases[i][j].x+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+1, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x-1, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+2, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+3, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+50, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+51, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+49, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+48, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+47, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                            }
+                            else
+                            {
+                                rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                            }
                         }
                     }
                 }
@@ -578,6 +617,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
     fond = chargement_fond(tabcases);
     float temps = 0;
     chargement_perso(tabjoueur,indice,nbrjoueur,fond);
+    dessin_haut_arbre(fond,tabcases);
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
     time_t start, end;
@@ -599,6 +639,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             {
                 buffer = chargement_fond(tabcases);
                 chargement_perso(tabjoueur,indice,nbrjoueur, buffer);
+                dessin_haut_arbre(buffer,tabcases);
                 combat(tabcases,tabjoueur,indice,nbrjoueur,buffer);
                 clear_bitmap(buffer);
                 blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);

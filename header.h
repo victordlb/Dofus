@@ -82,6 +82,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
 void dessin_ligne();
 t_cases** chargement_map();
 BITMAP* charger_map(t_cases** tabcases);
+void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases);
 
 
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
