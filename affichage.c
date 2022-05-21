@@ -1017,7 +1017,7 @@ int choix_map()
         draw_sprite(fond, map1, 100,250);
         draw_sprite(fond,map2,800,250);
         blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        textprintf_ex(fond, font, 650, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MAP");
+        textprintf_ex(fond, font, 600, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MAP");
         if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
         {
             couleur1 = makecol(0,0,0);
