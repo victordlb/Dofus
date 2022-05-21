@@ -92,10 +92,14 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
 
 ///deplacement
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond);
-int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice);
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur);
+t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int arrivee_col, int arrivee_lig);
+void couleur_case_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
+int possibilite_deplacement_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, int X, int Y);
+//ancienne fonction de deplacement non-utilisee dans le code final
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond);
 t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy);
+int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice);
 
 ///sauvegarde et chargement
 void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice);

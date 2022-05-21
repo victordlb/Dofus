@@ -107,13 +107,14 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     clear_bitmap(fond);
     fond = chargement_fond(tabcases);
     int done = 0;
-    int ind = 0;
+    int ind = 2;
+    int val = 0;
     //djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50);
     while(done == 0)
     {
         ///ici pour la map
         blit(fond, buffer,0,0,0,0,SCREEN_W, SCREEN_H);
-        couleur_case(tabjoueur,tabcases,indice,buffer);
+        couleur_case_bis(tabjoueur,tabcases,indice,buffer);
         chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
         dessin_haut_arbre(buffer,tabcases);
         draw_sprite(buffer, croix, 1270,740);
@@ -131,14 +132,17 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                 blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                 done = 3;
             }
-            if(possibilite_deplacement(tabcases, mouse_x, mouse_y, tabjoueur, indice)==1)
+            if(possibilite_deplacement_bis(tabjoueur, tabcases,indice,mouse_x, mouse_y)==1)
             {
-                Lechemin = itineraire(tabcases,tabjoueur,indice,mouse_x, mouse_y);
-                for(int i = 0; i<Lechemin[0].taille; i++)
+                Lechemin = djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50, mouse_x/50, mouse_y/50);
+                /*printf("depart :%d/%d\n",tabjoueur[indice]->classes.cord_x/50,tabjoueur[indice]->classes.cord_y/50  );
+                printf("arrivee : %d/%d\n",mouse_x/50, mouse_y/50 );
+                for(int i = 2; i<Lechemin[0].taille+1; i++)
                 {
                     printf("coordonne :%d/%d\n", Lechemin[i].x, Lechemin[i].y);
                 }
-                while(ind < Lechemin[0].taille)
+                printf("coordonne :%d/%d\n", mouse_x/50, mouse_y/50);*/
+                while(ind < Lechemin[0].taille+1)
                 {
                     tabjoueur[indice]->classes.cord_x = Lechemin[ind].x*50;
                     tabjoueur[indice]->classes.cord_y = Lechemin[ind].y*50;
@@ -153,8 +157,26 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                     blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     Sleep(500);
                     done = 1;
+                    val = 1;
                     ind += 1;
                 }
+                if(val == 1)
+                {
+                    tabjoueur[indice]->classes.cord_x = tabcases[mouse_y/50][mouse_x/50].x;
+                    tabjoueur[indice]->classes.cord_y = tabcases[mouse_y/50][mouse_x/50].y;
+                    clear_bitmap(buffer);
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases);
+                    blit(fond, buffer, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    dessin_haut_arbre(buffer,tabcases);
+                    draw_sprite(buffer, personnage, tabjoueur[indice]->classes.cord_x, tabjoueur[indice]->classes.cord_y-50);
+                    dessin_haut_arbre(buffer,tabcases);
+                    blit(buffer, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    Sleep(500);
+                    done = 1;
+                }
+
             }
         }
         blit(buffer, screen,0,0,0,0,SCREEN_W, SCREEN_H);
@@ -166,184 +188,61 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     destroy_bitmap(buffer);
 }
 
-///(tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) <= (X/50) && (X/50) <= (tabjoueur[indice]->classes.cord_x/50)- (tabjoueur[indice]->classes.PM/2) &&
-int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
+int possibilite_deplacement_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, int X, int Y)
 {
+    t_chemin* Unchemin;
     if(tabcases[Y/50][X/50].obstacle == 0)
     {
-        if(tabjoueur[indice]->classes.cord_x/50 == X/50)
+        Unchemin = djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50, X/50, Y/50);
+        if(Unchemin[0].taille <= tabjoueur[indice]->classes.PM)
         {
-            if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
-            {
-                printf("Possible\n");
-                return 1;
-            }
-            else
-            {
-                printf("Impossible\n");
-                return 0;
-            }
-        }
-        else if(tabjoueur[indice]->classes.cord_y/50 == Y/50 )
-        {
-            if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
-            {
-                printf("Possible\n");
-                return 1;
-            }
-            else
-            {
-                printf("Impossible\n");
-                return 0;
-            }
-        }
-        else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
-        {
-            printf("Possible\n");
             return 1;
         }
         else
         {
-            printf("Impossible\n");
             return 0;
         }
     }
-
     else
     {
-        printf("Impossible\n");
         return 0;
     }
 }
 
-void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
+void couleur_case_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
 {
     t_chemin* Lechemin;
-    for(int i = 0; i<16; i++)
+    for(int i=0; i<16; i++)
     {
         for(int j=0; j<28; j++)
         {
-            Lechemin = itineraire(tabcases,tabjoueur,indice, j*50, i*50);
-            for(int z = 0; z< Lechemin[0].taille ; z++)
+            if(tabcases[i][j].obstacle == 0)
             {
-                if(Lechemin[z].x == tabcases[i][j].x/50 && Lechemin[z].y == tabcases[i][j].y/50)
+                Lechemin = djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50,j,i);
+                if(Lechemin[0].taille <= tabjoueur[indice]->classes.PM)
                 {
-                    if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
+                    if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
                     {
-                        if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
-                        {
-                            if(tabcases[i][j].cases == 5)
-                            {
-                                hline(fond, tabcases[i][j].x, tabcases[i][j].y-2,tabcases[i][j].x+50, makecol(38,200,94));
-                                hline(fond, tabcases[i][j].x, tabcases[i][j].y-1,tabcases[i][j].x+50, makecol(38,200,94));
-                                hline(fond, tabcases[i][j].x, tabcases[i][j].y,tabcases[i][j].x+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+1, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x-1, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+2, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+3, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+50, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+51, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+49, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+48, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                                vline(fond, tabcases[i][j].x+47, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
-                            }
-                            else
-                            {
-                                rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
-                            }
-                        }
+                        rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
                     }
                 }
             }
+            else
+            {
+                continue;
+            }
         }
     }
 }
 
-///Calcul de l'itineraire (pas encore tester mais logiquement fonctionnel)
-t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
-{
-    t_chemin* Lechemin = (t_chemin*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_chemin));
-    int X = tabjoueur[indice]->classes.cord_x/50;
-    int Y = tabjoueur[indice]->classes.cord_y/50;
-    int maxPM = tabjoueur[indice]->classes.PM;
-    int comp = 0;
-    int stop = 0;
-    int obst = 0;
-    int obst2 = 0;
-    while(stop != 1)
-    {
-        if((X == finishx/50 && Y == finishy/50) || comp == maxPM)
-        {
-            stop = 1;
-        }
-        else
-        {
-            if((X < finishx/50 && obst == 0) || obst2 == 1)
-            {
-                if(tabcases[Y][X+1].obstacle == 0)
-                {
-                    X += 1;
-                    obst2 = 0;
-                    Lechemin[comp].x = X;
-                    Lechemin[comp].y = Y;
-                    comp += 1;
-                }
-                else
-                    obst = 1;
-            }
-            else if(X > finishx/50 && obst == 0)
-            {
-                if(tabcases[Y][X-1].obstacle == 0)
-                {
-                    X -= 1;
-                    obst2 = 0;
-                    Lechemin[comp].x = X;
-                    Lechemin[comp].y = Y;
-                    comp += 1;
-                }
-                else
-                    obst = 1;
-            }
-            else if(Y < finishy/50 || obst == 1)
-            {
-                if(tabcases[Y+1][X].obstacle == 0)
-                {
-                    Y += 1;
-                    obst = 0;
-                    Lechemin[comp].x = X;
-                    Lechemin[comp].y = Y;
-                    comp += 1;
-                }
-                else
-                    obst2 = 1;
-            }
-            else if(Y > finishy/50 || obst == 1)
-            {
-                if(tabcases[Y-1][X].obstacle == 0)
-                {
-                    Y -= 1;
-                    obst = 0;
-                    Lechemin[comp].x = X;
-                    Lechemin[comp].y = Y;
-                    comp += 1;
-                }
-                else
-                    obst2 = 1;
-            }
-        }
-    }
-    Lechemin[0].taille = comp;
-    return Lechemin;
-}
 
-/*t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers)
+t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int arrivee_col, int arrivee_lig)
 {
     int pos_col_actuelle=pos_col_pers,pos_lig_actuelle=pos_lig_pers;
     int distance[16][28];
     int verif[16][28];
     int predecesseur_col[16][28],predecesseur_lig[16][28];
-    int arrivee_col, arrivee_lig;
+    //int arrivee_col, arrivee_lig;
     int new_col,new_lig;
     t_chemin* monchemin;
 
@@ -359,18 +258,18 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
             //printf("%d\n", tabcases[i][j].obstacle);
         }
     }
-    printf("coord_x :%d / coord_y :%d\n",pos_col_actuelle,pos_lig_actuelle);
+    //printf("coord_x :%d / coord_y :%d\n",pos_col_actuelle,pos_lig_actuelle);
 
-    printf("Saisir le sommet d'arrivee en x\n");
+    /*printf("Saisir le sommet d'arrivee en x\n");
     scanf("%d",&arrivee_col);
 
     printf("Saisir le sommet d'arrivee en y\n");
-    scanf("%d",&arrivee_lig);
+    scanf("%d",&arrivee_lig);*/
 
     distance[pos_lig_pers][pos_col_pers]=0;
     predecesseur_col[pos_lig_pers][pos_col_pers]=-2;
     predecesseur_lig[pos_lig_pers][pos_col_pers]=-2;
-    printf("predecesseur : %d\n", predecesseur_lig[pos_lig_pers][pos_col_pers]);
+    //printf("predecesseur : %d\n", predecesseur_lig[pos_lig_pers][pos_col_pers]);
     verif[pos_lig_pers][pos_col_pers]=1;
 
     do
@@ -470,26 +369,197 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
 
     }
     while(verif[arrivee_lig][arrivee_col]==0);
-    printf("test2\n");
-    monchemin = (t_chemin*)malloc(sizeof(t_chemin)*distance[arrivee_lig][arrivee_col]+1 );
+    //printf("test2\n");
+    monchemin = (t_chemin*)malloc(sizeof(t_chemin)*1000 );
     monchemin[0].taille = distance[arrivee_lig][arrivee_col];
     int indice = distance[arrivee_lig][arrivee_col];
-    printf("%dx %dy %d|\n",arrivee_col,arrivee_lig, distance[arrivee_lig][arrivee_col]);
+    //printf("%dx %dy %d|\n",arrivee_col,arrivee_lig, distance[arrivee_lig][arrivee_col]);
     new_col=predecesseur_col[arrivee_lig][arrivee_col];
     int tampon = 0;
     new_lig=predecesseur_lig[arrivee_lig][arrivee_col];
     while(new_col!=-2 && new_lig != -2)
     {
-        printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
+        //printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
         tampon = new_col;
-        monchemin[indice].x/50 = new_col;
-        monchemin[indice].y/50 = new_lig;
+        monchemin[indice].x = new_col;
+        monchemin[indice].y = new_lig;
         new_col = predecesseur_col[new_lig][new_col];
         new_lig = predecesseur_lig[new_lig][tampon];
         indice--;
     }
-   // printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
+    // printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
 
+    return monchemin;
+}
 
- return monchemin;
-}*/
+/// ANCIENNE FONCTION NON-UTILISE DANS LE CODE FINAL
+
+int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
+{
+    if(tabcases[Y/50][X/50].obstacle == 0)
+    {
+        if(tabjoueur[indice]->classes.cord_x/50 == X/50)
+        {
+            if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
+            {
+                printf("Possible\n");
+                return 1;
+            }
+            else
+            {
+                printf("Impossible\n");
+                return 0;
+            }
+        }
+        else if(tabjoueur[indice]->classes.cord_y/50 == Y/50 )
+        {
+            if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
+            {
+                printf("Possible\n");
+                return 1;
+            }
+            else
+            {
+                printf("Impossible\n");
+                return 0;
+            }
+        }
+        else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
+        {
+            printf("Possible\n");
+            return 1;
+        }
+        else
+        {
+            printf("Impossible\n");
+            return 0;
+        }
+    }
+
+    else
+    {
+        printf("Impossible\n");
+        return 0;
+    }
+}
+
+///Calcul de l'itineraire (pas encore tester mais logiquement fonctionnel)
+t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
+{
+    t_chemin* Lechemin = (t_chemin*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_chemin));
+    int X = tabjoueur[indice]->classes.cord_x/50;
+    int Y = tabjoueur[indice]->classes.cord_y/50;
+    int maxPM = tabjoueur[indice]->classes.PM;
+    int comp = 0;
+    int stop = 0;
+    int obst = 0;
+    int obst2 = 0;
+    while(stop != 1)
+    {
+        if((X == finishx/50 && Y == finishy/50) || comp == maxPM)
+        {
+            stop = 1;
+        }
+        else
+        {
+            if((X < finishx/50 && obst == 0) || obst2 == 1)
+            {
+                if(tabcases[Y][X+1].obstacle == 0)
+                {
+                    X += 1;
+                    obst2 = 0;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    obst = 1;
+            }
+            else if(X > finishx/50 && obst == 0)
+            {
+                if(tabcases[Y][X-1].obstacle == 0)
+                {
+                    X -= 1;
+                    obst2 = 0;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    obst = 1;
+            }
+            else if(Y < finishy/50 || obst == 1)
+            {
+                if(tabcases[Y+1][X].obstacle == 0)
+                {
+                    Y += 1;
+                    obst = 0;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    obst2 = 1;
+            }
+            else if(Y > finishy/50 || obst == 1)
+            {
+                if(tabcases[Y-1][X].obstacle == 0)
+                {
+                    Y -= 1;
+                    obst = 0;
+                    Lechemin[comp].x = X;
+                    Lechemin[comp].y = Y;
+                    comp += 1;
+                }
+                else
+                    obst2 = 1;
+            }
+        }
+    }
+    Lechemin[0].taille = comp;
+    return Lechemin;
+}
+
+void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
+{
+    t_chemin* Lechemin;
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            Lechemin = itineraire(tabcases,tabjoueur,indice, j*50, i*50);
+            for(int z = 0; z< Lechemin[0].taille ; z++)
+            {
+                if(Lechemin[z].x == tabcases[i][j].x/50 && Lechemin[z].y == tabcases[i][j].y/50)
+                {
+                    if(possibilite_deplacement(tabcases, tabcases[i][j].x, tabcases[i][j].y,tabjoueur,indice)==1)
+                    {
+                        if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
+                        {
+                            if(tabcases[i][j].cases == 5)
+                            {
+                                hline(fond, tabcases[i][j].x, tabcases[i][j].y-2,tabcases[i][j].x+50, makecol(38,200,94));
+                                hline(fond, tabcases[i][j].x, tabcases[i][j].y-1,tabcases[i][j].x+50, makecol(38,200,94));
+                                hline(fond, tabcases[i][j].x, tabcases[i][j].y,tabcases[i][j].x+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+1, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x-1, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+2, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+3, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+50, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+51, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+49, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+48, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                                vline(fond, tabcases[i][j].x+47, tabcases[i][j].y, tabcases[i][j].y+50, makecol(38,200,94));
+                            }
+                            else
+                            {
+                                rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(38,200,94));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
