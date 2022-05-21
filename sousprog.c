@@ -426,6 +426,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.nom = "luffy";
             uneclasse.ID = i+1;
             fscanf(luf, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
+            uneclasse.PV_init = uneclasse.PV;
             fclose(luf);
             luf = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -488,6 +489,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.nom = "robin";
             uneclasse.ID = i+1;
             fscanf(rob, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
+            uneclasse.PV_init = uneclasse.PV;
             fclose(rob);
             rob = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -550,6 +552,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.nom = "sanji";
             uneclasse.ID = i+1;
             fscanf(san, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
+            uneclasse.PV_init = uneclasse.PV;
             fclose(san);
             san = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -612,6 +615,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.nom = "franky";
             uneclasse.ID = i+1;
             fscanf(fra, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
+            uneclasse.PV_init = uneclasse.PV;
             fclose(fra);
             fra = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
