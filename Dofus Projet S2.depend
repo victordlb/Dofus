@@ -84,7 +84,7 @@
 	<sys/stat.h>
 	"header.h"
 
-1653125370 source:c:\users\victo\onedrive\documents\github\dofus\map.c
+1653126600 source:c:\users\victo\onedrive\documents\github\dofus\map.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -92,21 +92,14 @@
 	<synchapi.h>
 	"header.h"
 
-1651875589 source:c:\users\victo\onedrive\documents\github\dofus\main.c
+1653126600 source:c:\users\victo\onedrive\documents\github\dofus\main.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	"header.h"
 	<time.h>
 
-1653094279 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
-	<stdio.h>
-	<stdlib.h>
-	<allegro.h>
-	<time.h>
-	<synchapi.h>
-	<string.h>
-	"header.h"
+1653126622 source:c:\users\victo\onedrive\documents\github\dofus\sousprog.c
 
 1652961173 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\liste.c
 	<stdio.h>
@@ -172,5 +165,39 @@
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
+	"header.h"
+
+1653126210 source:c:\users\victo\onedrive\documents\github\dofus\deplacement.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	"header.h"
+
+1653126429 source:c:\users\victo\onedrive\documents\github\dofus\affichage.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	"header.h"
+
+1653126600 source:c:\users\victo\onedrive\documents\github\dofus\init.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
+	<string.h>
+	"header.h"
+
+1653126600 source:c:\users\victo\onedrive\documents\github\dofus\tour.c
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<time.h>
+	<synchapi.h>
 	"header.h"
 
