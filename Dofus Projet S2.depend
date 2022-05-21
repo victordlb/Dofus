@@ -109,7 +109,7 @@
 	<synchapi.h>
 	"header.h"
 
-1653141000 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
+1653148604 c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\header.h
 
 1653140030 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\main.c
 	<stdio.h>
@@ -155,7 +155,7 @@
 	<sys/stat.h>
 	"header.h"
 
-1652981478 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\attaque.c
+1653141053 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\attaque.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -210,7 +210,7 @@
 	<string.h>
 	"header.h"
 
-1653140030 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\deplacement.c
+1653148604 source:c:\users\pauln\onedrive\bureau\projet dofus op\github\dofus\deplacement.c
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
