@@ -172,6 +172,4 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             done = 2;
         }
     }
-
-
 }

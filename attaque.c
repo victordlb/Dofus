@@ -7,7 +7,11 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
 {
     afficherSort(tabjoueur, indice, fond);
     BITMAP* buffer;
+    BITMAP* croix;
+    croix = load_bitmap("documents/props/logo croix.bmp", NULL);
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    draw_sprite(fond, croix, 1320, 740);
+    blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
     int done2 =0;
     BITMAP* select = load_bitmap("documents/props/css.bmp", NULL);
@@ -138,7 +142,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 Sleep(1000);
                 done =1;
             }
-            if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
+            if(mouse_x > 1320 && mouse_x < 1350 && mouse_y >740 && mouse_y < 770)
             {
                 done = 1;
             }
