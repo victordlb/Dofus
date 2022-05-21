@@ -141,6 +141,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
         if(key[KEY_P])
         {
             tabjoueur[indice]->classes.PV = 0;
+            Sleep(500);
             done = 8;
         }
         if(mouse_b&1)
