@@ -147,18 +147,20 @@ void menu_principal()
             /// a definir
             t_joueur** tab_joueur;
             int choix;
+            int choix_mapa;
             int nbrjoueur;
             int premier_joueur;
             nvlpartie :
             nbrjoueur = nombre_joueur();
-            tab_joueur = initialisation_joueur(nbrjoueur);
+            choix_mapa = choix_map();
+            tab_joueur = initialisation_joueur(nbrjoueur,choix_mapa);
             for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
             }
             premier_joueur = random_commencer(nbrjoueur);
             recommencer:
-            tour(tab_joueur, nbrjoueur, premier_joueur-1, 0);
+            tour(tab_joueur, nbrjoueur, premier_joueur-1, 0,choix_mapa);
             classement(tab_joueur,nbrjoueur);
             choix = menu_fin_de_jeu();
             if(choix == 1)
@@ -201,7 +203,7 @@ void menu_principal()
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
             }
-            tour(tabjoueur, nbrjoueur, premier_joueur, 0);
+            tour(tabjoueur, nbrjoueur, premier_joueur, 0,1);
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
@@ -995,6 +997,54 @@ int menu_fin_de_jeu()
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
             return 3;
+        }
+    }
+}
+
+int choix_map()
+{
+    BITMAP* fond;
+    BITMAP* map1;
+    BITMAP* map2;
+    fond = load_bitmap("documents/fond/fond choix map.bmp", NULL);
+    map1 = load_bitmap("documents/props/map1.bmp", NULL);
+    map2 = load_bitmap("documents/props/map2.bmp", NULL);
+    int couleur1;
+    int couleur2;
+    int done = 0;
+    while(done == 0)
+    {
+        draw_sprite(fond, map1, 100,250);
+        draw_sprite(fond,map2,800,250);
+        blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        textprintf_ex(fond, font, 650, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MAP");
+        if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        {
+            couleur1 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur1 = makecol(255,0,0);
+        }
+        if(mouse_x < 970 || mouse_x > (1050 + text_length(font, "Alabasta")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        {
+            couleur2 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur2 = makecol(255,0,0);
+        }
+        textprintf_ex(fond,font, 300,550,couleur1,-1, "Archipel Sabaody");
+        circlefill(fond, 230, 550, 10, couleur1);
+        textprintf_ex(fond, font, 1050, 550, couleur2, -1, "Alabasta");
+        circlefill(fond, 980, 550, 10, couleur2);
+        if(couleur1 == makecol(255,0,0) && mouse_b&1)
+        {
+            return 1;
+        }
+        if(couleur2 == makecol(255,0,0) && mouse_b&1)
+        {
+            return 2;
         }
     }
 }
