@@ -146,8 +146,10 @@ void menu_principal()
         {
             /// a definir
             t_joueur** tab_joueur;
+            int choix;
             int nbrjoueur;
             int premier_joueur;
+            nvlpartie :
             nbrjoueur = nombre_joueur();
             tab_joueur = initialisation_joueur(nbrjoueur);
             for(int x = 0; x<nbrjoueur; x++)
@@ -155,8 +157,28 @@ void menu_principal()
                 printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
             }
             premier_joueur = random_commencer(nbrjoueur);
-            tour(tab_joueur, nbrjoueur, premier_joueur, 0);
-            stop = 1;
+            recommencer:
+            tour(tab_joueur, nbrjoueur, premier_joueur-1, 0);
+            classement(tab_joueur,nbrjoueur);
+            choix = menu_fin_de_jeu();
+            if(choix == 1)
+            {
+                for(int t=0; t<nbrjoueur;t++)
+                {
+                    tab_joueur[t]->classes.PV = tab_joueur[t]->classes.PV_init;
+                    tab_joueur[t]->ordre = 0;
+                }
+                goto recommencer;
+            }
+            if(choix == 2)
+            {
+                goto nvlpartie;
+            }
+            if(choix == 3)
+            {
+                quitter();
+                stop = 1;
+            }
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
@@ -205,6 +227,7 @@ void quitter()
         textprintf_ex(screen, font, 830, 400, makecol(255,255,255),-1, ".");
         rest(1000);
     }
+
     destroy_bitmap(fond);
 }
 
@@ -427,6 +450,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(luf, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(luf);
             luf = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -490,6 +515,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(rob, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(rob);
             rob = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -553,6 +580,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(san, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(san);
             san = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -616,6 +645,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(fra, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(fra);
             fra = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -797,7 +828,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
                 textprintf_ex(fond, font, x, 170, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->classes.PV);
                 textprintf_ex(fond, font, x, 190, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->classes.PA);
                 textprintf_ex(fond, font, x, 210, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->classes.PM);
-                if(tabjoueur[i]->perdu == 1)
+                if(tabjoueur[i]->classes.PV < 0)
                 {
                     textprintf_ex(fond, font, x, 230, makecol(255,255,255), 0, "Etat : perdu");
                 }
@@ -878,4 +909,92 @@ char* saisie_pseudo()
     clear_keybuf();
     clear_bitmap(fond);
     return pseudo;
+}
+
+void classement(t_joueur** tabjoueur, int nbrjoueur)
+{
+    BITMAP* fond;
+    fond = load_bitmap("documents/fond/fond classement.bmp", NULL);
+    int done = 0;
+    int y = 200;
+    int compteur = 0;
+    while(done == 0)
+    {
+        blit(fond, screen, 0,0,0,0,SCREEN_W,SCREEN_H);
+        textprintf_ex(fond, font, 1050, 750,makecol(0,0,0),-1 ,"Clique droit pour quitter le classement");
+        textprintf_ex(fond, font, 1030, 150,makecol(0,0,0),-1,"CLASSEMENT");
+        if(mouse_b&2)
+        {
+            done = 5;
+        }
+        else if(compteur == 0)
+        {
+            for(int i=0; i<nbrjoueur;i++)
+            {
+                textprintf_ex(fond, font, 900, y,makecol(0,0,0),-1,"Joueur : %s", tabjoueur[i]->pseudo );
+                textprintf_ex(fond, font, 900, y+20,makecol(0,0,0),-1,"Vous aviez choisi comme mugiwara : %s", tabjoueur[i]->classes.nom );
+                textprintf_ex(fond, font, 900, y+40,makecol(0,0,0),-1,"Votre rang : %d/%djoueurs", tabjoueur[i]->ordre, nbrjoueur );
+                y = y+100;
+            }
+        }
+        compteur++;
+    }
+    destroy_bitmap(fond);
+}
+
+int menu_fin_de_jeu()
+{
+    BITMAP* fond;
+    fond = load_bitmap("documents/fond/fond fin.bmp", NULL);
+    int done = 0;
+    int couleur1;
+    int couleur2;
+    int couleur3;
+    while(done == 0)
+    {
+        blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        textprintf_ex(fond, font, 600, 50, makecol(0,0,0), -1, "QUE VOULEZ-VOUS FAIRE ?");
+        if(mouse_x < 170 || mouse_x > (250 + text_length(font, "Recommencer la meme partie")) || mouse_y < 120 || mouse_y > (120 + text_height(font)))
+        {
+            couleur1 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur1 = makecol(255,0,0);
+        }
+        if(mouse_x < 520 || mouse_x > (600 + text_length(font, "Commencer une nouvelle partie")) || mouse_y < 120 || mouse_y > (120 + text_height(font)))
+        {
+            couleur2 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur2 = makecol(255,0,0);
+        }
+        if(mouse_x < 1020 || mouse_x > (1100 + text_length(font, "Quitter ce jeu")) || mouse_y < 120 || mouse_y > (120 + text_height(font)))
+        {
+            couleur3 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur3 = makecol(255,0,0);
+        }
+        textprintf_ex(fond,font, 250,120,couleur1,-1, "Recommencer la meme partie");
+        circlefill(fond, 180, 120, 10, couleur1);
+        textprintf_ex(fond, font, 600, 120, couleur2, -1, "Commencer une nouvelle partie");
+        circlefill(fond, 530, 120, 10, couleur2);
+        textprintf_ex(fond, font, 1100, 120, couleur3, -1, "Quitter ce jeu");
+        circlefill(fond, 1030, 120, 10, couleur3);
+        if(couleur1 == makecol(255,0,0) && mouse_b&1)
+        {
+            return 1;
+        }
+        if(couleur2 == makecol(255,0,0) && mouse_b&1)
+        {
+            return 2;
+        }
+        if(couleur3 == makecol(255,0,0) && mouse_b&1)
+        {
+            return 3;
+        }
+    }
 }

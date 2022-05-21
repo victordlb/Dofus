@@ -147,6 +147,11 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
                 cord_x = mouse_x;
                 cord_y = mouse_y;
                 Lechemin = djikstra(tabcases,tabjoueur[indice]->classes.cord_x/50, tabjoueur[indice]->classes.cord_y/50, mouse_x/50, mouse_y/50);
+                if(Lechemin[0].taille == 1)
+                {
+                    val = 1;
+                }
+                tabjoueur[indice]->classes.PM = tabjoueur[indice]->classes.PM - Lechemin[0].taille;
                 while(ind <= Lechemin[0].taille)
                 {
 

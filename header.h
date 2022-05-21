@@ -18,9 +18,11 @@ typedef struct classe
     char* nom;
     int ID;
     int PV;
-    int PV_init;
     int PM;
     int PA;
+    int PV_init;
+    int PM_init;
+    int PA_init;
     t_attaque* mesattaques;
     int cord_x;
     int cord_y;
@@ -42,6 +44,7 @@ typedef struct joueur
     char* pseudo;
     t_classe classes;
     int perdu;
+    int ordre;
 }t_joueur;
 
 typedef struct chemin
@@ -70,12 +73,14 @@ int nombre_joueur();
 t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur);
 void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice);
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
+void classement(t_joueur** tabjoueur, int nbrjoueur);
+int menu_fin_de_jeu();
 
 ///tour_joueur
 char* saisie_pseudo();
 t_joueur** initialisation_joueur(int nbrjoueur);
 int random_commencer(int nbr);
-void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur);
+void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur);
 void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur);
 void compte_temps(float temps, BITMAP* buffer);
 
