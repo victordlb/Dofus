@@ -85,7 +85,7 @@ void logo()
 }
 
 /// affichage du menu principal et choix de l'action a faire
-void menu_principal()
+int menu_principal()
 {
     int couleur1 = 0;
     int couleur2 = 0;
@@ -178,22 +178,26 @@ void menu_principal()
             }
             if(choix == 3)
             {
-                quitter();
-                stop = 1;
+                goto fin;
             }
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            t_joueur** tabjoueur;
+            t_joueur** tabjoueur = NULL;
             int nbrjoueur;
+            char choix_mapa = 0;
             int premier_joueur;
-            char* nom;
-            nom = saisie_nom_chargement();
+            char* nomfff;
+            nomfff = saisie_nom_chargement();
             //t_charge Unecharge;
             printf("testdebut\n");
-            nbrjoueur = chargement_nbrjoueur(nom);
-            premier_joueur = chargement_indice(nom);
-            //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
+            nbrjoueur = chargement_nbrjoueur(nomfff);
+            printf("nombre :%d\n", nbrjoueur);
+            premier_joueur = chargement_indice(nomfff);
+            printf("premier joueur :%d\n", premier_joueur);
+            choix_mapa = chargement_choix_map(nomfff);
+            printf("choix mapa :%d\n", choix_mapa);
+            tabjoueur = chargement_infoJoueur_bis(nomfff, nbrjoueur);
             //Unecharge = chargement();
             printf("testfin\n");
             /*tabjoueur = Unecharge.tabjoueur;
@@ -202,15 +206,20 @@ void menu_principal()
             for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
+               // tabjoueur[x]->pseudo = "pseudo";
+                printf("%s\n", tabjoueur[x]->pseudo);
+                printf("%d %d %d %d %d %d %d %d %d\n", tabjoueur[x]->ordre, tabjoueur[x]->classes.PV, tabjoueur[x]->classes.PV_init, tabjoueur[x]->classes.PA, tabjoueur[x]->classes.PA_init, tabjoueur[x]->classes.PM, tabjoueur[x]->classes.PM_init,tabjoueur[x]->classes.cord_x, tabjoueur[x]->classes.cord_y);
             }
-            tour(tabjoueur, nbrjoueur, premier_joueur, 0,1);
+            tour(tabjoueur, nbrjoueur, premier_joueur, 0,choix_mapa);
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
+            fin:
             quitter();
             stop = 1;
         }
     }
+    return stop;
     destroy_bitmap(fond);
 }
 
@@ -714,7 +723,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 }
 
 /// affichage d'un menu pause avec choix de l'action a faire
-void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
+int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice, int choix)
 {
     BITMAP* fond;
     fond = load_bitmap("documents/fond/menu pause.bmp", NULL);
@@ -794,14 +803,14 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
             Sleep(500);
-            stop = 1;
-            menu_principal();
+            stop = 2;
         }
         if(couleur5 == makecol(255,0,0) && mouse_b&1)
         {
-            sauvegarde(tabjoueur,nbrjoueur,indice);
+            sauvegarde(tabjoueur,nbrjoueur,indice,choix);
         }
     }
+    return stop;
     destroy_bitmap(fond);
 }
 
