@@ -5,6 +5,7 @@
 #include <synchapi.h>
 #include "header.h"
 
+///dessin de ligne horizontale et verticale (non utilisé dans le code final)
 void dessin_ligne()
 {
     BITMAP* fond;
@@ -24,6 +25,7 @@ void dessin_ligne()
     destroy_bitmap(fond);
 }
 
+/// chargement du tableau de case et de ses caracteristique depuis un fichier texte
 t_cases** chargement_map(int choix)
 {
     t_cases** tabcases = (t_cases**)malloc(16 * sizeof(t_cases*));
@@ -96,6 +98,7 @@ t_cases** chargement_map(int choix)
     return tabcases;
 }
 
+/// dessin de la map en fonction de ses caracteristiques
 BITMAP* charger_map(t_cases** tabcases, int choix)
 {
     BITMAP* un;
@@ -174,6 +177,7 @@ BITMAP* charger_map(t_cases** tabcases, int choix)
     return fond;
 }
 
+/// dessin du haut des arbres de la map1 pour faire passer le joueur derriere
 void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases)
 {
     BITMAP* cinq = load_bitmap("documents/lamap/5.bmp", NULL);
@@ -190,7 +194,7 @@ void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases)
     destroy_bitmap(cinq);
 }
 
-
+///fonction non-utilisé qui colorise un element en vert
 int testvert(int vert)
 {
     int pourcentage = (100*vert)/255;
@@ -204,6 +208,7 @@ int testvert(int vert)
         return vert+75;
 }
 
+///fonction non-utilisé qui colorise un element en rouge
 int testrouge(int rouge)
 {
     int pourcentage = (100*rouge)/255;
@@ -217,6 +222,7 @@ int testrouge(int rouge)
         return rouge+75;
 }
 
+///fonction non-utilisé qui colorise un element en bleu
 int testbleu(int bleu)
 {
     int pourcentage = (100*bleu)/255;
@@ -230,7 +236,7 @@ int testbleu(int bleu)
         return bleu+75;
 }
 
-
+/// fonction qui dessine la map en fonction du tableau de case
 BITMAP* chargement_fond(t_cases** tabcases,int choix)
 {
     BITMAP* fond;
@@ -238,6 +244,7 @@ BITMAP* chargement_fond(t_cases** tabcases,int choix)
     return fond;
 }
 
+/// fonction qui affiche les différents element en plus de la map(joueur/curseur/etat des joueurs/....)
 void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* buffer, int etat)
 {
     BITMAP* personnage;

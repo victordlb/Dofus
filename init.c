@@ -6,7 +6,7 @@
 #include <string.h>
 #include "header.h"
 
-
+///lancement du jeu
 void lancement()
 {
     srand(time(NULL));
@@ -15,7 +15,7 @@ void lancement()
     menu_principal();
 }
 
-
+///initialisation du tableau de joueur avec choix de caractéristique pour chaque joueur
 t_joueur** initialisation_joueur(int nbrjoueur,int choix)
 {
     t_joueur** tabjoueur;
