@@ -1,13 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro.h>
+#include <time.h>
+#include <synchapi.h>
+#include <string.h>
 #include "header.h"
 
-void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond)
+/// fonction appelee lorsque le joueur decide d'attaquer, il pourra le faire ici
+void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond, int choix)
 {
     afficherSort(tabjoueur, indice, fond);
     BITMAP* buffer;
+    BITMAP* croix;
+    croix = load_bitmap("documents/props/logo croix.bmp", NULL);
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    draw_sprite(fond, croix, 1320, 740);
+    blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
     int done2 =0;
     BITMAP* select = load_bitmap("documents/props/css.bmp", NULL);
@@ -20,8 +28,8 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
             {
                 if(mouse_x > 490 && mouse_x < 510)
                 {
-                    buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    buffer = chargement_fond(tabcases,choix);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer, 0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur,indice,1,buffer);
                     clear_bitmap(buffer);
@@ -30,8 +38,8 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 }
                 if(mouse_x > 565 && mouse_x < 585)
                 {
-                    buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    buffer = chargement_fond(tabcases,choix);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 2, buffer);
                     clear_bitmap(buffer);
@@ -40,8 +48,8 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 }
                 if(mouse_x > 640 && mouse_x < 660)
                 {
-                    buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    buffer = chargement_fond(tabcases,choix);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 3, buffer);
                     clear_bitmap(buffer);
@@ -50,8 +58,8 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 }
                 if(mouse_x > 715 && mouse_x < 735)
                 {
-                    buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    buffer = chargement_fond(tabcases,choix);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 4, buffer);
                     clear_bitmap(buffer);
@@ -60,8 +68,8 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                 }
                 if(mouse_x > 792 && mouse_x < 812)
                 {
-                    buffer = chargement_fond(tabcases);
-                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer);
+                    buffer = chargement_fond(tabcases,choix);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,buffer,0);
                     afficherSort(tabjoueur, indice, buffer);
                     info_sort(tabjoueur, indice, 5, buffer);
                     clear_bitmap(buffer);
@@ -73,72 +81,115 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
             }
             if(mouse_x>502 && mouse_x<572 && mouse_y>737 && mouse_y<800)
             {
-                clear_bitmap(fond);
-                fond = chargement_fond(tabcases);
-                draw_sprite(fond, select, 495, 730);
-                porteSort(tabcases, tabjoueur, indice, 0, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                while(done2 == 0)
+                if(tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[0].consequence_PA >=0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,0, fond);
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases,choix);
+                    draw_sprite(fond, select, 495, 730);
+                    porteSort(tabcases, tabjoueur, indice, 0, fond);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                     blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    while(done2 == 0)
+                    {
+                        done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,0, fond);
+                        blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    }
+                    done = 1;
                 }
-                done = 1;
+                else
+                {
+                    done = 1;
+                }
             }
             if(mouse_x>577 && mouse_x<647 && mouse_y>737 && mouse_y<800)
             {
-                clear_bitmap(fond);
-                fond = chargement_fond(tabcases);
-                draw_sprite(fond, select, 495 + (1*75), 730);
-                porteSort(tabcases, tabjoueur, indice, 1, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                while(done2 == 0)
+                if(tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[1].consequence_PA >=0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,1,fond);
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases,choix);
+                    draw_sprite(fond, select, 495 + (1*75), 730);
+                    porteSort(tabcases, tabjoueur, indice, 1, fond);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                     blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    while(done2 == 0)
+                    {
+                        done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,1,fond);
+                        blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    }
+                    done = 1;
                 }
-                done = 1;
+                else
+                {
+                    done = 1;
+                }
             }
             if(mouse_x>652 && mouse_x<722 && mouse_y>737 && mouse_y<800)
             {
-                clear_bitmap(fond);
-                fond = chargement_fond(tabcases);
-                draw_sprite(fond, select, 495 + (2*75), 730);
-                porteSort(tabcases, tabjoueur, indice, 2, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                while(done2 == 0)
+                if(tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[2].consequence_PA >=0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,2, fond);
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases,choix);
+                    draw_sprite(fond, select, 495 + (2*75), 730);
+                    porteSort(tabcases, tabjoueur, indice, 2, fond);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                     blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    while(done2 == 0)
+                    {
+                        done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,2, fond);
+                        blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    }
+                    done = 1;
                 }
-                done = 1;
+                else
+                {
+                    done = 1;
+                }
             }
             if(mouse_x>727 && mouse_x<797 && mouse_y>737 && mouse_y<800)
             {
-                clear_bitmap(fond);
-                fond = chargement_fond(tabcases);
-                draw_sprite(fond, select, 495 + (3*75), 730);
-                porteSort(tabcases, tabjoueur, indice, 3, fond);
-                chargement_perso(tabjoueur,indice,nbrjoueur,fond);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                while(done2 == 0)
+                if(tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[3].consequence_PA >=0)
                 {
-                    done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,3,fond);
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases,choix);
+                    draw_sprite(fond, select, 495 + (3*75), 730);
+                    porteSort(tabcases, tabjoueur, indice, 3, fond);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
                     blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    while(done2 == 0)
+                    {
+                        done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,3,fond);
+                        blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    }
+                    done = 1;
                 }
-                done = 1;
+                else
+                {
+                    done = 1;
+                }
             }
             if(mouse_x>802 && mouse_x<872 && mouse_y>737 && mouse_y<800)
             {
-                draw_sprite(fond, select, 495 + (4*75), 730);
-                blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                Sleep(1000);
-                done =1;
+                if(tabjoueur[indice]->classes.PA - 1 >=0)
+                {
+                    clear_bitmap(fond);
+                    fond = chargement_fond(tabcases,choix);
+                    draw_sprite(fond, select, 495 + (3*75), 730);
+                    dessinportemelee(tabjoueur,tabcases,indice,8,fond);
+                    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
+                    blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    while(done2 == 0)
+                    {
+                        done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,8,fond);
+                        blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
+                    }
+                    done = 1;
+                }
+                else
+                {
+                    done = 1;
+                }
             }
-            if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
+            if(mouse_x > 1320 && mouse_x < 1350 && mouse_y >740 && mouse_y < 770)
             {
                 done = 1;
             }
@@ -147,9 +198,10 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
     }
     Sleep(1000);
     destroy_bitmap(select);
+    destroy_bitmap(croix);
 }
 
-
+/// fonction qui affiche dans les cases tous les sorts du joueur qui joue
 void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
 {
     BITMAP* sort1;
@@ -204,8 +256,15 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
     clear_bitmap(sort3);
     clear_bitmap(sort4);
     clear_bitmap(poing);
+    destroy_bitmap(sort1);
+    destroy_bitmap(sort2);
+    destroy_bitmap(sort3);
+    destroy_bitmap(sort4);
+    destroy_bitmap(poing);
+    destroy_bitmap(logo_info);
 }
 
+/// fonction qui test la porte du sort choisi par le joueur
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond)
 {
     if(tabjoueur[indice]->classes.mesattaques[numsort].type == 1)
@@ -218,6 +277,7 @@ void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort
     }
 }
 
+/// fonction qui dessine en forme de croix la porte des sorts
 void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
 {
     for(int i = 0; i<16; i++)
@@ -235,6 +295,7 @@ void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int n
     }
 }
 
+/// fonction qui dessine en forme de cercle la porte des sorts
 void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
 {
     for(int i = 0; i<16; i++)
@@ -252,6 +313,7 @@ void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int 
     }
 }
 
+///fonction qui test si le sors en forme de croix est possible
 int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice, int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -282,6 +344,7 @@ int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indic
         return 0;
 }
 
+///fonction qui test si le sort en forme de cercle est possible
 int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -308,6 +371,45 @@ int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indi
         return 0;
 }
 
+///fonction qui test si la mele est possible
+int possibmelee(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
+{
+    int Ycase = tabcases[Y/50][X/50].y/50;
+    int Xcase = tabcases[Y/50][X/50].x/50;
+    int Yjoueur = tabjoueur[indice]->classes.cord_y/50;
+    int Xjoueur = tabjoueur[indice]->classes.cord_x/50;
+    if(tabcases[Y/50][X/50].obstacle == 0)
+    {
+        if((Xcase == Xjoueur && Ycase == Yjoueur-1) || (Xcase == Xjoueur-1 && Ycase == Yjoueur) ||(Xcase == Xjoueur && Ycase == Yjoueur+1)||(Xcase == Xjoueur+1 && Ycase == Yjoueur))
+        {
+            return 1;
+        }
+        else
+            return 0;
+    }
+    else
+        return 0;
+}
+
+/// fonction qui dessine la porte de la melee
+void dessinportemelee(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
+{
+    for(int i = 0; i<16; i++)
+    {
+        for(int j=0; j<28; j++)
+        {
+            if(possibmelee(tabjoueur,tabcases[i][j].x, tabcases[i][j].y, tabcases, indice, numsort) == 1)
+            {
+                if(tabcases[i][j].x != tabjoueur[indice]->classes.cord_x || tabcases[i][j].y != tabjoueur[indice]->classes.cord_y)
+                {
+                    rectfill(fond, tabcases[i][j].x+5, tabcases[i][j].y+5, tabcases[i][j].x+45,tabcases[i][j].y+45, makecol(50,130,246));
+                }
+            }
+        }
+    }
+}
+
+/// fonction qui test si le sors est possible et le lance a l'endroit ou le joueur clique(si un joueur s'y trouve il perd des PV)
 int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, int numsort, BITMAP* fond)
 {
     BITMAP* anime;
@@ -318,8 +420,9 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
         {
             if(possibcroix(tabcases,mouse_x, mouse_y,tabjoueur,indice,numsort) == 1)
             {
-                if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
-                {
+                tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA;
+                //if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
+               // {
                     for(int i = 0; i<nbrjoueur; i++)
                     {
                         if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
@@ -344,12 +447,12 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                     }
                     printf("personne sur cette case\n");
                     return 1;
-                }
+                /*}
                 else
                 {
                     printf("pas assez de PA");
                     return 1;
-                }
+                }*/
             }
             else
                 return 0;
@@ -358,8 +461,9 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
         {
             if(possibcercle(tabjoueur,mouse_x, mouse_y,tabcases,indice,numsort) == 1)
             {
-                if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
-                {
+                tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA;
+                //if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
+                //{
                     for(int i = 0; i<nbrjoueur; i++)
                     {
                         if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
@@ -384,24 +488,47 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                     }
                     printf("personne sur cette case\n");
                     return 1;
-                }
-                else
+                //}
+                /*else
                 {
                     printf("pas assez de PA");
                     return 1;
-                }
+                }*/
             }
             else
                 return 0;
         }
         else
-            return 0;
+        {
+            if(possibmelee(tabjoueur,mouse_x,mouse_y,tabcases,indice,8) == 1)
+            {
+                tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA - 1;
+                for(int i = 0; i<nbrjoueur; i++)
+                {
+                    if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
+                    {
+                        tabjoueur[i]->classes.PV -= 3;
+                        draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
+                        printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
+                        if(tabjoueur[i]->classes.PV <=0)
+                        {
+                            tabjoueur[i]->perdu = 1;
+                        }
+                        return 1;
+                    }
+                }
+                printf("personne sur cette case\n");
+                return 1;
+            }
+        }
         return 0;
     }
     else
         return 0;
+    destroy_bitmap(anime);
 }
 
+/// fonction qui affiche les infos d'un sort si on clique sur l'icone d'information
 void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
 {
     BITMAP* info;
@@ -530,9 +657,12 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
         {
             if(mouse_y > 590 && mouse_y < 620 && mouse_x > pos_x_bis && mouse_x < pos_x_bis+30)
             {
-                 stop = 9;
+                stop = 9;
             }
         }
     }
+    clear_bitmap(info);
+    destroy_bitmap(info);
+    destroy_bitmap(logo_croix);
 }
 

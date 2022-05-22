@@ -5,6 +5,7 @@
 #include <synchapi.h>
 #include "header.h"
 
+/// determination aleatoire du premier joueur a jouer
 int random_commencer(int nbr)
 {
     int random = 0;
@@ -12,45 +13,58 @@ int random_commencer(int nbr)
     return random;
 }
 
-void tour(t_joueur** tabjoueur, int nbrjoueur, int random, int compteur)
+/// fonction récurente qui fait tourner en boucle le jeu
+void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur, int choix_mapa)
 {
-    if(compteur == nbrjoueur-1)
+    if(tabjoueur[indice]->classes.PV > 0)
     {
-        for(int i=0; i<nbrjoueur; i++)
+        tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA_init;
+        tabjoueur[indice]->classes.PM = tabjoueur[indice]->classes.PM_init;
+        choix_action(tabjoueur,indice,nbrjoueur,choix_mapa);
+        if(tabjoueur[indice]->classes.PV <=0)
         {
-            if(tabjoueur[i]->perdu != 1)
+            compteur++;
+            if(compteur == 1)
             {
-                printf("joueur %d :%s, vous avez gagner !\n", tabjoueur[i]->classes.ID, tabjoueur[i]->classes.nom);
+                tabjoueur[indice]->ordre = nbrjoueur;
+            }
+            if(compteur == 2)
+            {
+                tabjoueur[indice]->ordre = nbrjoueur -1;
+            }
+            if(compteur == 3)
+            {
+                tabjoueur[indice]->ordre = nbrjoueur - 2;
+            }
+            if(compteur == nbrjoueur - 1)
+            {
+                for(int i=0; i<nbrjoueur; i++)
+                {
+                    if(tabjoueur[i]->classes.PV > 0)
+                    {
+                        tabjoueur[i]->ordre = 1;
+                    }
+                }
+                return 0;
             }
         }
-    }
-    else if(tabjoueur[random-1]->perdu != 1)
-    {
-        int entier;
-        // deplacement(tabjoueur, random-1,nbrjoueur);
-        choix_action(tabjoueur,random-1,nbrjoueur);
-        printf("joueur %d : %s a vous de jouer(saisir un entier)\n", tabjoueur[random-1]->classes.ID, tabjoueur[random-1]->classes.nom);
-        //scanf("%d", &entier);
-        if(tabjoueur[random-1]->classes.PV <= 0)
+        if(indice + 1 == nbrjoueur)
         {
-            tabjoueur[random-1]->perdu = 1;
-            compteur++;
-        }
-        if(random == nbrjoueur)
-        {
-            tour(tabjoueur, nbrjoueur, 1, compteur);
+            tour(tabjoueur,nbrjoueur,0,compteur,choix_mapa);
         }
         else
         {
-            tour(tabjoueur, nbrjoueur, random + 1, compteur);
+            tour(tabjoueur,nbrjoueur,indice+1,compteur,choix_mapa);
         }
     }
     else
     {
-        tour(tabjoueur, nbrjoueur, random + 1, compteur);
+        tour(tabjoueur, nbrjoueur, indice+1, compteur,choix_mapa);
     }
+
 }
 
+/// fonction qui affiche le chrono en fonction du temps à chaque tour
 void compte_temps(float temps, BITMAP* buffer)
 {
     BITMAP* chrono;
@@ -122,22 +136,32 @@ void compte_temps(float temps, BITMAP* buffer)
     destroy_bitmap(chrono);
 }
 
-void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
+/// fonction appele a chaque tour qui determine le choix d'action du joueur (deplacement/attaque/passer son tour/menu pause)
+void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix)
 {
     t_cases** tabcases;
     BITMAP* fond;
     BITMAP* buffer;
-    tabcases = chargement_map();
-    fond = chargement_fond(tabcases);
+    tabcases = chargement_map(choix);
+    fond = chargement_fond(tabcases,choix);
     float temps = 0;
-    chargement_perso(tabjoueur,indice,nbrjoueur,fond);
-    dessin_haut_arbre(fond,tabcases);
+    chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
+    if(choix == 1)
+    {
+        dessin_haut_arbre(fond,tabcases);
+    }
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
     time_t start, end;
     time(&start);
     while(done == 0)
     {
+        if(key[KEY_P])
+        {
+            tabjoueur[indice]->classes.PV = 0;
+            Sleep(500);
+            done = 8;
+        }
         if(mouse_b&1)
         {
             if(mouse_x > 1340 && mouse_x < 1380 && mouse_y >5 && mouse_y < 45)
@@ -147,15 +171,20 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             }
             if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
             {
-                deplacement(tabcases,tabjoueur,indice,nbrjoueur,fond);
+                deplacement(tabcases,tabjoueur,indice,nbrjoueur,fond,choix);
             }
             if(mouse_x > 1300 && mouse_x < 1350 && mouse_y >750 && mouse_y < 800)
             {
-                buffer = chargement_fond(tabcases);
-                chargement_perso(tabjoueur,indice,nbrjoueur, buffer);
-                dessin_haut_arbre(buffer,tabcases);
-                combat(tabcases,tabjoueur,indice,nbrjoueur,buffer);
+                buffer = chargement_fond(tabcases,choix);
+                chargement_perso(tabjoueur,indice,nbrjoueur, buffer,0);
+                if(choix == 1)
+                {
+                    dessin_haut_arbre(buffer,tabcases);
+                }
+                combat(tabcases,tabjoueur,indice,nbrjoueur,buffer,choix);
                 clear_bitmap(buffer);
+                fond = chargement_fond(tabcases,choix);
+                chargement_perso(tabjoueur,indice,nbrjoueur, fond,0);
                 blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
             }
             if(mouse_x > 1350 && mouse_x < 1400 && mouse_y >750 && mouse_y < 800)
@@ -172,6 +201,4 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur)
             done = 2;
         }
     }
-
-
 }

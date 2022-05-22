@@ -4,6 +4,7 @@
 #include "header.h"
 #include <time.h>
 
+/// juste le main ;)
 int main()
 {
     lancement();

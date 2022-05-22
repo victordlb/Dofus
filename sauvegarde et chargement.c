@@ -20,7 +20,7 @@ void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice)
     mkdir(tpm);
     //trajet = tpm;
     printf("test1\n");
-    sauvegarde_tabjoueur(tabjoueur,nbrjoueur, tpm);
+    sauvegarde_tabjoueur_bis(tabjoueur,nbrjoueur, tpm);
     sauvegarde_nbrjoueur(nbrjoueur, tpm);
     sauvegarde_tour(indice,tpm);
 }
@@ -66,6 +66,34 @@ void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
         }
         fclose(fichier1);
     }
+}
+
+void sauvegarde_tabjoueur_bis(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
+{
+    char* nom;
+    char tpm[500];
+    nom = "/saveInfoJoueur.txt";
+    printf("test1\n");
+    strcat(strcpy(tpm, trajet), nom);
+    printf("test1\n");
+    printf("%s\n", tpm);
+    FILE* fichier1 = NULL;
+    fichier1 = fopen(tpm, "wba");
+    if(fichier1 == NULL)
+    {
+        printf("Erreur de creation du fichier\n");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        for(int i; i<nbrjoueur; i++)
+        {
+            fprintf(fichier1, " %s", tabjoueur[i]->pseudo);
+            fprintf(fichier1, " %s", tabjoueur[i]->classes.nom);
+            fprintf(fichier1, " %d %d %d %d %d %d %d",  tabjoueur[i]->ordre, tabjoueur[i]->classes.PV,tabjoueur[i]->classes.PM,tabjoueur[i]->classes.PA,tabjoueur[i]->classes.ID, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
+        }
+    }
+    fclose(fichier1);
 }
 
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
@@ -165,6 +193,117 @@ int chargement_indice(char* nom)
     }
     return indice;
 }
+
+/*t_joueur** chargement_infoJoueur_bis(char* nom, int nbrjoueur)
+{
+    char nom1[500];
+    int validation = 2;
+    char recup[500];
+    t_joueur** tab;
+    FILE* fichier1;
+    tab = (t_joueur**)malloc(sizeof(t_joueur*)*1);
+    tab = (t_joueur*)malloc(sizeof(t_joueur)*nbrjoueur);
+    for(int j = 0; j<nbrjoueur; j++)
+    {
+        if(tab[j] == NULL)
+            printf("erreur\n");
+    }
+    char tampon1[500];
+    char* trajet;
+    trajet = "sauvegarde/";
+    strcat(strcpy(tampon1, trajet), nom);
+    printf("tampon %s\n", tampon1);
+    char tpm1[500];
+    char* tpm_pseudo;
+    char* tpm_nom_classe;
+    printf("slt\n");
+    strcpy(nom1, "/saveInfoJoueur.txt" );
+    strcpy(tpm1, tampon1);
+    strcat(tampon1, nom1);
+    printf("%s\n", nom1);
+    printf("%s\n", tampon1);
+    fichier1 = fopen(tampon1, "r+");
+    int compteur = -1;
+    int indice = 0;
+    if(fichier1 == NULL)
+    {
+        printf("Ce fichier n'existe pas\n");
+    }
+    else
+    {
+        for(int i=0; i<500; i++)
+        {
+            recup[i] = fgetc(fichier1);
+        }
+        printf("ok\n");
+        fclose(fichier1);
+        for(int j=0; j<500; j++)
+        {
+            if(recup[j] == ' ')
+            {
+                compteur++;
+            }
+
+            if(recup[j] == '\0')
+            {
+                break;
+            }
+            else
+            {
+                printf("%c", recup[j]);
+            }
+        }
+        printf("\nnbr espace :%d\n", compteur);
+        if(compteur == 0)
+        {
+            tab[indice]->pseudo = recup[j];
+        }
+        if(compteur == 1)
+        {
+            tab[indice]->classes.nom = recup[j];
+        }
+        if(compteur == 2)
+        {
+            tab[indice]->ordre = atoi(recup[j]);
+        }
+        if(compteur == 4)
+        {
+            tab[indice]->classes.PV = atoi(recup[j]);
+        }
+        if(compteur == 5)
+        {
+            tab[indice]->classes.PM = atoi(recup[j]);
+        }
+        if(compteur == 6)
+        {
+            tab[indice]->classes.PA = atoi(recup[j]);
+        }
+        if(compteur == 7)
+        {
+            tab[indice]->classes.cord_x = atoi(recup[j]);
+        }
+        if(compteur == 8)
+        {
+            tab[indice]->classes.cord_y = atoi(recup[j]);
+        }
+        if(compteur == 9)
+        {
+            compteur = 0;
+            indice++;
+        }
+        if(indice == nbrjoueur-1)
+        {
+            break;
+        }
+        for(int i=0; i<nbrjoueur; i++)
+        {
+            printf("nom :%s\n", tab[i]->pseudo);
+            printf("nom classe %s\n", tab[i]->classes.nom);
+            //printf("PV :%d\n", tab[i]->classes.PV);
+        }
+    }
+    return tab;
+}*/
 
 t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
 {
@@ -303,7 +442,7 @@ t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur)
         }
         else if(i==2)
         {
-           // tab[i] = (t_joueur*)malloc(sizeof(t_joueur));
+            // tab[i] = (t_joueur*)malloc(sizeof(t_joueur));
             printf("pap\n");
             strcpy(nom3, "/saveInfoJoueur3.txt" );
             //nom1 = "/saveInfoJoueur3.txt";

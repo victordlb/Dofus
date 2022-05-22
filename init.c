@@ -6,7 +6,7 @@
 #include <string.h>
 #include "header.h"
 
-
+///lancement du jeu
 void lancement()
 {
     srand(time(NULL));
@@ -15,8 +15,8 @@ void lancement()
     menu_principal();
 }
 
-
-t_joueur** initialisation_joueur(int nbrjoueur)
+///initialisation du tableau de joueur avec choix de caractéristique pour chaque joueur
+t_joueur** initialisation_joueur(int nbrjoueur,int choix)
 {
     t_joueur** tabjoueur;
     tabjoueur =(t_joueur**)malloc(nbrjoueur * sizeof(t_joueur*));
@@ -27,6 +27,6 @@ t_joueur** initialisation_joueur(int nbrjoueur)
         tabjoueur[i]->classes = choix_classe(tabjoueur,i, nbrjoueur);
         tabjoueur[i]->perdu = 0;
     }
-    premier_placement(tabjoueur, nbrjoueur);
+    premier_placement(tabjoueur, nbrjoueur,choix);
     return tabjoueur;
 }

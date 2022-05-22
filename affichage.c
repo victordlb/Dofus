@@ -6,6 +6,7 @@
 #include <string.h>
 #include "header.h"
 
+/// initialisation d'allegro
 void initialisation()
 {
     allegro_init();
@@ -18,12 +19,13 @@ void initialisation()
     }
     install_keyboard();
     install_mouse();
-    BITMAP* curseur_souris = load_bitmap("documents/props/curseur_brasFranky.bmp", NULL);
+    BITMAP* curseur_souris = load_bitmap("documents/props/curseur ace.bmp", NULL); // utilisation d'une autre souris que de la souris de base
     set_mouse_sprite(curseur_souris);
     show_mouse(screen);
     destroy_bitmap(curseur_souris);
 }
 
+/// affichage d'un logo au lancement du jeu
 void logo()
 {
     int pixel = 0;
@@ -82,6 +84,7 @@ void logo()
     destroy_bitmap(mugiwara_edition);
 }
 
+/// affichage du menu principal et choix de l'action a faire
 void menu_principal()
 {
     int couleur1 = 0;
@@ -143,17 +146,41 @@ void menu_principal()
         {
             /// a definir
             t_joueur** tab_joueur;
+            int choix;
+            int choix_mapa;
             int nbrjoueur;
             int premier_joueur;
+            nvlpartie :
             nbrjoueur = nombre_joueur();
-            tab_joueur = initialisation_joueur(nbrjoueur);
+            choix_mapa = choix_map();
+            tab_joueur = initialisation_joueur(nbrjoueur,choix_mapa);
             for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tab_joueur[x]->classes.ID, tab_joueur[x]->classes.nom);
             }
             premier_joueur = random_commencer(nbrjoueur);
-            tour(tab_joueur, nbrjoueur, premier_joueur, 0);
-            stop = 1;
+            recommencer:
+            tour(tab_joueur, nbrjoueur, premier_joueur-1, 0,choix_mapa);
+            classement(tab_joueur,nbrjoueur);
+            choix = menu_fin_de_jeu();
+            if(choix == 1)
+            {
+                for(int t=0; t<nbrjoueur;t++)
+                {
+                    tab_joueur[t]->classes.PV = tab_joueur[t]->classes.PV_init;
+                    tab_joueur[t]->ordre = 0;
+                }
+                goto recommencer;
+            }
+            if(choix == 2)
+            {
+                goto nvlpartie;
+            }
+            if(choix == 3)
+            {
+                quitter();
+                stop = 1;
+            }
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
@@ -166,7 +193,7 @@ void menu_principal()
             printf("testdebut\n");
             nbrjoueur = chargement_nbrjoueur(nom);
             premier_joueur = chargement_indice(nom);
-            tabjoueur = chargement_infoJoueur(nom, nbrjoueur);
+            //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
             //Unecharge = chargement();
             printf("testfin\n");
             /*tabjoueur = Unecharge.tabjoueur;
@@ -176,7 +203,7 @@ void menu_principal()
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
             }
-            tour(tabjoueur, nbrjoueur, premier_joueur, 0);
+            tour(tabjoueur, nbrjoueur, premier_joueur, 0,1);
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
@@ -187,6 +214,7 @@ void menu_principal()
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page de fin de jeu
 void quitter()
 {
     BITMAP* fond = load_bitmap("documents/fond/quitter.bmp", NULL);
@@ -201,9 +229,11 @@ void quitter()
         textprintf_ex(screen, font, 830, 400, makecol(255,255,255),-1, ".");
         rest(1000);
     }
+
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page de regle du jeu
 void regle()
 {
     BITMAP* regle = load_bitmap("documents/fond/regle.bmp", NULL);
@@ -219,6 +249,7 @@ void regle()
     destroy_bitmap(regle);
 }
 
+/// affichage d'une page de choix du nombre de joueur
 int nombre_joueur()
 {
     int nbr = 0;
@@ -281,6 +312,7 @@ int nombre_joueur()
     return nbr;
 }
 
+/// affichage d'une page de choix de classe et initialisation des infos en fonction du choix de la classe
 t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 {
     t_classe uneclasse;
@@ -420,6 +452,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(luf, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(luf);
             luf = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -483,6 +517,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(rob, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(rob);
             rob = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -546,6 +582,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(san, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(san);
             san = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -609,6 +647,8 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
             uneclasse.ID = i+1;
             fscanf(fra, "%d %d %d", &uneclasse.PV, &uneclasse.PM, &uneclasse.PA);
             uneclasse.PV_init = uneclasse.PV;
+            uneclasse.PM_init = uneclasse.PM;
+            uneclasse.PA_init = uneclasse.PA;
             fclose(fra);
             fra = NULL;
             uneclasse.mesattaques = (t_attaque*)malloc(4 * sizeof(t_attaque));
@@ -673,6 +713,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
     return uneclasse;
 }
 
+/// affichage d'un menu pause avec choix de l'action a faire
 void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
 {
     BITMAP* fond;
@@ -764,6 +805,7 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page des infos joueur
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
 {
     BITMAP* fond;
@@ -788,7 +830,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
                 textprintf_ex(fond, font, x, 170, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->classes.PV);
                 textprintf_ex(fond, font, x, 190, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->classes.PA);
                 textprintf_ex(fond, font, x, 210, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->classes.PM);
-                if(tabjoueur[i]->perdu == 1)
+                if(tabjoueur[i]->classes.PV <= 0)
                 {
                     textprintf_ex(fond, font, x, 230, makecol(255,255,255), 0, "Etat : perdu");
                 }
@@ -804,6 +846,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(fond);
 }
 
+/// affichage d'une page de saisie qui return une chaine de caractere
 char* saisie_pseudo()
 {
     BITMAP* fond;
@@ -867,5 +910,155 @@ char* saisie_pseudo()
     }
     clear_keybuf();
     clear_bitmap(fond);
+    destroy_bitmap(fond);
     return pseudo;
+}
+
+void classement(t_joueur** tabjoueur, int nbrjoueur)
+{
+    BITMAP* fond;
+    fond = load_bitmap("documents/fond/fond classement.bmp", NULL);
+    int done = 0;
+    int y = 200;
+    int compteur = 0;
+    while(done == 0)
+    {
+        blit(fond, screen, 0,0,0,0,SCREEN_W,SCREEN_H);
+        textprintf_ex(fond, font, 1050, 750,makecol(0,0,0),-1 ,"Clique droit pour quitter le classement");
+        textprintf_ex(fond, font, 1030, 150,makecol(0,0,0),-1,"CLASSEMENT");
+        if(mouse_b&2)
+        {
+            done = 5;
+        }
+        else if(compteur == 0)
+        {
+            for(int i=0; i<nbrjoueur;i++)
+            {
+                textprintf_ex(fond, font, 900, y,makecol(0,0,0),-1,"Joueur : %s", tabjoueur[i]->pseudo );
+                textprintf_ex(fond, font, 900, y+20,makecol(0,0,0),-1,"Vous aviez choisi comme mugiwara : %s", tabjoueur[i]->classes.nom );
+                textprintf_ex(fond, font, 900, y+40,makecol(0,0,0),-1,"Votre rang : %d/%djoueurs", tabjoueur[i]->ordre, nbrjoueur );
+                y = y+100;
+            }
+        }
+        compteur++;
+    }
+    destroy_bitmap(fond);
+}
+
+int menu_fin_de_jeu()
+{
+    BITMAP* fond;
+    fond = load_bitmap("documents/fond/fond fin.bmp", NULL);
+    int done = 0;
+    int couleur1;
+    int couleur2;
+    int couleur3;
+    int retour = 0;
+    while(done == 0)
+    {
+        blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        textprintf_ex(fond, font, 600, 50, makecol(0,0,0), -1, "QUE VOULEZ-VOUS FAIRE ?");
+        if(mouse_x < 170 || mouse_x > (250 + text_length(font, "Recommencer la meme partie")) || mouse_y < 120 || mouse_y > (120 + text_height(font)))
+        {
+            couleur1 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur1 = makecol(255,0,0);
+        }
+        if(mouse_x < 520 || mouse_x > (600 + text_length(font, "Commencer une nouvelle partie")) || mouse_y < 120 || mouse_y > (120 + text_height(font)))
+        {
+            couleur2 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur2 = makecol(255,0,0);
+        }
+        if(mouse_x < 1020 || mouse_x > (1100 + text_length(font, "Quitter ce jeu")) || mouse_y < 120 || mouse_y > (120 + text_height(font)))
+        {
+            couleur3 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur3 = makecol(255,0,0);
+        }
+        textprintf_ex(fond,font, 250,120,couleur1,-1, "Recommencer la meme partie");
+        circlefill(fond, 180, 120, 10, couleur1);
+        textprintf_ex(fond, font, 600, 120, couleur2, -1, "Commencer une nouvelle partie");
+        circlefill(fond, 530, 120, 10, couleur2);
+        textprintf_ex(fond, font, 1100, 120, couleur3, -1, "Quitter ce jeu");
+        circlefill(fond, 1030, 120, 10, couleur3);
+        if(couleur1 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 1;
+            done = 3;
+        }
+        if(couleur2 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 2;
+            done = 3;
+        }
+        if(couleur3 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 3;
+            done = 3;
+        }
+    }
+    return retour;
+    destroy_bitmap(fond);
+}
+
+int choix_map()
+{
+    BITMAP* fond;
+    BITMAP* map1;
+    BITMAP* map2;
+    fond = load_bitmap("documents/fond/fond choix map.bmp", NULL);
+    map1 = load_bitmap("documents/props/map1.bmp", NULL);
+    map2 = load_bitmap("documents/props/map2.bmp", NULL);
+    int couleur1;
+    int couleur2;
+    int done = 0;
+    int retour = 0;
+    while(done == 0)
+    {
+        draw_sprite(fond, map1, 100,250);
+        draw_sprite(fond,map2,800,250);
+        blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        textprintf_ex(fond, font, 600, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MAP");
+        if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        {
+            couleur1 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur1 = makecol(255,0,0);
+        }
+        if(mouse_x < 970 || mouse_x > (1050 + text_length(font, "Alabasta")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        {
+            couleur2 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur2 = makecol(255,0,0);
+        }
+        textprintf_ex(fond,font, 300,550,couleur1,-1, "Archipel Sabaody");
+        circlefill(fond, 230, 550, 10, couleur1);
+        textprintf_ex(fond, font, 1050, 550, couleur2, -1, "Alabasta");
+        circlefill(fond, 980, 550, 10, couleur2);
+        if(couleur1 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 1;
+            done = 3;
+        }
+        if(couleur2 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 2;
+            done = 3;
+        }
+    }
+    return retour;
+    destroy_bitmap(fond);
+    destroy_bitmap(map1);
+    destroy_bitmap(map2);
 }
