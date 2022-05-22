@@ -6,6 +6,9 @@
 #include <string.h>
 #include "header.h"
 
+/// TOUTES LES FONCTIONS DANS CE .C SONT DES FONCTIONS QUI AFFICHE UN FOND SUR LE SCREEN, AUTRE QUE LA MAP
+
+
 /// initialisation d'allegro
 void initialisation()
 {
@@ -56,7 +59,7 @@ void logo()
             {
                 putpixel(mugiwara_edition, i, j, makecol(255,0,255));
             }
-            /// passer en blanc
+            /// passer en blanc le texte initialement noir
             if(color == makecol(0,0,0))
             {
                 putpixel(dofus, i,j, makecol(255,255,255));
@@ -144,7 +147,6 @@ int menu_principal()
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
-            /// a definir
             t_joueur** tab_joueur;
             int choix;
             int choix_mapa;
@@ -189,15 +191,10 @@ int menu_principal()
             int premier_joueur;
             char* nom;
             nom = saisie_nom_chargement();
-            //t_charge Unecharge;
             nbrjoueur = chargement_nbrjoueur(nom);
             premier_joueur = chargement_indice(nom);
             choix_mapa = chargement_choix_map(nom);
             //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
-            //Unecharge = chargement();
-            /*tabjoueur = Unecharge.tabjoueur;
-            nbrjoueur = Unecharge.nbrjoueur;
-            premier_joueur = Unecharge.indice;*/
             for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
@@ -781,7 +778,6 @@ int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice, int choix)
         circlefill(fond, 330, 500, 10, couleur5);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
-            /// a definir
             stop = 1;
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)

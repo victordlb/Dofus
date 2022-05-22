@@ -5,6 +5,8 @@
 #include <synchapi.h>
 #include "header.h"
 
+///TOUTES LES FONCTIONS DANS CE .C METTENT EN PLACE LA FONCTIONNALITE DE DEPLACEMENT DES JOUEURS
+
 /// fonction qui determine la 1ere position des joueurs
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
 {
@@ -134,10 +136,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
 /// fonction appelé lorsque un joueur veut se deplacer, il pourra le faire ici
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond,int choix)
 {
-    //t_cases** tabcases;
     t_chemin* Lechemin;
-    //tabcases = chargement_map();
-    // BITMAP* fond;
     BITMAP* croix;
     croix = load_bitmap("documents/props/logo croix.bmp", NULL);
     BITMAP* personnage;
@@ -322,10 +321,8 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
     int distance[16][28];
     int verif[16][28];
     int predecesseur_col[16][28],predecesseur_lig[16][28];
-    //int arrivee_col, arrivee_lig;
     int new_col,new_lig;
     t_chemin* monchemin;
-
 
     for(int i=0; i<16; i++)
     {
@@ -465,12 +462,10 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
         {
             if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
             {
-                printf("Possible\n");
                 return 1;
             }
             else
             {
-                printf("Impossible\n");
                 return 0;
             }
         }
@@ -478,30 +473,25 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
         {
             if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
             {
-                printf("Possible\n");
                 return 1;
             }
             else
             {
-                printf("Impossible\n");
                 return 0;
             }
         }
         else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
         {
-            printf("Possible\n");
             return 1;
         }
         else
         {
-            printf("Impossible\n");
             return 0;
         }
     }
 
     else
     {
-        printf("Impossible\n");
         return 0;
     }
 }

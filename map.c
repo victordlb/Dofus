@@ -5,6 +5,8 @@
 #include <synchapi.h>
 #include "header.h"
 
+///TOUTES LES FONCTIONS DE CE .C METTENT EN PLACE LES MAPS DEPUIS UN FICHIER TEXTE ET UN TABLEAU DE CASES
+
 ///dessin de ligne horizontale et verticale (non utilisé dans le code final)
 void dessin_ligne()
 {

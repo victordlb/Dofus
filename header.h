@@ -1,6 +1,7 @@
 #ifndef HEADER_H_INCLUDED
 #define HEADER_H_INCLUDED
 
+///structure de caracteristique d'attaque
 typedef struct attaque
 {
     char* nom;
@@ -13,6 +14,7 @@ typedef struct attaque
     int effet_spe; //fonctionnalité non utilisée
 }t_attaque;
 
+///structure de caracteristique de classe
 typedef struct classe
 {
     char* nom;
@@ -28,6 +30,7 @@ typedef struct classe
     int cord_y;
 }t_classe;
 
+///structure de caracteristique de cases
 typedef struct cases
 {
     int x;
@@ -37,8 +40,7 @@ typedef struct cases
     int indice;
 }t_cases;
 
-/// fin de la partie : on sauvegarde le pseudo avec la classe qu'il a choisit et son niveau
-/// début d'une prochaine partie : si on reconnait le pseudo et qu'il choisi la meme classe on lui indique le niveau
+///structure de caracteristique de joueur
 typedef struct joueur
 {
     char* pseudo;
@@ -47,6 +49,7 @@ typedef struct joueur
     int ordre;
 }t_joueur;
 
+/// structure de caracteristique de chemin
 typedef struct chemin
 {
     int x;
@@ -54,13 +57,6 @@ typedef struct chemin
     int taille;
 }t_chemin;
 
-
-typedef struct charge
-{
-    t_joueur** tabjoueur;
-    int nbrjoueur;
-    int indice;
-}t_charge;
 
 ///affichage_allegro
 void initialisation();
@@ -85,7 +81,7 @@ void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur,int choi
 void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix);
 void compte_temps(float temps, BITMAP* buffer);
 
-///LA MAP
+///LES MAPS
 void dessin_ligne();
 t_cases** chargement_map(int choix);
 BITMAP* charger_map(t_cases** tabcases, int choix);
@@ -114,7 +110,6 @@ void sauvegarde_tabjoueur_bis(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet);
 void sauvegarde_tour(int indice, char* trajet);
 void sauvegarde_choixmap(int choix, char* trajet);
-t_charge chargement();
 
 char* saisie_nom_sauvegarde();
 char* saisie_nom_chargement();

@@ -5,6 +5,8 @@
 #include <synchapi.h>
 #include "header.h"
 
+///TOUTES LES FONCTIONS DE CE .C COORDONNENT LES SOUS PROGRAMMES D'AUTRE .C POUR FLUIDIFIER LE DEROULEMENT DE CHAQUE TOUR
+
 /// determination aleatoire du premier joueur a jouer
 int random_commencer(int nbr)
 {

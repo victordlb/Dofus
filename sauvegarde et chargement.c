@@ -7,6 +7,8 @@
 #include <sys/stat.h>
 #include "header.h"
 
+///TOUTES LES FONCTIONS DE CE .C PERMETTENT DE METTRE EN PLACE LA SAUVEGARDE ET LE CHARGEMENT DE PARTIE
+
 ///Sauvegarde d'une partie en cours
 void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice, int choix)
 {
@@ -15,12 +17,8 @@ void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice, int choix)
     char tpm[500];
     trajet = "sauvegarde/";
     nom = saisie_nom_sauvegarde();
-    //printf("%s\n", trajet);
     strcat(strcpy(tpm, trajet), nom);
-    //printf("%s\n", tpm);
     mkdir(tpm);
-    //trajet = tpm;
-    //printf("test1\n");
     sauvegarde_tabjoueur(tabjoueur,nbrjoueur, tpm);
     sauvegarde_nbrjoueur(nbrjoueur, tpm);
     sauvegarde_tour(indice,tpm);
@@ -50,10 +48,7 @@ void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
         {
             nom = "/saveInfoJoueur4.txt";
         }
-        //printf("test1\n");
         strcat(strcpy(tpm, trajet), nom);
-        //printf("test1\n");
-        //printf("%s\n", tpm);
         FILE* fichier1 = NULL;
         fichier1 = fopen(tpm, "wba");
         if(fichier1 == NULL)
@@ -77,7 +72,6 @@ void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
     char tpm[500];
     strcat(strcpy(tpm,trajet), "/saveNbrjoueur.txt");
     FILE* fichier2 = NULL;
-    //printf("%s\n", tpm);
     fichier2 = fopen(tpm, "wba");
     if(fichier2 == NULL)
     {
@@ -97,7 +91,6 @@ void sauvegarde_tour(int indice, char* trajet)
     char tpm[500];
     strcat(strcpy(tpm, trajet), "/saveTour.txt");
     FILE* fichier3 = NULL;
-    //printf("%s\n", tpm);
     fichier3 = fopen(tpm, "wba");
     if(fichier3 == NULL)
     {
@@ -140,7 +133,6 @@ int chargement_nbrjoueur(char* nom)
     FILE* fichier2;
     strcat(strcpy(tampon2, trajet), nom);
     strcat(tampon2, nom2);
-    //printf("%s\n", tampon2);
     fichier2 = fopen(tampon2, "rb");
     if(fichier2 == NULL)
     {
@@ -151,7 +143,6 @@ int chargement_nbrjoueur(char* nom)
     {
         fscanf(fichier2,"%d",&nbrjoueur);
         fclose(fichier2);
-        //printf("nbr :%d\n", nbrjoueur);
     }
     return nbrjoueur;
 }
@@ -169,7 +160,6 @@ int chargement_indice(char* nom)
     FILE* fichier3;
     strcat(strcpy(tampon3, trajet), nom);
     strcat(tampon3, nom3);
-    //printf("%s\n", tampon3);
     fichier3 = fopen(tampon3, "rb");
     if(fichier3 == NULL)
     {
@@ -180,7 +170,6 @@ int chargement_indice(char* nom)
     {
         fscanf(fichier3,"%d",&indice);
         fclose(fichier3);
-        //printf("indice :%d\n", indice);
     }
     return indice;
 }
@@ -356,10 +345,7 @@ void sauvegarde_tabjoueur_bis(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
     char* nom;
     char tpm[500];
     nom = "/saveInfoJoueur.txt";
-    //printf("test1\n");
     strcat(strcpy(tpm, trajet), nom);
-    //printf("test1\n");
-    //printf("%s\n", tpm);
     FILE* fichier1 = NULL;
     fichier1 = fopen(tpm, "wba");
     if(fichier1 == NULL)
