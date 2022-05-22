@@ -85,7 +85,7 @@ void logo()
 }
 
 /// affichage du menu principal et choix de l'action a faire
-void menu_principal()
+int menu_principal()
 {
     int couleur1 = 0;
     int couleur2 = 0;
@@ -178,37 +178,40 @@ void menu_principal()
             }
             if(choix == 3)
             {
-                quitter();
-                stop = 1;
+                goto fin;
             }
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            t_joueur** tabjoueur;
+            t_joueur** tabjoueur = NULL;
             int nbrjoueur;
+            int choix_mapa;
             int premier_joueur;
             char* nom;
             nom = saisie_nom_chargement();
             //t_charge Unecharge;
             nbrjoueur = chargement_nbrjoueur(nom);
             premier_joueur = chargement_indice(nom);
+            choix_mapa = chargement_choix_map(nom);
             //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
             //Unecharge = chargement();
             /*tabjoueur = Unecharge.tabjoueur;
             nbrjoueur = Unecharge.nbrjoueur;
             premier_joueur = Unecharge.indice;*/
-            /*for(int x = 0; x<nbrjoueur; x++)
+            for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
             }
-            tour(tabjoueur, nbrjoueur, premier_joueur, 0,1);*/
+            tour(tabjoueur, nbrjoueur, premier_joueur, 0,choix_mapa);
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
+            fin:
             quitter();
             stop = 1;
         }
     }
+    return stop;
     destroy_bitmap(fond);
 }
 
@@ -712,7 +715,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 }
 
 /// affichage d'un menu pause avec choix de l'action a faire
-void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
+int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice, int choix)
 {
     BITMAP* fond;
     fond = load_bitmap("documents/fond/menu pause.bmp", NULL);
@@ -792,14 +795,14 @@ void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
             Sleep(500);
-            stop = 1;
-            menu_principal();
+            stop = 2;
         }
         if(couleur5 == makecol(255,0,0) && mouse_b&1)
         {
-            sauvegarde(tabjoueur,nbrjoueur,indice);
+            sauvegarde(tabjoueur,nbrjoueur,indice,choix);
         }
     }
+    return stop;
     destroy_bitmap(fond);
 }
 
@@ -1014,20 +1017,24 @@ int choix_map()
     BITMAP* fond;
     BITMAP* map1;
     BITMAP* map2;
+    BITMAP* map3;
     fond = load_bitmap("documents/fond/fond choix map.bmp", NULL);
     map1 = load_bitmap("documents/props/map1.bmp", NULL);
     map2 = load_bitmap("documents/props/map2.bmp", NULL);
+    map3 = load_bitmap("documents/props/map3.bmp", NULL);
     int couleur1;
     int couleur2;
+    int couleur3;
     int done = 0;
     int retour = 0;
     while(done == 0)
     {
-        draw_sprite(fond, map1, 100,250);
-        draw_sprite(fond,map2,800,250);
+        draw_sprite(fond, map1, 100,100);
+        draw_sprite(fond,map2,800,100);
+        draw_sprite(fond, map3, 450, 450);
         blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
         textprintf_ex(fond, font, 600, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MAP");
-        if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 410 || mouse_y > (410 + text_height(font)))
         {
             couleur1 = makecol(0,0,0);
         }
@@ -1035,7 +1042,7 @@ int choix_map()
         {
             couleur1 = makecol(255,0,0);
         }
-        if(mouse_x < 970 || mouse_x > (1050 + text_length(font, "Alabasta")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        if(mouse_x < 970 || mouse_x > (1050 + text_length(font, "Alabasta")) || mouse_y < 410 || mouse_y > (410 + text_height(font)))
         {
             couleur2 = makecol(0,0,0);
         }
@@ -1043,10 +1050,20 @@ int choix_map()
         {
             couleur2 = makecol(255,0,0);
         }
-        textprintf_ex(fond,font, 300,550,couleur1,-1, "Archipel Sabaody");
-        circlefill(fond, 230, 550, 10, couleur1);
-        textprintf_ex(fond, font, 1050, 550, couleur2, -1, "Alabasta");
-        circlefill(fond, 980, 550, 10, couleur2);
+        if(mouse_x < 570 || mouse_x > (650 + text_length(font, "Royaume de Drum")) || mouse_y < 760 || mouse_y > (760 + text_height(font)))
+        {
+            couleur3 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur3 = makecol(255,0,0);
+        }
+        textprintf_ex(fond,font, 300,410,couleur1,-1, "Archipel Sabaody");
+        circlefill(fond, 230, 410, 10, couleur1);
+        textprintf_ex(fond, font, 1050, 410, couleur2, -1, "Alabasta");
+        circlefill(fond, 980, 410, 10, couleur2);
+        textprintf_ex(fond, font, 650, 760, couleur3, -1, "Royaume de Drum");
+        circlefill(fond, 580, 760, 10, couleur3);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
             retour = 1;
@@ -1055,6 +1072,11 @@ int choix_map()
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
             retour = 2;
+            done = 3;
+        }
+        if(couleur3 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 3;
             done = 3;
         }
     }

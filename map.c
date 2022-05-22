@@ -122,9 +122,6 @@ BITMAP* charger_map(t_cases** tabcases, int choix)
     BITMAP* huit ;
     BITMAP* neuf;
     BITMAP* zero;
-    BITMAP* dix;
-    BITMAP* onze;
-    BITMAP* douze;
     if(choix == 1)
     {
         un = load_bitmap("documents/lamap/1.bmp", NULL);
@@ -156,50 +153,64 @@ BITMAP* charger_map(t_cases** tabcases, int choix)
         un = load_bitmap("documents/lamap3/1.bmp", NULL);
         deux = load_bitmap("documents/lamap3/2.bmp", NULL);
         trois = load_bitmap("documents/lamap3/3.bmp", NULL);
-        quatre = load_bitmap("documents/lamap3/4.bmp", NULL);
-        cinq = load_bitmap("documents/lamap3/5.bmp", NULL);
-        six = load_bitmap("documents/lamap3/6.bmp", NULL);
+        quatre = load_bitmap("documents/lamap3/10.bmp", NULL);
+        cinq = load_bitmap("documents/lamap3/11.bmp", NULL);
+        six = load_bitmap("documents/lamap3/12.bmp", NULL);
         sept = load_bitmap("documents/lamap3/7.bmp", NULL);
         huit = load_bitmap("documents/lamap3/8.bmp", NULL);
         neuf = load_bitmap("documents/lamap3/9.bmp", NULL);
         zero = load_bitmap("documents/lamap3/0.bmp", NULL);
-        dix = load_bitmap("documents/lamap3/10.bmp",NULL);
-        onze = load_bitmap("documents/lamap3/11.bmp", NULL);
-        douze = load_bitmap("documents/lamap3/12.bmp", NULL);
     }
     BITMAP* fond = create_bitmap(SCREEN_W, SCREEN_H);
     for(int i =0; i<16; i++)
     {
         for(int j=0; j<28; j++)
         {
-            if(tabcases[i][j].cases == 1)
-                draw_sprite(fond, un, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 2)
-                draw_sprite(fond, deux, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 3)
-                draw_sprite(fond, trois, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 4)
-                draw_sprite(fond, quatre, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 5)
-                draw_sprite(fond, cinq, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 6)
-                draw_sprite(fond, six, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 7)
-                draw_sprite(fond, sept, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 8)
-                draw_sprite(fond, huit, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 9)
-                draw_sprite(fond, neuf, tabcases[i][j].x, tabcases[i][j].y);
-            if(tabcases[i][j].cases == 0)
-                draw_sprite(fond, zero, tabcases[i][j].x, tabcases[i][j].y);
-            if(choix == 3)
+            if(choix != 3)
             {
+                if(tabcases[i][j].cases == 1)
+                    draw_sprite(fond, un, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 2)
+                    draw_sprite(fond, deux, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 3)
+                    draw_sprite(fond, trois, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 4)
+                    draw_sprite(fond, quatre, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 5)
+                    draw_sprite(fond, cinq, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 6)
+                    draw_sprite(fond, six, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 7)
+                    draw_sprite(fond, sept, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 8)
+                    draw_sprite(fond, huit, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 9)
+                    draw_sprite(fond, neuf, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 0)
+                    draw_sprite(fond, zero, tabcases[i][j].x, tabcases[i][j].y);
+            }
+            else
+            {
+                if(tabcases[i][j].cases == 1)
+                    draw_sprite(fond, un, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 2)
+                    draw_sprite(fond, deux, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 3)
+                    draw_sprite(fond, trois, tabcases[i][j].x, tabcases[i][j].y);
                 if(tabcases[i][j].cases == 10)
-                    draw_sprite(fond, dix, tabcases[i][j].x, tabcases[i][j].y);
+                    draw_sprite(fond, quatre, tabcases[i][j].x, tabcases[i][j].y);
                 if(tabcases[i][j].cases == 11)
-                    draw_sprite(fond, onze, tabcases[i][j].x, tabcases[i][j].y);
+                    draw_sprite(fond, cinq, tabcases[i][j].x, tabcases[i][j].y);
                 if(tabcases[i][j].cases == 12)
-                    draw_sprite(fond, douze, tabcases[i][j].x, tabcases[i][j].y);
+                    draw_sprite(fond, six, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 7)
+                    draw_sprite(fond, sept, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 8)
+                    draw_sprite(fond, huit, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 9)
+                    draw_sprite(fond, neuf, tabcases[i][j].x, tabcases[i][j].y);
+                if(tabcases[i][j].cases == 0)
+                    draw_sprite(fond, zero, tabcases[i][j].x, tabcases[i][j].y);
             }
         }
     }
@@ -213,9 +224,6 @@ BITMAP* charger_map(t_cases** tabcases, int choix)
     destroy_bitmap(huit);
     destroy_bitmap(neuf);
     destroy_bitmap(zero);
-    destroy_bitmap(dix);
-    destroy_bitmap(onze);
-    destroy_bitmap(douze);
     return fond;
 }
 
