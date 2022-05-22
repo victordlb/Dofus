@@ -42,6 +42,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
                 defx = 4;
                 defy = 12;
             }
+            else if(choix == 3)
+            {
+                defx = 2;
+                defy = 10;
+            }
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
         {
@@ -62,6 +67,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
                 defx = 22;
                 defy = 2;
             }
+            else if(choix == 3)
+            {
+                defx = 20;
+                defy = 3;
+            }
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
         {
@@ -75,6 +85,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
             {
                 defx = 12;
                 defy = 12;
+            }
+            else if(choix == 3)
+            {
+                defx = 10;
+                defy = 2;
             }
         }
         time_t start, end;
