@@ -6,6 +6,7 @@
 #include <string.h>
 #include "header.h"
 
+/// fonction appelee lorsque le joueur decide d'attaquer, il pourra le faire ici
 void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond, int choix)
 {
     afficherSort(tabjoueur, indice, fond);
@@ -92,8 +93,6 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                     {
                         done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,0, fond);
                         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                        //chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
-                        //blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     }
                     done = 1;
                 }
@@ -116,8 +115,6 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                     {
                         done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,1,fond);
                         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                        //chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
-                        //blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     }
                     done = 1;
                 }
@@ -140,8 +137,6 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                     {
                         done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,2, fond);
                         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                        //chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
-                        //blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     }
                     done = 1;
                 }
@@ -164,8 +159,6 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                     {
                         done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,3,fond);
                         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                        //chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
-                        //blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     }
                     done = 1;
                 }
@@ -188,8 +181,6 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
                     {
                         done2 = lancerattaque(tabcases,tabjoueur,indice,nbrjoueur,8,fond);
                         blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
-                        //chargement_perso(tabjoueur,indice,nbrjoueur,fond,0);
-                        //blit(fond, screen, 0,0,0,0,SCREEN_W, SCREEN_H);
                     }
                     done = 1;
                 }
@@ -210,7 +201,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
     destroy_bitmap(croix);
 }
 
-
+/// fonction qui affiche dans les cases tous les sorts du joueur qui joue
 void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
 {
     BITMAP* sort1;
@@ -273,6 +264,7 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
     destroy_bitmap(logo_info);
 }
 
+/// fonction qui test la porte du sort choisi par le joueur
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond)
 {
     if(tabjoueur[indice]->classes.mesattaques[numsort].type == 1)
@@ -285,6 +277,7 @@ void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort
     }
 }
 
+/// fonction qui dessine en forme de croix la porte des sorts
 void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
 {
     for(int i = 0; i<16; i++)
@@ -302,6 +295,7 @@ void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int n
     }
 }
 
+/// fonction qui dessine en forme de cercle la porte des sorts
 void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
 {
     for(int i = 0; i<16; i++)
@@ -319,6 +313,7 @@ void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int 
     }
 }
 
+///fonction qui test si le sors en forme de croix est possible
 int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice, int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -349,6 +344,7 @@ int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indic
         return 0;
 }
 
+///fonction qui test si le sort en forme de cercle est possible
 int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -375,6 +371,7 @@ int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indi
         return 0;
 }
 
+///fonction qui test si la mele est possible
 int possibmelee(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -394,6 +391,7 @@ int possibmelee(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indic
         return 0;
 }
 
+/// fonction qui dessine la porte de la melee
 void dessinportemelee(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
 {
     for(int i = 0; i<16; i++)
@@ -411,6 +409,7 @@ void dessinportemelee(t_joueur** tabjoueur, t_cases** tabcases, int indice,int n
     }
 }
 
+/// fonction qui test si le sors est possible et le lance a l'endroit ou le joueur clique(si un joueur s'y trouve il perd des PV)
 int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, int numsort, BITMAP* fond)
 {
     BITMAP* anime;
@@ -529,6 +528,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
     destroy_bitmap(anime);
 }
 
+/// fonction qui affiche les infos d'un sort si on clique sur l'icone d'information
 void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
 {
     BITMAP* info;
@@ -661,6 +661,7 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
             }
         }
     }
+    clear_bitmap(info);
     destroy_bitmap(info);
     destroy_bitmap(logo_croix);
 }

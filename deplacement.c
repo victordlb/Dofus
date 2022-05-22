@@ -5,6 +5,7 @@
 #include <synchapi.h>
 #include "header.h"
 
+/// fonction qui determine la 1ere position des joueurs
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
 {
     BITMAP* fond ;
@@ -115,6 +116,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
     destroy_bitmap(fond);
 }
 
+/// fonction appelé lorsque un joueur veut se deplacer, il pourra le faire ici
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond,int choix)
 {
     //t_cases** tabcases;
@@ -249,6 +251,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     destroy_bitmap(croix);
 }
 
+/// fonction qui teste si le deplacement est possible à l'endroit ou le joueur a cliquer
 int possibilite_deplacement_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, int X, int Y)
 {
     t_chemin* Unchemin;
@@ -270,6 +273,7 @@ int possibilite_deplacement_bis(t_joueur** tabjoueur, t_cases** tabcases, int in
     }
 }
 
+/// fonction qui parcours tout le tableau de case et colorie en vert les cases ou le deplacement est possible
 void couleur_case_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
 {
     t_chemin* Lechemin;
@@ -296,7 +300,7 @@ void couleur_case_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITM
     }
 }
 
-
+/// théoreme des graphes/de djikstra qui determine le chemin le plus court pour aller d'un point A à un point B
 t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int arrivee_col, int arrivee_lig)
 {
     int pos_col_actuelle=pos_col_pers,pos_lig_actuelle=pos_lig_pers;
@@ -316,21 +320,11 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
             verif[i][j]=0;//non gris
             predecesseur_col[i][j]=-1;
             predecesseur_lig[i][j]=-1;
-            //printf("%d\n", tabcases[i][j].obstacle);
         }
     }
-    //printf("coord_x :%d / coord_y :%d\n",pos_col_actuelle,pos_lig_actuelle);
-
-    /*printf("Saisir le sommet d'arrivee en x\n");
-    scanf("%d",&arrivee_col);
-
-    printf("Saisir le sommet d'arrivee en y\n");
-    scanf("%d",&arrivee_lig);*/
-
     distance[pos_lig_pers][pos_col_pers]=0;
     predecesseur_col[pos_lig_pers][pos_col_pers]=-2;
     predecesseur_lig[pos_lig_pers][pos_col_pers]=-2;
-    //printf("predecesseur : %d\n", predecesseur_lig[pos_lig_pers][pos_col_pers]);
     verif[pos_lig_pers][pos_col_pers]=1;
 
     do
@@ -401,8 +395,6 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
             }
         }
 
-
-
         int minimum=1000;
         int indice_min_col,indice_min_lig;
         for(int i=0; i<16; i++)
@@ -422,25 +414,19 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
             }
         }
 
-
         verif[indice_min_lig][indice_min_col]=1;
         pos_lig_actuelle=indice_min_lig;
         pos_col_actuelle=indice_min_col;
-
-
     }
     while(verif[arrivee_lig][arrivee_col]==0);
-    //printf("test2\n");
     monchemin = (t_chemin*)malloc(sizeof(t_chemin)*1000 );
     monchemin[0].taille = distance[arrivee_lig][arrivee_col];
     int indice = distance[arrivee_lig][arrivee_col];
-    //printf("%dx %dy %d|\n",arrivee_col,arrivee_lig, distance[arrivee_lig][arrivee_col]);
     new_col=predecesseur_col[arrivee_lig][arrivee_col];
     int tampon = 0;
     new_lig=predecesseur_lig[arrivee_lig][arrivee_col];
     while(new_col!=-2 && new_lig != -2)
     {
-        //printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
         tampon = new_col;
         monchemin[indice].x = new_col;
         monchemin[indice].y = new_lig;
@@ -448,13 +434,14 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
         new_lig = predecesseur_lig[new_lig][tampon];
         indice--;
     }
-    // printf("%dx %dy poids %d|\n",new_col,new_lig,distance[new_lig][new_col]);
 
     return monchemin;
 }
 
 /// ANCIENNE FONCTION NON-UTILISE DANS LE CODE FINAL
 
+
+/// test si le deplacement est possible a l'endroit ou le joueur a cliquer
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
     if(tabcases[Y/50][X/50].obstacle == 0)
@@ -581,6 +568,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     return Lechemin;
 }
 
+/// colorisation des cases a l'endroit ou le deplacement est possible
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
 {
     t_chemin* Lechemin;

@@ -5,6 +5,7 @@
 #include <synchapi.h>
 #include "header.h"
 
+/// determination aleatoire du premier joueur a jouer
 int random_commencer(int nbr)
 {
     int random = 0;
@@ -12,6 +13,7 @@ int random_commencer(int nbr)
     return random;
 }
 
+/// fonction récurente qui fait tourner en boucle le jeu
 void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur, int choix_mapa)
 {
     if(tabjoueur[indice]->classes.PV > 0)
@@ -62,6 +64,7 @@ void tour(t_joueur** tabjoueur, int nbrjoueur, int indice, int compteur, int cho
 
 }
 
+/// fonction qui affiche le chrono en fonction du temps à chaque tour
 void compte_temps(float temps, BITMAP* buffer)
 {
     BITMAP* chrono;
@@ -133,6 +136,7 @@ void compte_temps(float temps, BITMAP* buffer)
     destroy_bitmap(chrono);
 }
 
+/// fonction appele a chaque tour qui determine le choix d'action du joueur (deplacement/attaque/passer son tour/menu pause)
 void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix)
 {
     t_cases** tabcases;
