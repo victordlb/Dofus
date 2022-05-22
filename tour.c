@@ -179,6 +179,7 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix)
                 }
                 combat(tabcases,tabjoueur,indice,nbrjoueur,buffer,choix);
                 clear_bitmap(buffer);
+                fond = chargement_fond(tabcases,choix);
                 chargement_perso(tabjoueur,indice,nbrjoueur, fond,0);
                 blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
             }

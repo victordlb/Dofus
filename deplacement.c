@@ -246,6 +246,7 @@ void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjo
     destroy_bitmap(fond);
     destroy_bitmap(personnage);
     destroy_bitmap(buffer);
+    destroy_bitmap(croix);
 }
 
 int possibilite_deplacement_bis(t_joueur** tabjoueur, t_cases** tabcases, int indice, int X, int Y)

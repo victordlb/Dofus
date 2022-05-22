@@ -193,7 +193,7 @@ void menu_principal()
             printf("testdebut\n");
             nbrjoueur = chargement_nbrjoueur(nom);
             premier_joueur = chargement_indice(nom);
-            tabjoueur = chargement_infoJoueur(nom, nbrjoueur);
+            //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
             //Unecharge = chargement();
             printf("testfin\n");
             /*tabjoueur = Unecharge.tabjoueur;
@@ -830,7 +830,7 @@ void infojoueur(t_joueur** tabjoueur, int nbrjoueur)
                 textprintf_ex(fond, font, x, 170, makecol(255,255,255), 0, "PV : %d", tabjoueur[i]->classes.PV);
                 textprintf_ex(fond, font, x, 190, makecol(255,255,255), 0, "PA : %d", tabjoueur[i]->classes.PA);
                 textprintf_ex(fond, font, x, 210, makecol(255,255,255), 0, "PM : %d", tabjoueur[i]->classes.PM);
-                if(tabjoueur[i]->classes.PV < 0)
+                if(tabjoueur[i]->classes.PV <= 0)
                 {
                     textprintf_ex(fond, font, x, 230, makecol(255,255,255), 0, "Etat : perdu");
                 }
@@ -910,6 +910,7 @@ char* saisie_pseudo()
     }
     clear_keybuf();
     clear_bitmap(fond);
+    destroy_bitmap(fond);
     return pseudo;
 }
 
@@ -952,6 +953,7 @@ int menu_fin_de_jeu()
     int couleur1;
     int couleur2;
     int couleur3;
+    int retour = 0;
     while(done == 0)
     {
         blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
@@ -988,17 +990,22 @@ int menu_fin_de_jeu()
         circlefill(fond, 1030, 120, 10, couleur3);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
-            return 1;
+            retour = 1;
+            done = 3;
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
-            return 2;
+            retour = 2;
+            done = 3;
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            return 3;
+            retour = 3;
+            done = 3;
         }
     }
+    return retour;
+    destroy_bitmap(fond);
 }
 
 int choix_map()
@@ -1012,6 +1019,7 @@ int choix_map()
     int couleur1;
     int couleur2;
     int done = 0;
+    int retour = 0;
     while(done == 0)
     {
         draw_sprite(fond, map1, 100,250);
@@ -1040,11 +1048,17 @@ int choix_map()
         circlefill(fond, 980, 550, 10, couleur2);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
-            return 1;
+            retour = 1;
+            done = 3;
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
-            return 2;
+            retour = 2;
+            done = 3;
         }
     }
+    return retour;
+    destroy_bitmap(fond);
+    destroy_bitmap(map1);
+    destroy_bitmap(map2);
 }

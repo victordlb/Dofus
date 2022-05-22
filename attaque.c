@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <allegro.h>
+#include <time.h>
+#include <synchapi.h>
+#include <string.h>
 #include "header.h"
 
 void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond, int choix)
@@ -204,6 +207,7 @@ void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur,
     }
     Sleep(1000);
     destroy_bitmap(select);
+    destroy_bitmap(croix);
 }
 
 
@@ -261,6 +265,12 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
     clear_bitmap(sort3);
     clear_bitmap(sort4);
     clear_bitmap(poing);
+    destroy_bitmap(sort1);
+    destroy_bitmap(sort2);
+    destroy_bitmap(sort3);
+    destroy_bitmap(sort4);
+    destroy_bitmap(poing);
+    destroy_bitmap(logo_info);
 }
 
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond)
@@ -516,6 +526,7 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
     }
     else
         return 0;
+    destroy_bitmap(anime);
 }
 
 void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
@@ -650,5 +661,7 @@ void info_sort(t_joueur** tabjoueur, int indice, int num_info, BITMAP* fond)
             }
         }
     }
+    destroy_bitmap(info);
+    destroy_bitmap(logo_croix);
 }
 
