@@ -152,6 +152,8 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix)
     }
     blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
     int done = 0;
+    int arret = 0;
+    int menu = 0;
     time_t start, end;
     time(&start);
     while(done == 0)
@@ -166,8 +168,23 @@ void choix_action(t_joueur** tabjoueur, int indice, int nbrjoueur,int choix)
         {
             if(mouse_x > 1340 && mouse_x < 1380 && mouse_y >5 && mouse_y < 45)
             {
-                menu_pause(tabjoueur,nbrjoueur,indice);
-                blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
+                menu = menu_pause(tabjoueur,nbrjoueur,indice,choix);
+                if(menu == 2)
+                {
+                    arret = menu_principal();
+                    if(arret == 1)
+                    {
+                        for(int z=0;z<nbrjoueur;z++)
+                        {
+                            tabjoueur[z]->classes.PV = 0;
+                            done = 3;
+                        }
+                    }
+                }
+                if(arret != 1)
+                {
+                    blit(fond, screen,0,0,0,0,SCREEN_W, SCREEN_H);
+                }
             }
             if(mouse_x > 1250 && mouse_x < 1300 && mouse_y >750 && mouse_y < 800)
             {

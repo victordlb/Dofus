@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include "header.h"
 
-void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice)
+void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice, int choix)
 {
     char* nom;
     char* trajet;
@@ -23,6 +23,7 @@ void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice)
     sauvegarde_tabjoueur_bis(tabjoueur,nbrjoueur, tpm);
     sauvegarde_nbrjoueur(nbrjoueur, tpm);
     sauvegarde_tour(indice,tpm);
+    sauvegarde_choixmap(choix, tpm);
 }
 
 void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
@@ -60,7 +61,7 @@ void sauvegarde_tabjoueur(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
         }
         else
         {
-            fprintf(fichier1, "%s\n", tabjoueur[i]->pseudo);
+            fprintf(fichier1, " %s\n", tabjoueur[i]->pseudo);
             fprintf(fichier1, "%s\n", tabjoueur[i]->classes.nom);
             fprintf(fichier1, "%d %d %d %d %d %d %d",  tabjoueur[i]->perdu, tabjoueur[i]->classes.PV,tabjoueur[i]->classes.PM,tabjoueur[i]->classes.PA,tabjoueur[i]->classes.ID, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
         }
@@ -88,12 +89,29 @@ void sauvegarde_tabjoueur_bis(t_joueur** tabjoueur, int nbrjoueur, char* trajet)
     {
         for(int i; i<nbrjoueur; i++)
         {
-            fprintf(fichier1, " %s", tabjoueur[i]->pseudo);
+            fprintf(fichier1, "%s", tabjoueur[i]->pseudo);
             fprintf(fichier1, " %s", tabjoueur[i]->classes.nom);
-            fprintf(fichier1, " %d %d %d %d %d %d %d",  tabjoueur[i]->ordre, tabjoueur[i]->classes.PV,tabjoueur[i]->classes.PM,tabjoueur[i]->classes.PA,tabjoueur[i]->classes.ID, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
+            fprintf(fichier1, " %d %d %d %d %d %d %d %d %d %d \n",  tabjoueur[i]->ordre, tabjoueur[i]->classes.PV,tabjoueur[i]->classes.PM,tabjoueur[i]->classes.PA,tabjoueur[i]->classes.ID,tabjoueur[i]->classes.PV_init,tabjoueur[i]->classes.PM_init,tabjoueur[i]->classes.PA_init,tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y);
         }
     }
     fclose(fichier1);
+}
+
+void sauvegarde_choixmap(int choix, char* trajet)
+{
+    char* nom;
+    char tpm[500];
+    nom = "/saveChoixmap.txt";
+    strcat(strcpy(tpm, trajet), "/saveChoixmap.txt");
+    FILE* fichier4 = NULL;
+    fichier4 = fopen(tpm, "wba");
+    if(fichier4 == NULL)
+        printf("Erreur d'ouverture fichier\n");
+    else
+    {
+        fprintf(fichier4, "%d", choix);
+    }
+    fclose(fichier4);
 }
 
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet)
@@ -193,6 +211,433 @@ int chargement_indice(char* nom)
     }
     return indice;
 }
+
+int chargement_choix_map(char* nom)
+{
+    char* trajet;
+    int validation = 2;
+    int choix;
+    trajet = "sauvegarde/";
+    char* nom3;
+    char tampon3[500];
+    nom3 = "/saveChoixmap.txt";
+    FILE* fichier3;
+    strcat(strcpy(tampon3, trajet), nom);
+    strcat(tampon3, nom3);
+    printf("%s\n", tampon3);
+    fichier3 = fopen(tampon3, "rb");
+    if(fichier3 == NULL)
+    {
+        printf("Ce fichier n'existe pas\n");
+        validation = 0;
+    }
+    if(validation != 0)
+    {
+        fscanf(fichier3,"%d",&choix);
+        fclose(fichier3);
+        printf("choix :%d\n", choix);
+    }
+    return choix;
+}
+
+t_joueur** chargement_infoJoueur_bis(char* nom, int nbrjoueur)
+{
+    int i = 0;
+    char** recup = (char**)malloc(nbrjoueur * sizeof(char*));
+    char tampon[100];
+    t_joueur** tab;
+    FILE* fichier1;
+    tab = (t_joueur*)malloc(sizeof(t_joueur)*1);
+    tab = (t_joueur*)malloc(sizeof(t_joueur)*nbrjoueur);
+    char tampon1[500];
+    char* trajet;
+    char tpm1[500];
+    char nom1[500];
+    trajet = "sauvegarde/";
+    strcat(strcpy(tampon1, trajet), nom);
+    printf("tampon %s\n", tampon1);
+    strcpy(nom1, "/saveInfoJoueur.txt" );
+    strcpy(tpm1, tampon1);
+    strcat(tampon1, nom1);
+    printf("%s\n", nom1);
+    printf("%s\n", tampon1);
+    fichier1 = fopen(tampon1, "r+");
+    if(fichier1 == NULL)
+    {
+        printf("Ce fichier n'existe pas\n");
+    }
+    else
+    {
+        //Parcours du fichier
+        while(!feof(fichier1))
+        {
+            fgets(tampon, 100, fichier1);
+            recup[i] = (char*)malloc((strlen(tampon)+1) * sizeof(char));
+            strcpy(recup[i], tampon);
+            i++;
+        }
+        fclose(fichier1);
+        int stop = 0;
+        int j = 0;
+        int espace = 0;
+        int cmpnom = 0;
+        int cmpclasse = 0;
+        int cmpordre = 0;
+        int cmppv = 0;
+        int cmppm = 0;
+        int cmppa = 0;
+        int cmpid = 0;
+        int cmppvinit = 0;
+        int cmppminit = 0;
+        int cmppainit = 0;
+        int cmpcordx = 0;
+        int cmpcordy = 0;
+        char* tpmnom;
+        char* tpmclasse;
+        char* tpmordre;
+        char* tpmpv;
+        char* tpmpm;
+        char* tpmpa;
+        char* tpmid;
+        char* tpmpvinit;
+        char* tpmpminit;
+        char* tpmpainit;
+        char* tpmcordx;
+        char* tpmcordy;
+        for(int x = 0; x<nbrjoueur; x++)
+        {
+            tpmnom = (char*)malloc(sizeof(char) * 25);
+            tpmclasse= (char*)malloc(sizeof(char) * 8);
+            tpmordre= (char*)malloc(sizeof(char) * 5);
+            tpmpv= (char*)malloc(sizeof(char) * 5);
+            tpmpm= (char*)malloc(sizeof(char) * 5);
+            tpmpa= (char*)malloc(sizeof(char) * 5);
+            tpmid= (char*)malloc(sizeof(char) * 5);
+            tpmpvinit= (char*)malloc(sizeof(char) * 5);
+            tpmpminit= (char*)malloc(sizeof(char) * 5);
+            tpmpainit= (char*)malloc(sizeof(char) * 5);
+            tpmcordx= (char*)malloc(sizeof(char) * 5);
+            tpmcordy= (char*)malloc(sizeof(char) * 5);
+            while(stop != 1)
+            {
+                if(recup[x][j] == ' ')
+                    espace += 1;
+                if(espace == 0)
+                {
+                    tpmnom[cmpnom] = recup[x][j];
+                    cmpnom +=1;
+                }
+                if(espace == 1)
+                {
+                    tpmclasse[cmpclasse] = recup[x][j];
+                    cmpclasse +=1;
+                }
+                if(espace == 2)
+                {
+                    tpmordre[cmpordre] = recup[x][j];
+                    cmpordre +=1;
+                }
+                if(espace == 3)
+                {
+                    tpmpv[cmppv] = recup[x][j];
+                    cmppv +=1;
+                }
+                if(espace == 4)
+                {
+                    tpmpm[cmppm] = recup[x][j];
+                    cmppm +=1;
+                }
+                if(espace == 5)
+                {
+                    tpmpa[cmppa] = recup[x][j];
+                    cmppa +=1;
+                }
+                if(espace == 6)
+                {
+                    tpmid[cmpid] = recup[x][j];
+                    cmpid +=1;
+                }
+                if(espace == 7)
+                {
+                    tpmpvinit[cmppvinit] = recup[x][j];
+                    cmppvinit +=1;
+                }
+                if(espace == 8)
+                {
+                    tpmpminit[cmppminit] = recup[x][j];
+                    cmppminit +=1;
+                }
+                if(espace == 9)
+                {
+                    tpmpainit[cmppainit] = recup[x][j];
+                    cmppainit +=1;
+                }
+                if(espace == 10)
+                {
+                    tpmcordx[cmpcordx] = recup[x][j];
+                    cmpcordx +=1;
+                }
+                if(espace == 11)
+                {
+                    tpmcordy[cmpcordy] = recup[x][j];
+                    cmpcordy +=1;
+                }
+                if(espace == 12)
+                {
+                    stop = 1;
+                }
+                j +=1;
+            }
+            tab[x]->pseudo = (char*)malloc((strlen(tpmnom)+1) * sizeof(char));
+            strcpy(tab[x]->pseudo, tpmnom);
+            tab[x]->classes.nom = (char*)malloc((strlen(tpmclasse)+1) * sizeof(char));
+            strcpy(tab[x]->classes.nom, tpmclasse);
+            tab[x]->ordre = atoi(tpmordre);
+            tab[x]->classes.PA = atoi(tpmpa);
+            tab[x]->classes.PA_init = atoi(tpmpainit);
+            tab[x]->classes.PM = atoi(tpmpm);
+            tab[x]->classes.PM_init = atoi(tpmpminit);
+            tab[x]->classes.PV = atoi(tpmpv);
+            tab[x]->classes.PV_init = atoi(tpmpvinit);
+            tab[x]->classes.cord_x = atoi(tpmcordx);
+            tab[x]->classes.cord_y = atoi(tpmcordy);
+            tab[x]->classes.ID = atoi(tpmid);
+            stop = 0;
+            j = 0;
+            espace = 0;
+            cmpnom = 0;
+            cmpclasse = 0;
+            cmpordre = 0;
+            cmppv = 0;
+            cmppm = 0;
+            cmppa = 0;
+            cmpid = 0;
+            cmppvinit = 0;
+            cmppminit = 0;
+            cmppainit = 0;
+            cmpcordx = 0;
+            cmpcordy = 0;
+            tpmnom = NULL;
+            tpmclasse = NULL;
+            tpmordre = NULL;
+            tpmpv = NULL;
+            tpmpm = NULL;
+            tpmpa = NULL;
+            tpmid = NULL;
+            tpmpvinit = NULL;
+            tpmpminit = NULL;
+            tpmpainit = NULL;
+            tpmcordx = NULL;
+            tpmcordy = NULL;
+        }
+    }
+    return tab;
+}
+
+/*t_joueur** chargement_infoJoueur_bis(char* nom, int nbrjoueur)
+{
+    int i = 0;
+    char** recup = (char**)malloc(nbrjoueur * sizeof(char*));
+    char tampon[100];
+    t_joueur** tab;
+    FILE* fichier1;
+    tab = (t_joueur*)malloc(sizeof(t_joueur)*1);
+    //tab = (t_joueur*)malloc(sizeof(t_joueur)*nbrjoueur);
+    char tampon1[500];
+    char* trajet;
+    char tpm1[500];
+    char nom1[500];
+    trajet = "sauvegarde/";
+    strcat(strcpy(tampon1, trajet), nom);
+    printf("tampon %s\n", tampon1);
+    strcpy(nom1, "/saveInfoJoueur.txt" );
+    strcpy(tpm1, tampon1);
+    strcat(tampon1, nom1);
+    printf("%s\n", nom1);
+    printf("%s\n", tampon1);
+    fichier1 = fopen(tampon1, "r+");
+    if(fichier1 == NULL)
+    {
+        printf("Ce fichier n'existe pas\n");
+    }
+    else
+    {
+        //Parcours du fichier
+        while(!feof(fichier1))
+        {
+            //fgets(tampon, 100, fichier1);
+            recup[i] = (char*)malloc(100 * sizeof(char));
+            for(int k=0; k<100; k++)
+            {
+                recup[i][k] = fgetc(fichier1);
+                printf("%c", recup[i][k]);
+                if(recup[i][k] == '\0')
+                    break;
+            }
+            printf("\n");
+
+           // strcpy(recup[i], tampon);
+            i++;
+        }
+        fclose(fichier1);
+        printf("test\n");
+        int stop = 0;
+        int j = 0;
+        int espace = 0;
+        int cmpnom = 0;
+        int cmpclasse = 0;
+        int cmpordre = 0;
+        int cmppv = 0;
+        int cmppm = 0;
+        int cmppa = 0;
+        int cmpid = 0;
+        int cmppvinit = 0;
+        int cmppminit = 0;
+        int cmppainit = 0;
+        int cmpcordx = 0;
+        int cmpcordy = 0;
+        char* tpmpseudo= NULL;
+        char* tpmclasse= NULL;
+        char* tpmordre= NULL;
+        char* tpmpv= NULL;
+        char* tpmpm= NULL;
+        char* tpmpa= NULL;
+        char* tpmid= NULL;
+        char* tpmpvinit= NULL;
+        char* tpmpminit= NULL;
+        char* tpmpainit= NULL;
+        char* tpmcordx= NULL;
+        char* tpmcordy= NULL;
+        for(int x = 0; x<nbrjoueur-1; x++)
+        {
+            tab[x] = (t_joueur*)malloc(sizeof(t_joueur));
+            tpmpseudo = (char*)malloc(sizeof(char) * 25);
+            tpmclasse= (char*)malloc(sizeof(char) * 8);
+            tpmordre= (char*)malloc(sizeof(char) * 5);
+            tpmpv= (char*)malloc(sizeof(char) * 5);
+            tpmpm= (char*)malloc(sizeof(char) * 5);
+            tpmpa= (char*)malloc(sizeof(char) * 5);
+            tpmid= (char*)malloc(sizeof(char) * 5);
+            tpmpvinit= (char*)malloc(sizeof(char) * 5);
+            tpmpminit= (char*)malloc(sizeof(char) * 5);
+            tpmpainit= (char*)malloc(sizeof(char) * 5);
+            tpmcordx= (char*)malloc(sizeof(char) * 5);
+            tpmcordy= (char*)malloc(sizeof(char) * 5);
+            printf("test1\n");
+            while(stop != 1)
+            {
+                if(recup[x][j] == ' ')
+                    espace += 1;
+                if(espace == 0)
+                {
+                    tpmpseudo[cmpnom] = recup[x][j];
+                    cmpnom +=1;
+                }
+                else if(espace == 1)
+                {
+                    tpmclasse[cmpclasse] = recup[x][j];
+                    cmpclasse +=1;
+                }
+                else if(espace == 2)
+                {
+                    tpmordre[cmpordre] = recup[x][j];
+                    cmpordre +=1;
+                }
+                else if(espace == 3)
+                {
+                    tpmpv[cmppv] = recup[x][j];
+                    cmppv +=1;
+                }
+                else if(espace == 4)
+                {
+                    tpmpm[cmppm] = recup[x][j];
+                    cmppm +=1;
+                }
+                else if(espace == 5)
+                {
+                    tpmpa[cmppa] = recup[x][j];
+                    cmppa +=1;
+                }
+                else if(espace == 6)
+                {
+                    tpmid[cmpid] = recup[x][j];
+                    cmpid +=1;
+                }
+                else if(espace == 7)
+                {
+                    tpmpvinit[cmppvinit] = recup[x][j];
+                    cmppvinit +=1;
+                }
+                else if(espace == 8)
+                {
+                    tpmpminit[cmppminit] = recup[x][j];
+                    cmppminit +=1;
+                }
+                else if(espace == 9)
+                {
+                    tpmpainit[cmppainit] = recup[x][j];
+                    cmppainit +=1;
+                }
+                else if(espace == 10)
+                {
+                    tpmcordx[cmpcordx] = recup[x][j];
+                    cmpcordx +=1;
+                }
+                else if(espace == 11)
+                {
+                    tpmcordy[cmpcordy] = recup[x][j];
+                    cmpcordy +=1;
+                }
+                else
+                    stop = 1;
+                j +=1;
+
+            }
+            tab[x]->pseudo = (char*)malloc((strlen(tpmpseudo)+1) * sizeof(char));
+            strcpy(tab[x]->pseudo, tpmpseudo);
+            tab[x]->classes.nom = (char*)malloc((strlen(tpmclasse)+1) * sizeof(char));
+            strcpy(tab[x]->classes.nom, tpmclasse);
+            tab[x]->ordre = atoi(tpmordre);
+            tab[x]->classes.PA = atoi(tpmpa);
+            tab[x]->classes.PA_init = atoi(tpmpainit);
+            tab[x]->classes.PM = atoi(tpmpm);
+            tab[x]->classes.PM_init = atoi(tpmpminit);
+            tab[x]->classes.PV = atoi(tpmpv);
+            tab[x]->classes.PV_init = atoi(tpmpvinit);
+            tab[x]->classes.cord_x = atoi(tpmcordx);
+            tab[x]->classes.cord_y = atoi(tpmcordy);
+            tab[x]->classes.ID = atoi(tpmid);
+            stop = 0;
+            j = 0;
+            espace = 0;
+            cmpnom = 0;
+            cmpclasse = 0;
+            cmpordre = 0;
+            cmppv = 0;
+            cmppm = 0;
+            cmppa = 0;
+            cmpid = 0;
+            cmppvinit = 0;
+            cmppminit = 0;
+            cmppainit = 0;
+            cmpcordx = 0;
+            cmpcordy = 0;
+            tpmpseudo = NULL;
+            tpmclasse = NULL;
+            tpmordre = NULL;
+            tpmpv = NULL;
+            tpmpm = NULL;
+            tpmpa = NULL;
+            tpmid = NULL;
+            tpmpvinit = NULL;
+            tpmpminit = NULL;
+            tpmpainit = NULL;
+            tpmcordx = NULL;
+            tpmcordy = NULL;
+        }
+    }
+    return tab;
+}*/
 
 /*t_joueur** chargement_infoJoueur_bis(char* nom, int nbrjoueur)
 {

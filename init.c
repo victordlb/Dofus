@@ -12,7 +12,18 @@ void lancement()
     srand(time(NULL));
     initialisation();
     logo();
-    menu_principal();
+    int done = 0;
+    do
+    {
+        done = menu_principal();
+    }while(done == 0);
+    printf("Fermeture du programme");
+    Sleep(500);
+    printf(" .");
+    Sleep(500);
+    printf(" .");
+    Sleep(500);
+    printf(" .\n");
 }
 
 ///initialisation du tableau de joueur avec choix de caractéristique pour chaque joueur
