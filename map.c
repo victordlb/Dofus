@@ -64,7 +64,7 @@ t_cases** chargement_map(int choix)
             }
             else if(choix == 2)
             {
-                if(tabcases[i][j].cases <= 4)
+                if(tabcases[i][j].cases < 4)
                     tabcases[i][j].obstacle = 0;
                 else
                     tabcases[i][j].obstacle = 1;
@@ -187,6 +187,7 @@ void dessin_haut_arbre(BITMAP* fond, t_cases** tabcases)
             }
         }
     }
+    destroy_bitmap(cinq);
 }
 
 
@@ -386,6 +387,9 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     }
     destroy_bitmap(fond);
     destroy_bitmap(personnage);
+    destroy_bitmap(personnage1);
+    destroy_bitmap(personnage2);
+    destroy_bitmap(personnage4);
     destroy_bitmap(tete_perso);
     destroy_bitmap(tete_perso_c);
     destroy_bitmap(casesort);
@@ -395,5 +399,6 @@ void chargement_perso(t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* b
     destroy_bitmap(logodpl);
     destroy_bitmap(logopass);
     destroy_bitmap(cadre);
+    destroy_bitmap(pv);
 }
 
