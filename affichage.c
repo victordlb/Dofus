@@ -85,7 +85,7 @@ void logo()
 }
 
 /// affichage du menu principal et choix de l'action a faire
-int menu_principal()
+void menu_principal()
 {
     int couleur1 = 0;
     int couleur2 = 0;
@@ -178,48 +178,37 @@ int menu_principal()
             }
             if(choix == 3)
             {
-                goto fin;
+                quitter();
+                stop = 1;
             }
         }
         if(couleur3 == makecol(255,0,0) && mouse_b&1)
         {
-            t_joueur** tabjoueur = NULL;
+            t_joueur** tabjoueur;
             int nbrjoueur;
-            char choix_mapa = 0;
             int premier_joueur;
-            char* nomfff;
-            nomfff = saisie_nom_chargement();
+            char* nom;
+            nom = saisie_nom_chargement();
             //t_charge Unecharge;
-            printf("testdebut\n");
-            nbrjoueur = chargement_nbrjoueur(nomfff);
-            printf("nombre :%d\n", nbrjoueur);
-            premier_joueur = chargement_indice(nomfff);
-            printf("premier joueur :%d\n", premier_joueur);
-            choix_mapa = chargement_choix_map(nomfff);
-            printf("choix mapa :%d\n", choix_mapa);
-            tabjoueur = chargement_infoJoueur_bis(nomfff, nbrjoueur);
+            nbrjoueur = chargement_nbrjoueur(nom);
+            premier_joueur = chargement_indice(nom);
+            //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
             //Unecharge = chargement();
-            printf("testfin\n");
             /*tabjoueur = Unecharge.tabjoueur;
             nbrjoueur = Unecharge.nbrjoueur;
             premier_joueur = Unecharge.indice;*/
-            for(int x = 0; x<nbrjoueur; x++)
+            /*for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
-               // tabjoueur[x]->pseudo = "pseudo";
-                printf("%s\n", tabjoueur[x]->pseudo);
-                printf("%d %d %d %d %d %d %d %d %d\n", tabjoueur[x]->ordre, tabjoueur[x]->classes.PV, tabjoueur[x]->classes.PV_init, tabjoueur[x]->classes.PA, tabjoueur[x]->classes.PA_init, tabjoueur[x]->classes.PM, tabjoueur[x]->classes.PM_init,tabjoueur[x]->classes.cord_x, tabjoueur[x]->classes.cord_y);
             }
-            tour(tabjoueur, nbrjoueur, premier_joueur, 0,choix_mapa);
+            tour(tabjoueur, nbrjoueur, premier_joueur, 0,1);*/
         }
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
-            fin:
             quitter();
             stop = 1;
         }
     }
-    return stop;
     destroy_bitmap(fond);
 }
 
@@ -723,7 +712,7 @@ t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur)
 }
 
 /// affichage d'un menu pause avec choix de l'action a faire
-int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice, int choix)
+void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice)
 {
     BITMAP* fond;
     fond = load_bitmap("documents/fond/menu pause.bmp", NULL);
@@ -803,14 +792,14 @@ int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice, int choix)
         if(couleur4 == makecol(255,0,0) && mouse_b&1)
         {
             Sleep(500);
-            stop = 2;
+            stop = 1;
+            menu_principal();
         }
         if(couleur5 == makecol(255,0,0) && mouse_b&1)
         {
-            sauvegarde(tabjoueur,nbrjoueur,indice,choix);
+            sauvegarde(tabjoueur,nbrjoueur,indice);
         }
     }
-    return stop;
     destroy_bitmap(fond);
 }
 
@@ -894,7 +883,7 @@ char* saisie_pseudo()
                 textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"_");
             }
         }
-        //* si effacement
+        // si effacement
         if ( touche2==KEY_BACKSPACE )
         {
             i--;
@@ -903,7 +892,7 @@ char* saisie_pseudo()
             textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"_");
             textprintf_ex(fond,font,420+8*(i+1),300,makecol(255,255,255),0," ");
         }
-        //* si validation
+        // si validation
         if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
         {
             textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0," ");
@@ -923,6 +912,7 @@ char* saisie_pseudo()
     return pseudo;
 }
 
+///affichage du classement en fin de partie
 void classement(t_joueur** tabjoueur, int nbrjoueur)
 {
     BITMAP* fond;
@@ -954,6 +944,7 @@ void classement(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(fond);
 }
 
+///affichage du menu de fin de jeu
 int menu_fin_de_jeu()
 {
     BITMAP* fond;
@@ -1017,6 +1008,7 @@ int menu_fin_de_jeu()
     destroy_bitmap(fond);
 }
 
+///menu pour choisir sur quelle map jouer
 int choix_map()
 {
     BITMAP* fond;

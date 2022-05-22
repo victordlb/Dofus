@@ -7,10 +7,10 @@ typedef struct attaque
     int consequence_PA;
     int modulo_echec;
     int degats;
-    int type;  //1 = croix, 2 = cercle, 3 = zone + cercle
+    int type;  //1 = croix, 2 = cercle
     int porte;
-    int consequence_PM; //1 = plus de mouvement, 0 = rien, 2 = avance de cases, 3 = plus 5 PM
-    int effet_spe; // 1 = augmentation echec, 2 = blessure, 3 = defense, 4 = critique, 5 = enflamme, 6 = bloque les PM
+    int consequence_PM; //fonctionnalité non utilisée
+    int effet_spe; //fonctionnalité non utilisée
 }t_attaque;
 
 typedef struct classe

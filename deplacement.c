@@ -441,7 +441,7 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
 /// ANCIENNE FONCTION NON-UTILISE DANS LE CODE FINAL
 
 
-/// test si le deplacement est possible a l'endroit ou le joueur a cliquer
+// test si le deplacement est possible a l'endroit ou le joueur a cliquer
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
     if(tabcases[Y/50][X/50].obstacle == 0)
@@ -491,7 +491,7 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
     }
 }
 
-///Calcul de l'itineraire (pas encore tester mais logiquement fonctionnel)
+//Calcul de l'itineraire
 t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
 {
     t_chemin* Lechemin = (t_chemin*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_chemin));
@@ -568,7 +568,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     return Lechemin;
 }
 
-/// colorisation des cases a l'endroit ou le deplacement est possible
+// colorisation des cases a l'endroit ou le deplacement est possible
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
 {
     t_chemin* Lechemin;
