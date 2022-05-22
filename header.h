@@ -65,13 +65,13 @@ typedef struct charge
 ///affichage_allegro
 void initialisation();
 void logo();
-void menu_principal();
+int menu_principal();
 void lancement();
 void quitter();
 void regle();
 int nombre_joueur();
 t_classe choix_classe(t_joueur** tab_joueur,int i, int nbrjoueur);
-void menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice);
+int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice,int choix);
 void infojoueur(t_joueur** tabjoueur, int nbrjoueur);
 void classement(t_joueur** tabjoueur, int nbrjoueur);
 int menu_fin_de_jeu();
@@ -108,16 +108,18 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice);
 
 ///sauvegarde et chargement
-void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice);
+void sauvegarde(t_joueur** tabjoueur, int nbrjoueur,int indice, int choix);
 void sauvegarde_tabjoueur(t_joueur** , int nbrjoueur, char* trajet);
 void sauvegarde_nbrjoueur(int nbrjoueur, char* trajet);
 void sauvegarde_tour(int indice, char* trajet);
+void sauvegarde_choixmap(int choix, char* trajet);
 t_charge chargement();
 char* saisie_nom_sauvegarde();
 char* saisie_nom_chargement();
 t_joueur** chargement_infoJoueur(char* nom, int nbrjoueur);
 int chargement_indice(char* nom);
 int chargement_nbrjoueur(char* nom);
+int chargement_choix_map(char* nom);
 
 ///Combat
 void chargerSort(t_joueur** tabjoueur, int indice);
