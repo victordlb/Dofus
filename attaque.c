@@ -6,6 +6,8 @@
 #include <string.h>
 #include "header.h"
 
+///TOUTES LES FONCTIONS DANS CE .C METTENT EN PLACE LA FONCTIONNALITE D'ATTAQUE ENTRE LES JOUEURS
+
 /// fonction appelee lorsque le joueur decide d'attaquer, il pourra le faire ici
 void combat(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond, int choix)
 {
@@ -243,8 +245,6 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
         sort3 = load_bitmap("documents/perso/franky/sortF/3.bmp", NULL);
         sort4 = load_bitmap("documents/perso/franky/sortF/4.bmp", NULL);
     }
-    else
-        printf("oups");
     draw_sprite(fond, sort1, 502, 737);
     draw_sprite(fond, sort2, 502 + (1*75), 737);
     draw_sprite(fond, sort3, 502 + (2*75), 737);
@@ -264,7 +264,7 @@ void afficherSort(t_joueur** tabjoueur, int indice, BITMAP* fond)
     destroy_bitmap(logo_info);
 }
 
-/// fonction qui test la porte du sort choisi par le joueur
+/// fonction qui test la portée du sort choisi par le joueur
 void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort, BITMAP* fond)
 {
     if(tabjoueur[indice]->classes.mesattaques[numsort].type == 1)
@@ -277,7 +277,7 @@ void porteSort(t_cases** tabcases, t_joueur** tabjoueur, int indice, int numsort
     }
 }
 
-/// fonction qui dessine en forme de croix la porte des sorts
+/// fonction qui dessine en forme de croix la portée des sorts
 void dessinportecroix(t_joueur** tabjoueur, t_cases** tabcases, int indice,int numsort, BITMAP* fond)
 {
     for(int i = 0; i<16; i++)
@@ -313,7 +313,7 @@ void dessinportecercle(t_joueur** tabjoueur, t_cases** tabcases, int indice,int 
     }
 }
 
-///fonction qui test si le sors en forme de croix est possible
+///fonction qui test si la case est à portée du joueur (forme de croix)
 int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice, int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -344,7 +344,7 @@ int possibcroix(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indic
         return 0;
 }
 
-///fonction qui test si le sort en forme de cercle est possible
+///fonction qui test si la case est à portée du joueur (forme de cercle)
 int possibcercle(t_joueur** tabjoueur,int X, int Y, t_cases** tabcases, int indice,int numsort)
 {
     int Ycase = tabcases[Y/50][X/50].y/50;
@@ -421,8 +421,6 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
             if(possibcroix(tabcases,mouse_x, mouse_y,tabjoueur,indice,numsort) == 1)
             {
                 tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA;
-                //if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
-               // {
                     for(int i = 0; i<nbrjoueur; i++)
                     {
                         if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
@@ -431,7 +429,6 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
                                 draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
-                                printf("%s : %d", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
                                     tabjoueur[i]->perdu = 1;
@@ -440,19 +437,11 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             }
                             else
                             {
-                                printf("raté");
                                 return 1;
                             }
                         }
                     }
-                    printf("personne sur cette case\n");
                     return 1;
-                /*}
-                else
-                {
-                    printf("pas assez de PA");
-                    return 1;
-                }*/
             }
             else
                 return 0;
@@ -462,8 +451,6 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
             if(possibcercle(tabjoueur,mouse_x, mouse_y,tabcases,indice,numsort) == 1)
             {
                 tabjoueur[indice]->classes.PA = tabjoueur[indice]->classes.PA - tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA;
-                //if(tabjoueur[indice]->classes.PA >= tabjoueur[indice]->classes.mesattaques[numsort].consequence_PA)
-                //{
                     for(int i = 0; i<nbrjoueur; i++)
                     {
                         if(tabjoueur[i]->classes.cord_x/50 == mouse_x/50 && tabjoueur[i]->classes.cord_y/50 == mouse_y/50)
@@ -472,7 +459,6 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             {
                                 tabjoueur[i]->classes.PV -= tabjoueur[indice]->classes.mesattaques[numsort].degats;
                                 draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
-                                printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                                 if(tabjoueur[i]->classes.PV <=0)
                                 {
                                     tabjoueur[i]->perdu = 1;
@@ -481,19 +467,11 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                             }
                             else
                             {
-                                printf("raté\n");
                                 return 1;
                             }
                         }
                     }
-                    printf("personne sur cette case\n");
                     return 1;
-                //}
-                /*else
-                {
-                    printf("pas assez de PA");
-                    return 1;
-                }*/
             }
             else
                 return 0;
@@ -509,7 +487,6 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                     {
                         tabjoueur[i]->classes.PV -= 3;
                         draw_sprite(fond, anime, tabjoueur[i]->classes.cord_x, tabjoueur[i]->classes.cord_y+5);
-                        printf("%s : %d\n", tabjoueur[i]->pseudo, tabjoueur[i]->classes.PV);
                         if(tabjoueur[i]->classes.PV <=0)
                         {
                             tabjoueur[i]->perdu = 1;
@@ -517,7 +494,6 @@ int lancerattaque(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrj
                         return 1;
                     }
                 }
-                printf("personne sur cette case\n");
                 return 1;
             }
         }

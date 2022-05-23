@@ -5,6 +5,8 @@
 #include <synchapi.h>
 #include "header.h"
 
+///TOUTES LES FONCTIONS DANS CE .C METTENT EN PLACE LA FONCTIONNALITE DE DEPLACEMENT DES JOUEURS
+
 /// fonction qui determine la 1ere position des joueurs
 void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
 {
@@ -42,6 +44,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
                 defx = 4;
                 defy = 12;
             }
+            else if(choix == 3)
+            {
+                defx = 2;
+                defy = 10;
+            }
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "robin")==0)
         {
@@ -62,6 +69,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
                 defx = 22;
                 defy = 2;
             }
+            else if(choix == 3)
+            {
+                defx = 20;
+                defy = 3;
+            }
         }
         else if(strcmp(tabjoueur[i]->classes.nom, "franky") == 0)
         {
@@ -75,6 +87,11 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
             {
                 defx = 12;
                 defy = 12;
+            }
+            else if(choix == 3)
+            {
+                defx = 10;
+                defy = 2;
             }
         }
         time_t start, end;
@@ -119,10 +136,7 @@ void premier_placement(t_joueur** tabjoueur, int nbrjoueur,int choix)
 /// fonction appelé lorsque un joueur veut se deplacer, il pourra le faire ici
 void deplacement(t_cases** tabcases, t_joueur** tabjoueur, int indice, int nbrjoueur, BITMAP* fond,int choix)
 {
-    //t_cases** tabcases;
     t_chemin* Lechemin;
-    //tabcases = chargement_map();
-    // BITMAP* fond;
     BITMAP* croix;
     croix = load_bitmap("documents/props/logo croix.bmp", NULL);
     BITMAP* personnage;
@@ -307,10 +321,8 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
     int distance[16][28];
     int verif[16][28];
     int predecesseur_col[16][28],predecesseur_lig[16][28];
-    //int arrivee_col, arrivee_lig;
     int new_col,new_lig;
     t_chemin* monchemin;
-
 
     for(int i=0; i<16; i++)
     {
@@ -441,7 +453,7 @@ t_chemin* djikstra(t_cases** tabcases, int pos_col_pers,int pos_lig_pers, int ar
 /// ANCIENNE FONCTION NON-UTILISE DANS LE CODE FINAL
 
 
-/// test si le deplacement est possible a l'endroit ou le joueur a cliquer
+// test si le deplacement est possible a l'endroit ou le joueur a cliquer
 int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueur, int indice)
 {
     if(tabcases[Y/50][X/50].obstacle == 0)
@@ -450,12 +462,10 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
         {
             if((tabjoueur[indice]->classes.cord_y/50) + tabjoueur[indice]->classes.PM >= Y/50 && Y/50 >= (tabjoueur[indice]->classes.cord_y/50) - tabjoueur[indice]->classes.PM)
             {
-                printf("Possible\n");
                 return 1;
             }
             else
             {
-                printf("Impossible\n");
                 return 0;
             }
         }
@@ -463,35 +473,30 @@ int possibilite_deplacement(t_cases** tabcases,int X, int Y, t_joueur** tabjoueu
         {
             if( (tabjoueur[indice]->classes.cord_x/50) + tabjoueur[indice]->classes.PM >= X/50 && X/50 >= (tabjoueur[indice]->classes.cord_x/50) - tabjoueur[indice]->classes.PM)
             {
-                printf("Possible\n");
                 return 1;
             }
             else
             {
-                printf("Impossible\n");
                 return 0;
             }
         }
         else if((((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.cord_y/50)) - tabjoueur[indice]->classes.PM <= (X/50)+(Y/50) && (X/50)+(Y/50) <=  ((tabjoueur[indice]->classes.cord_x/50)+ (tabjoueur[indice]->classes.cord_y/50)) + tabjoueur[indice]->classes.PM) && (((tabjoueur[indice]->classes.cord_x/50) - (tabjoueur[indice]->classes.PM/2)) <= X/50 && ((tabjoueur[indice]->classes.cord_y/50) + (tabjoueur[indice]->classes.PM/2)) >= Y/50) && (((tabjoueur[indice]->classes.cord_x/50) + (tabjoueur[indice]->classes.PM/2)) >= X/50 && ((tabjoueur[indice]->classes.cord_y/50) - (tabjoueur[indice]->classes.PM/2)) <= Y/50))
         {
-            printf("Possible\n");
             return 1;
         }
         else
         {
-            printf("Impossible\n");
             return 0;
         }
     }
 
     else
     {
-        printf("Impossible\n");
         return 0;
     }
 }
 
-///Calcul de l'itineraire (pas encore tester mais logiquement fonctionnel)
+//Calcul de l'itineraire
 t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int finishx, int finishy)
 {
     t_chemin* Lechemin = (t_chemin*)malloc(tabjoueur[indice]->classes.PM * sizeof(t_chemin));
@@ -568,7 +573,7 @@ t_chemin* itineraire(t_cases** tabcases, t_joueur** tabjoueur, int indice, int f
     return Lechemin;
 }
 
-/// colorisation des cases a l'endroit ou le deplacement est possible
+// colorisation des cases a l'endroit ou le deplacement est possible
 void couleur_case(t_joueur** tabjoueur, t_cases** tabcases, int indice, BITMAP* fond)
 {
     t_chemin* Lechemin;

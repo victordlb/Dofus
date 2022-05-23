@@ -6,6 +6,9 @@
 #include <string.h>
 #include "header.h"
 
+/// TOUTES LES FONCTIONS DANS CE .C SONT DES FONCTIONS QUI AFFICHE UN FOND SUR LE SCREEN, AUTRE QUE LA MAP
+
+
 /// initialisation d'allegro
 void initialisation()
 {
@@ -56,7 +59,7 @@ void logo()
             {
                 putpixel(mugiwara_edition, i, j, makecol(255,0,255));
             }
-            /// passer en blanc
+            /// passer en blanc le texte initialement noir
             if(color == makecol(0,0,0))
             {
                 putpixel(dofus, i,j, makecol(255,255,255));
@@ -144,7 +147,6 @@ int menu_principal()
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
-            /// a definir
             t_joueur** tab_joueur;
             int choix;
             int choix_mapa;
@@ -185,30 +187,17 @@ int menu_principal()
         {
             t_joueur** tabjoueur = NULL;
             int nbrjoueur;
-            char choix_mapa = 0;
+            int choix_mapa;
             int premier_joueur;
-            char* nomfff;
-            nomfff = saisie_nom_chargement();
-            //t_charge Unecharge;
-            printf("testdebut\n");
-            nbrjoueur = chargement_nbrjoueur(nomfff);
-            printf("nombre :%d\n", nbrjoueur);
-            premier_joueur = chargement_indice(nomfff);
-            printf("premier joueur :%d\n", premier_joueur);
-            choix_mapa = chargement_choix_map(nomfff);
-            printf("choix mapa :%d\n", choix_mapa);
-            tabjoueur = chargement_infoJoueur_bis(nomfff, nbrjoueur);
-            //Unecharge = chargement();
-            printf("testfin\n");
-            /*tabjoueur = Unecharge.tabjoueur;
-            nbrjoueur = Unecharge.nbrjoueur;
-            premier_joueur = Unecharge.indice;*/
+            char* nom;
+            nom = saisie_nom_chargement();
+            nbrjoueur = chargement_nbrjoueur(nom);
+            premier_joueur = chargement_indice(nom);
+            choix_mapa = chargement_choix_map(nom);
+            //tabjoueur = chargement_infoJoueur_bis(nom, nbrjoueur);
             for(int x = 0; x<nbrjoueur; x++)
             {
                 printf("joueur %d : %s\n", tabjoueur[x]->classes.ID, tabjoueur[x]->classes.nom);
-               // tabjoueur[x]->pseudo = "pseudo";
-                printf("%s\n", tabjoueur[x]->pseudo);
-                printf("%d %d %d %d %d %d %d %d %d\n", tabjoueur[x]->ordre, tabjoueur[x]->classes.PV, tabjoueur[x]->classes.PV_init, tabjoueur[x]->classes.PA, tabjoueur[x]->classes.PA_init, tabjoueur[x]->classes.PM, tabjoueur[x]->classes.PM_init,tabjoueur[x]->classes.cord_x, tabjoueur[x]->classes.cord_y);
             }
             tour(tabjoueur, nbrjoueur, premier_joueur, 0,choix_mapa);
         }
@@ -789,7 +778,6 @@ int menu_pause(t_joueur** tabjoueur, int nbrjoueur, int indice, int choix)
         circlefill(fond, 330, 500, 10, couleur5);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
-            /// a definir
             stop = 1;
         }
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
@@ -894,7 +882,7 @@ char* saisie_pseudo()
                 textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"_");
             }
         }
-        //* si effacement
+        // si effacement
         if ( touche2==KEY_BACKSPACE )
         {
             i--;
@@ -903,7 +891,7 @@ char* saisie_pseudo()
             textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0,"_");
             textprintf_ex(fond,font,420+8*(i+1),300,makecol(255,255,255),0," ");
         }
-        //* si validation
+        // si validation
         if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
         {
             textprintf_ex(fond,font,420+8*i,300,makecol(255,255,255),0," ");
@@ -923,6 +911,7 @@ char* saisie_pseudo()
     return pseudo;
 }
 
+///affichage du classement en fin de partie
 void classement(t_joueur** tabjoueur, int nbrjoueur)
 {
     BITMAP* fond;
@@ -954,6 +943,7 @@ void classement(t_joueur** tabjoueur, int nbrjoueur)
     destroy_bitmap(fond);
 }
 
+///affichage du menu de fin de jeu
 int menu_fin_de_jeu()
 {
     BITMAP* fond;
@@ -1017,25 +1007,30 @@ int menu_fin_de_jeu()
     destroy_bitmap(fond);
 }
 
+///menu pour choisir sur quelle map jouer
 int choix_map()
 {
     BITMAP* fond;
     BITMAP* map1;
     BITMAP* map2;
+    BITMAP* map3;
     fond = load_bitmap("documents/fond/fond choix map.bmp", NULL);
     map1 = load_bitmap("documents/props/map1.bmp", NULL);
     map2 = load_bitmap("documents/props/map2.bmp", NULL);
+    map3 = load_bitmap("documents/props/map3.bmp", NULL);
     int couleur1;
     int couleur2;
+    int couleur3;
     int done = 0;
     int retour = 0;
     while(done == 0)
     {
-        draw_sprite(fond, map1, 100,250);
-        draw_sprite(fond,map2,800,250);
+        draw_sprite(fond, map1, 100,100);
+        draw_sprite(fond,map2,800,100);
+        draw_sprite(fond, map3, 450, 450);
         blit(fond, screen,0,0,0,0,SCREEN_W,SCREEN_H);
         textprintf_ex(fond, font, 600, 50, makecol(0,0,0), -1, "CHOISISSEZ VOTRE MAP");
-        if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        if(mouse_x < 220 || mouse_x > (300 + text_length(font, "Archipel Sabaody")) || mouse_y < 410 || mouse_y > (410 + text_height(font)))
         {
             couleur1 = makecol(0,0,0);
         }
@@ -1043,7 +1038,7 @@ int choix_map()
         {
             couleur1 = makecol(255,0,0);
         }
-        if(mouse_x < 970 || mouse_x > (1050 + text_length(font, "Alabasta")) || mouse_y < 550 || mouse_y > (550 + text_height(font)))
+        if(mouse_x < 970 || mouse_x > (1050 + text_length(font, "Alabasta")) || mouse_y < 410 || mouse_y > (410 + text_height(font)))
         {
             couleur2 = makecol(0,0,0);
         }
@@ -1051,10 +1046,20 @@ int choix_map()
         {
             couleur2 = makecol(255,0,0);
         }
-        textprintf_ex(fond,font, 300,550,couleur1,-1, "Archipel Sabaody");
-        circlefill(fond, 230, 550, 10, couleur1);
-        textprintf_ex(fond, font, 1050, 550, couleur2, -1, "Alabasta");
-        circlefill(fond, 980, 550, 10, couleur2);
+        if(mouse_x < 570 || mouse_x > (650 + text_length(font, "Royaume de Drum")) || mouse_y < 760 || mouse_y > (760 + text_height(font)))
+        {
+            couleur3 = makecol(0,0,0);
+        }
+        else
+        {
+            couleur3 = makecol(255,0,0);
+        }
+        textprintf_ex(fond,font, 300,410,couleur1,-1, "Archipel Sabaody");
+        circlefill(fond, 230, 410, 10, couleur1);
+        textprintf_ex(fond, font, 1050, 410, couleur2, -1, "Alabasta");
+        circlefill(fond, 980, 410, 10, couleur2);
+        textprintf_ex(fond, font, 650, 760, couleur3, -1, "Royaume de Drum");
+        circlefill(fond, 580, 760, 10, couleur3);
         if(couleur1 == makecol(255,0,0) && mouse_b&1)
         {
             retour = 1;
@@ -1063,6 +1068,11 @@ int choix_map()
         if(couleur2 == makecol(255,0,0) && mouse_b&1)
         {
             retour = 2;
+            done = 3;
+        }
+        if(couleur3 == makecol(255,0,0) && mouse_b&1)
+        {
+            retour = 3;
             done = 3;
         }
     }
